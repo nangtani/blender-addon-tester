@@ -21,16 +21,18 @@ bl_info = {
     "author": "Dave Keeshan",
     "version": (0, 0, 1),
     "blender": (2, 80, 0),
-#     "location": "File > Import-Export",
-#     "description": "Import-Export OBJ, Import OBJ mesh, UV's, materials and textures",
-#     "warning": "",
-#     "wiki_url": "http://wiki.blender.org/index.php/Extensions:2.6/Py/Scripts/Import-Export/Wavefront_OBJ",
-#     "support": 'OFFICIAL',
+    #     "location": "File > Import-Export",
+    #     "description": "Import-Export OBJ, Import OBJ mesh, UV's, materials and textures",
+    #     "warning": "",
+    #     "wiki_url": "http://wiki.blender.org/index.php/Extensions:2.6/Py/Scripts/Import-Export/Wavefront_OBJ",
+    #     "support": 'OFFICIAL',
     "category": "Object",
 }
 
+
 def register():
     print("Hello World")
+
 
 def unregister():
     print("Goodbye World")
