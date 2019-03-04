@@ -54,7 +54,7 @@ def getSuffix(blender_version, nightly):
     return (blender_zippath)
 
 
-def getBlender(blender_version, blender_zippath):
+def getBlender(blender_version, blender_zippath, nightly):
     cwd = checkPath(os.getcwd())
     os.chdir("..")
 
