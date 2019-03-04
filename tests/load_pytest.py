@@ -16,6 +16,9 @@ class SetupPlugin(object):
         cleanup(self.addon, self.bpy_module)
         print("*** test run reporting finished")
 
-
-exit_val = pytest.main(["tests"], plugins=[SetupPlugin("fake_addon")])
+addon = "fake_addon"
+try:
+    exit_val = pytest.main(["tests"], plugins=[SetupPytest(addon)])
+except:
+    exit_val = 1
 sys.exit(exit_val)
