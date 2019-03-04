@@ -27,7 +27,11 @@ def main(blender, test_file):
 
 
 if __name__ == "__main__":
-
+    if len(sys.argv) >= 2:
+        blender_rev = sys.argv[1]
+    else:
+        blender_rev = "2.79b"
+    
     if len(sys.argv) >= 2:
         blender_rev = sys.argv[1]
     else:
@@ -36,6 +40,7 @@ if __name__ == "__main__":
     blender_dir = "blender_build/blender-{0}".format(blender_rev)
 
     blender = os.path.realpath("{0}/blender".format(blender_dir))
+
     test_file = "tests/load_pytest.py"
 
     exit_val = main(blender, test_file)
