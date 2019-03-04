@@ -27,14 +27,13 @@ def getSuffix(blender_version, nightly):
         machine = "linux.+x86_64"
         ext = "tar.bz2"
 
+    rev = re.sub("\w$", "", blender_version)
     if False == nightly:
-        url = "https://www.blender.org/download"
-        download_url = "https://ftp.nluug.nl/pub/graphics/blender/release"
+        url = f"https://ftp.nluug.nl/pub/graphics/blender/release/Blender{rev}"
         if "win64" == machine:
             machine = "windows64"
     else:
         url = "https://builder.blender.org/download"
-        download_url = url
 
     page = requests.get(url)
     data = page.text
@@ -43,14 +42,11 @@ def getSuffix(blender_version, nightly):
     blender_version_suffix = ""
     for link in soup.find_all("a"):
         x = str(link.get("href"))
-        g = re.search(f".+blender-{blender_version}.+{machine}.+{ext}", x)
+        g = re.search(f"blender-{blender_version}.+{machine}.+{ext}", x)
         if g:
-            blender_zippath = re.sub("^.+download", download_url, g.group(0))
+            blender_zippath = f"{url}/{g.group(0)}"
             break
-
-#     g = re.search(f"blender-{blender_version}-(\w+).+", blender_zippath)
-#     if g:
-#         blender_version_suffix = g.group(1)
+    #print(blender_zippath)
     return (blender_zippath)
 
 

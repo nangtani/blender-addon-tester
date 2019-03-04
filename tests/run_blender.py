@@ -32,11 +32,6 @@ if __name__ == "__main__":
     else:
         blender_rev = "2.79b"
     
-    if len(sys.argv) >= 2:
-        blender_rev = sys.argv[1]
-    else:
-        blender_rev = "2.79"
-
     blender_dir = "blender_build/blender-{0}".format(blender_rev)
 
     blender = os.path.realpath("{0}/blender".format(blender_dir))

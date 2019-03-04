@@ -4,6 +4,7 @@ env:
     global:
         - BLENDER_CACHE=$HOME/.cache/blender
     matrix:
+        - BLENDER_VERSION="2.78c"
         - BLENDER_VERSION="2.79b"
         - BLENDER_VERSION="2.79-nightly"
         - BLENDER_VERSION="2.80-nightly"
@@ -23,14 +24,13 @@ addons:
             - blender
 
 before_install:
-    - env
+    #- env
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
     - pip install -r tests/requirements.txt --upgrade
     - yolk -l
     - mkdir -p blender_build
     - cd $TRAVIS_BUILD_DIR
-#    - BLENDER_VERSION_SUFFIX=`python tests/get_blender.py ${BLENDER_VERSION}`
 
 install:
     - python tests/get_blender.py ${BLENDER_VERSION}
