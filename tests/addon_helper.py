@@ -11,7 +11,8 @@ def zip_addon(addon):
     bpy_module = re.sub(".py", "", os.path.basename(os.path.realpath(addon)))
     zfile = os.path.realpath(bpy_module + ".zip")
 
-    print(f"Zipping addon - {bpy_module}")
+    #print(f"Zipping addon - {bpy_module}")
+    print("Zipping addon - {0}".format(bpy_module))
 
     zf = zipfile.ZipFile(zfile, "w")
     if os.path.isdir(addon):
@@ -26,15 +27,17 @@ def zip_addon(addon):
 
 
 def copy_addon(bpy_module, zfile):
-    print(f"Copying addon - {bpy_module}")
+    #print(f"Copying addon - {bpy_module}")
+    print("Copying addon - {0}".format(bpy_module))
 
     bpy.ops.wm.addon_install(overwrite=True, filepath=zfile)
     bpy.ops.wm.addon_enable(module=bpy_module)
 
 
 def cleanup(addon, bpy_module):
-    print(f"Cleaning up - {bpy_module}")
-    bpy.ops.wm.addon_disable(module=bpy_module)
+    #print(f"Cleaning up - {bpy_module}")
+    print("Cleaning up - {}".format(bpy_module))
+    bpy.op.wm.addon_disable(module=bpy_module)
 
     # addon_remove does not work correctly in CLI
     # bpy.ops.wm.addon_remove(bpy_module=bpy_module)
