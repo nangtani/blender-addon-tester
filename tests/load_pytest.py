@@ -1,11 +1,10 @@
+import sys
+import pytest
 try:
-    import sys
-    import pytest
     from addon_helper import zip_addon, copy_addon, cleanup
-except:
+except Exception as e:
+    print(e)
     sys.exit(1)
-
-
 
 class SetupPlugin(object):
     def __init__(self, addon):
