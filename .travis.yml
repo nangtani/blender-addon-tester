@@ -1,5 +1,9 @@
 dist: xenial
 
+os:
+    - linux
+    - osx
+
 env:
     global:
         - BLENDER_CACHE=$HOME/.cache/blender
