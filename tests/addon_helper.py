@@ -37,7 +37,7 @@ def copy_addon(bpy_module, zfile):
 def cleanup(addon, bpy_module):
     #print(f"Cleaning up - {bpy_module}")
     print("Cleaning up - {}".format(bpy_module))
-    bpy.op.wm.addon_disable(module=bpy_module)
+    bpy.ops.wm.addon_disable(module=bpy_module)
 
     # addon_remove does not work correctly in CLI
     # bpy.ops.wm.addon_remove(bpy_module=bpy_module)
