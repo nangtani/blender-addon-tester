@@ -20,8 +20,9 @@ class SetupPlugin(object):
         print("*** test run reporting finished")
 
 addon = "fake_addon"
-try:
-    exit_val = pytest.main(["tests"], plugins=[SetupPlugin(addon)])
-except:
-    exit_val = 1
+exit_val = pytest.main(["tests"], plugins=[SetupPlugin(addon)])
+# try:
+#     exit_val = pytest.main(["tests"], plugins=[SetupPlugin(addon)])
+# except:
+#     exit_val = 1
 sys.exit(exit_val)
