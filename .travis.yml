@@ -2,8 +2,8 @@ dist: xenial
 
 os:
     - linux
-#    - osx
-    - windows
+    - osx
+#     - windows
 
 env:
     global:
