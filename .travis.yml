@@ -4,14 +4,15 @@ os:
     - linux
 #    - osx
     - windows
+
 env:
     global:
         - BLENDER_CACHE=$HOME/.cache/blender
     matrix:
-        - BLENDER_VERSION="2.78c"
+#        - BLENDER_VERSION="2.78c"
         - BLENDER_VERSION="2.79b"
-        - BLENDER_VERSION="2.79-nightly"
-        - BLENDER_VERSION="2.80-nightly"
+#        - BLENDER_VERSION="2.79-nightly"
+#        - BLENDER_VERSION="2.80-nightly"
 
 language: python
 python:
@@ -33,7 +34,6 @@ before_install:
     - ls ${BLENDER_CACHE}
     - pip install -r tests/requirements.txt --upgrade
     - yolk -l
-    - mkdir -p blender_build
     - cd $TRAVIS_BUILD_DIR
 
 install:
@@ -41,7 +41,7 @@ install:
 
 script:
     - cd ${TRAVIS_BUILD_DIR}
-    - blender_build/blender-${BLENDER_VERSION}/blender --version
+    - ../blender-${BLENDER_VERSION}/blender --version
     - python tests/run_blender.py ${BLENDER_VERSION}
 
 #after_success:
