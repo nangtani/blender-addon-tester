@@ -2,7 +2,7 @@ dist: xenial
 
 os:
     - linux
-    - osx
+#    - osx  #Doesn't do 3.6 or 3.7
 #    - windows #No python support
 
 env:
@@ -13,10 +13,10 @@ env:
         - BLENDER_VERSION="2.79b"
 #        - BLENDER_VERSION="2.79-nightly"
 #        - BLENDER_VERSION="2.80-nightly"
-# 
-# language: python
-# python:
-#     - 3.7
+
+language: python
+python:
+    - 3.7
 
 cache:
     apt: true
