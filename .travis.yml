@@ -23,14 +23,13 @@ cache:
     directories:
         - $HOME/.cache/pip
         - ${BLENDER_CACHE}
+
 addons:
     apt:
         packages:
             - blender
-#            - python3
 
 before_install:
-    #- env
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
     - pip3 install -r tests/requirements.txt --upgrade
