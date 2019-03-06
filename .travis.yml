@@ -14,9 +14,9 @@ env:
         - BLENDER_VERSION="2.79-nightly"
         - BLENDER_VERSION="2.80-nightly"
 
-language: python
-python:
-    - 3.7
+# language: python
+# python:
+#     - 3.7
 
 cache:
     apt: true
@@ -27,24 +27,24 @@ addons:
     apt:
         packages:
             - blender
-#            - python
+            - python3
 
 before_install:
     #- env
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
-    - pip install -r tests/requirements.txt --upgrade
+    - pip3 install -r tests/requirements.txt --upgrade
     - yolk -l
     - cd $TRAVIS_BUILD_DIR
 
 install:
-    - python --version
-    - python tests/get_blender.py ${BLENDER_VERSION}
+    - python3 --version
+    - python3 tests/get_blender.py ${BLENDER_VERSION}
 
 script:
     - cd ${TRAVIS_BUILD_DIR}
     - ../blender-${BLENDER_VERSION}/blender --version
-    - python tests/run_blender.py ${BLENDER_VERSION}
+    - python3 tests/run_blender.py ${BLENDER_VERSION}
 
 #after_success:
 #    - codecov -f tests_output/coverage.xml
