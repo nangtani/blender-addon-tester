@@ -3,7 +3,7 @@ dist: xenial
 os:
     - linux
     - osx
-#     - windows
+#    - windows #No python support
 
 env:
     global:
@@ -13,10 +13,10 @@ env:
         - BLENDER_VERSION="2.79b"
 #        - BLENDER_VERSION="2.79-nightly"
 #        - BLENDER_VERSION="2.80-nightly"
-
-language: python
-python:
-    - 3.5
+# 
+# language: python
+# python:
+#     - 3.7
 
 cache:
     apt: true
@@ -27,6 +27,7 @@ addons:
     apt:
         packages:
             - blender
+            - python
 
 before_install:
     #- env
@@ -41,6 +42,7 @@ install:
 
 script:
     - cd ${TRAVIS_BUILD_DIR}
+    - python --version
     - ../blender-${BLENDER_VERSION}/blender --version
     - python tests/run_blender.py ${BLENDER_VERSION}
 
