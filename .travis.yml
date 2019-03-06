@@ -38,11 +38,11 @@ before_install:
     - cd $TRAVIS_BUILD_DIR
 
 install:
+    - python --version
     - python tests/get_blender.py ${BLENDER_VERSION}
 
 script:
     - cd ${TRAVIS_BUILD_DIR}
-    - python --version
     - ../blender-${BLENDER_VERSION}/blender --version
     - python tests/run_blender.py ${BLENDER_VERSION}
 
