@@ -16,8 +16,7 @@ env:
 
 language: python
 python:
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 3.7 ; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]];   then 3.5 ; fi
+    - 3.5
 
 cache:
     apt: true
