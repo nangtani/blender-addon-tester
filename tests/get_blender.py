@@ -77,7 +77,6 @@ def getBlender(blender_version, blender_zippath, nightly):
         z.extractall()
     z.close()
     blender_archive = zdir
-    # os.remove(blender_zipfile)
 
     for zfile in zfiles:
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d", zfile):
@@ -92,11 +91,6 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     shutil.rmtree("tests/__pycache__", ignore_errors=True)
 
-#     blender_dir = "blender_build"
-#     if not os.path.exists(blender_dir):
-#         os.mkdir(blender_dir)
-    #os.chdir(blender_dir)
-
     ext = ""
     if nightly == True:
         ext = "-nightly"
@@ -106,14 +100,13 @@ def getBlender(blender_version, blender_zippath, nightly):
         shutil.rmtree(dst)
 
     src = f"../{blender_archive}"
-    try:
-        os.symlink(src, dst)
-    except OSError:  # Windows can't add links
-        shutil.move(src, dst)
+#     try:
+#         os.symlink(src, dst)
+#     except OSError:  # Windows can't add links
+#         shutil.move(src, dst)
+    print(f"move {src} to {dst}")
+    shutil.move(src, dst)
     
-    #cmd = f"rm -rf blender_build/*/*/scripts/addons/io_import_scene_lwo.py"
-    #os.system(cmd)
-
 def main(blender_version, nightly=True):
 
     blender_zipfile = getSuffix(blender_version, nightly)
@@ -132,5 +125,5 @@ if __name__ == "__main__":
         nightly = True
     else:    
         nightly = False
-#        
+
     main(blender_rev, nightly)
