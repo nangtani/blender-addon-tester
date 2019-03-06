@@ -92,23 +92,24 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     shutil.rmtree("tests/__pycache__", ignore_errors=True)
 
-    blender_dir = "blender_build"
-    if not os.path.exists(blender_dir):
-        os.mkdir(blender_dir)
+#     blender_dir = "blender_build"
+#     if not os.path.exists(blender_dir):
+#         os.mkdir(blender_dir)
+    #os.chdir(blender_dir)
 
     ext = ""
     if nightly == True:
         ext = "-nightly"
-    os.chdir(blender_dir)
-    link_path = f"blender-{blender_version}{ext}"
+    dst = f"../blender-{blender_version}{ext}"
 
-    if os.path.exists(link_path):
-        os.remove(link_path)
+    if os.path.exists(dst):
+        shutil.rmtree(dst)
 
+    src = f"../{blender_archive}"
     try:
-        os.symlink(f"../../{blender_archive}", link_path)
+        os.symlink(src, dst)
     except OSError:  # Windows can't add links
-        pass
+        shutil.move(src, dst)
     
     #cmd = f"rm -rf blender_build/*/*/scripts/addons/io_import_scene_lwo.py"
     #os.system(cmd)

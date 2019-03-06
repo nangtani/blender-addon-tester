@@ -32,7 +32,7 @@ if __name__ == "__main__":
     else:
         blender_rev = "2.79b"
     
-    blender_dir = "blender_build/blender-{0}".format(blender_rev)
+    blender_dir = "../blender-{0}".format(blender_rev)
 
     blender = os.path.realpath("{0}/blender".format(blender_dir))
 
