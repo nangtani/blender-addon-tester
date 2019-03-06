@@ -3,7 +3,7 @@ dist: xenial
 os:
     - linux
 #    - osx
-
+    - windows
 env:
     global:
         - BLENDER_CACHE=$HOME/.cache/blender
