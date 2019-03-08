@@ -46,7 +46,7 @@ def getSuffix(blender_version, nightly):
         if g:
             blender_zippath = f"{url}/{g.group(0)}"
             break
-    #print(blender_zippath)
+
     return (blender_zippath)
 
 
@@ -89,7 +89,7 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     cmd = f"{python} -m ensurepip"
     os.system(cmd)
-    cmd = f"{python} -m pip install --upgrade -r {cwd}/blender_requirements.txt -r {cwd}/tests/requirements.txt"
+    cmd = f"{python} -m pip install --upgrade -r {cwd}/blender_requirements.txt -r {cwd}/scripts/requirements.txt"
     os.system(cmd)
 
     os.chdir(cwd)
@@ -105,10 +105,6 @@ def getBlender(blender_version, blender_zippath, nightly):
         shutil.rmtree(dst)
 
     src = f"{cache_dir}/{blender_archive}"
-#     try:
-#         os.symlink(src, dst)
-#     except OSError:  # Windows can't add links
-#         shutil.move(src, dst)
     print(f"move {src} to {dst}")
     shutil.move(src, dst)
     

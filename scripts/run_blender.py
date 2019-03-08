@@ -15,7 +15,7 @@ def checkPath(path):
 
 def main(blender, test_file):
     test_file = checkPath(test_file)
-    os.environ["PYTHONPATH"] = os.getcwd() + "/tests"
+    os.environ["PYTHONPATH"] = os.getcwd() + "/scripts"
     os.environ["PYTHONPATH"] = checkPath(os.environ["PYTHONPATH"])
 
     cmd = '{0} --background --python "{1}"'.format(blender, test_file)
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     blender = os.path.realpath("{0}/blender".format(blender_dir))
 
-    test_file = "tests/load_pytest.py"
+    test_file = "scripts/load_pytest.py"
 
     exit_val = main(blender, test_file)
 
