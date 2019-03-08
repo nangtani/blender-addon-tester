@@ -57,6 +57,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         os.chdir(os.environ['BLENDER_CACHE'])
     else:
         os.chdir("..")
+    cache_dir = checkPath(os.getcwd())
 
     blender_zipfile = blender_zippath.split("/")[-1]
 
@@ -103,7 +104,7 @@ def getBlender(blender_version, blender_zippath, nightly):
     if os.path.exists(dst):
         shutil.rmtree(dst)
 
-    src = f"../{blender_archive}"
+    src = f"{cache_dir}/{blender_archive}"
 #     try:
 #         os.symlink(src, dst)
 #     except OSError:  # Windows can't add links
