@@ -1,15 +1,13 @@
 import os
 import sys
+import subprocess
 import re
 
 
 def checkPath(path):
-    path = os.path.realpath(path)
-    if re.match("/cygdrive/", path):
-        path = re.sub("/cygdrive/", "", path)
-        path = re.sub("/", "\\\\", path)
-        path = (path[:1] + ":" + path[1:]).capitalize()
-
+    if "cygwin" == sys.platform:
+        cmd = "cygpath -wa {0}".format(path)
+        path = subprocess.check_output(cmd.split()).decode('ascii').rstrip()
     return path
 
 
