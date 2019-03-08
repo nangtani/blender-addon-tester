@@ -52,7 +52,11 @@ def getSuffix(blender_version, nightly):
 
 def getBlender(blender_version, blender_zippath, nightly):
     cwd = checkPath(os.getcwd())
-    os.chdir("..")
+    if 'BLENDER_CACHE' in os.environ.keys():
+        print(f"BLENDER_CACHE found {os.environ['BLENDER_CACHE']}")
+        os.chdir(os.environ['BLENDER_CACHE'])
+    else:
+        os.chdir("..")
 
     blender_zipfile = blender_zippath.split("/")[-1]
 
