@@ -43,7 +43,7 @@ def cleanup(addon, bpy_module):
     print("Cleaning up - {}".format(bpy_module))
     if (2, 80, 0) < bpy.app.version:
         bpy.ops.preferences.addon_disable(module=bpy_module)
-        bpy.ops.preferences.addon_remove(bpy_module=bpy_module)
+        #bpy.ops.preferences.addon_remove(bpy_module=bpy_module)
     else:
         bpy.ops.wm.addon_disable(module=bpy_module)
     
