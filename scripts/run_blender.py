@@ -7,7 +7,7 @@ import re
 def checkPath(path):
     if "cygwin" == sys.platform:
         cmd = "cygpath -wa {0}".format(path)
-        path = subprocess.check_output(cmd.split()).decode('ascii').rstrip()
+        path = subprocess.check_output(cmd.split()).decode("ascii").rstrip()
     return path
 
 
@@ -29,7 +29,7 @@ if __name__ == "__main__":
         blender_rev = sys.argv[1]
     else:
         blender_rev = "2.79b"
-    
+
     blender_dir = "../blender-{0}".format(blender_rev)
 
     blender = os.path.realpath("{0}/blender".format(blender_dir))

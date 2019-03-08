@@ -10,12 +10,9 @@ from bs4 import BeautifulSoup
 
 
 def checkPath(path):
-    path = os.path.realpath(path)
-    if re.match("/cygdrive/", path):
-        path = re.sub("/cygdrive/", "", path)
-        path = re.sub("/", "\\\\", path)
-        path = (path[:1] + ":" + path[1:]).capitalize()
-
+    if "cygwin" == sys.platform:
+        cmd = "cygpath -wa {0}".format(path)
+        path = subprocess.check_output(cmd.split()).decode("ascii").rstrip()
     return path
 
 
@@ -47,14 +44,14 @@ def getSuffix(blender_version, nightly):
             blender_zippath = f"{url}/{g.group(0)}"
             break
 
-    return (blender_zippath)
+    return blender_zippath
 
 
 def getBlender(blender_version, blender_zippath, nightly):
     cwd = checkPath(os.getcwd())
-    if 'BLENDER_CACHE' in os.environ.keys():
+    if "BLENDER_CACHE" in os.environ.keys():
         print(f"BLENDER_CACHE found {os.environ['BLENDER_CACHE']}")
-        os.chdir(os.environ['BLENDER_CACHE'])
+        os.chdir(os.environ["BLENDER_CACHE"])
     else:
         os.chdir("..")
     cache_dir = checkPath(os.getcwd())
@@ -107,7 +104,8 @@ def getBlender(blender_version, blender_zippath, nightly):
     src = f"{cache_dir}/{blender_archive}"
     print(f"move {src} to {dst}")
     shutil.move(src, dst)
-    
+
+
 def main(blender_version, nightly=True):
 
     blender_zipfile = getSuffix(blender_version, nightly)
@@ -120,11 +118,11 @@ if __name__ == "__main__":
         blender_rev = sys.argv[1]
     else:
         blender_rev = "2.79b"
-    
+
     if re.search("-", blender_rev):
         blender_rev, _ = blender_rev.split("-")
         nightly = True
-    else:    
+    else:
         nightly = False
 
     main(blender_rev, nightly)
