@@ -61,13 +61,15 @@ The `unconfigure` removes the `addon` from the `scripts/addon` directory used by
 
 To run the test locally you need to have a version of blender present. Since these scripts were written to work on multiple revisions of blender at the same time, your standard unzips should got here accordingly:
 
-**2.79** : `blender_build/blender_2.79`
+**2.79b** : `../blender_2.79b`
 
-**2.80** : `blender_build/blender_2.80`
+**2.79-nightly** : `../blender_2.79-nightly`
+
+**2.80-nightly** : `../blender_2.80-nightly`
 
 To run the tests locally we use the system python to run the script, one could arguably use the one included in blender itself.
 
-`python tests/run_blender.py 2.79`
+`python tests/run_blender.py 2.79-nightly`
 
 ```
 ============================= test session starts =============================
