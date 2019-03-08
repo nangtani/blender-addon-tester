@@ -16,7 +16,7 @@ def main(blender, test_file):
     os.environ["PYTHONPATH"] = os.getcwd() + "/scripts"
     os.environ["PYTHONPATH"] = checkPath(os.environ["PYTHONPATH"])
 
-    cmd = '{0} --background --python "{1}"'.format(blender, test_file)
+    cmd = '{0} -b --python "{1}"'.format(blender, test_file)
     result = int(os.system(cmd))
     if 0 == result:
         return 0
