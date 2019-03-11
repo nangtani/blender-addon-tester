@@ -22,6 +22,7 @@ class SetupPlugin(object):
 addon = "fake_addon"
 try:
     exit_val = pytest.main(["tests"], plugins=[SetupPlugin(addon)])
-except:
+except Exception as e:
+    print(e)
     exit_val = 1
 sys.exit(exit_val)
