@@ -48,7 +48,7 @@ def getSuffix(blender_version, nightly):
     for link in soup.find_all("a"):
         x = str(link.get("href"))
         g = re.search(f"blender-(.+)-{machine}.+{ext}", x)
-        if h:
+        if g:
             version_found = g.group(1).split("-")[0]
             versions_found.append(version_found)
             if version_found == blender_version:
