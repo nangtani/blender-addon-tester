@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+import subprocess
 import zipfile
 import tarfile
 import requests
@@ -37,13 +38,20 @@ def getSuffix(blender_version, nightly):
     soup = BeautifulSoup(data, features="html.parser")
 
     blender_version_suffix = ""
+    blender_zippath = None
+    versions_found = []
     for link in soup.find_all("a"):
         x = str(link.get("href"))
         g = re.search(f"blender-{blender_version}.+{machine}.+{ext}", x)
+        g = re.search(f"blender-(.+)-.+{machine}.+{ext}", x)
         if g:
-            blender_zippath = f"{url}/{g.group(0)}"
-            break
+            version_found = g.group(1)
+            versions_found.append(version_found)
+            if version_found == blender_version:
+                blender_zippath = f"{url}/{g.group(0)}"
 
+    if None == blender_zippath:
+        raise Exception(f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}")
     return blender_zippath
 
 
