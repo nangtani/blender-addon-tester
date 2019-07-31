@@ -47,9 +47,9 @@ def getSuffix(blender_version, nightly):
     versions_found = []
     for link in soup.find_all("a"):
         x = str(link.get("href"))
-        g = re.search(f"blender-(\d\.\d\d).+-{machine}.+{ext}", x)
-        if g:
-            version_found = g.group(1)
+        g = re.search(f"blender-(.+)-{machine}.+{ext}", x)
+        if h:
+            version_found = g.group(1).split("-")[0]
             versions_found.append(version_found)
             if version_found == blender_version:
                 blender_zippath = f"{url}/{g.group(0)}"
