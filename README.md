@@ -3,7 +3,7 @@
 
 # Blender - pytest - TravisCI integration
 
-The code to shows how the `pytest` can be used inside blender to test an addon.  Once a checkin has been performed TravisCI run the tests on the current nightly builds for blender 2.79 and 2.80.
+The code to shows how the `pytest` can be used inside blender to test an addon.  Once a checkin has been performed TravisCI runs the tests on the current releases and nightly builds for blender.
 
 ## Motivation
 
@@ -11,13 +11,13 @@ I have been around python for the better part of 10 years now.  Python is only j
 
 I have been playing around with blender for 3-4 years and the move to blender 2.80 from 2.79 is beginning to look very similar.
 
-One obvious area of concern is that the addon used in blender are hardly ever written with any tests.  If some thing was written for 2.56 it may or may not work for 2.65. It usually did so that has allowed some great work to live on.  Hoever the move to 2.80 is really beginning to flag where we suffer for lack of regressable testing.
+One obvious area of concern is that the addon used in blender are hardly ever written with any tests.  If an addon was written for 2.56 it may or may not work for 2.65. It usually did, so that has allowed some great work to live on.  Hoever the move to 2.80 is really beginning to flag where we suffer for lack of regressable testing.
 
-My new years resolution (2019) was to at least see if I could put together a decent test frame work that could allow for regressable tests, on multiple builts of blender, and have it feed into a continous integration tool, in this case TravisCI, that can run against the nightly builds.  
+My new years resolution (2019) was to at least see if I could put together a decent test framework that could allow for regressable tests, on multiple builts of blender, and have it feed into a continous integration tool, in this case TravisCI, that can run against the nightly builds.  
 
-I have also picked `pytest` as I have experience with this from my day job as and microchip validation engineer.  And it is non standard enough the work here shows how you can get any python module you want into blender.
+I have also picked `pytest` as I have experience with this from my day job as a microchip validation engineer.  And it is non standard enough that the work here shows how you can get any python module you want into blender.
 
-Where possible I try and script in python only.  Some other work I have seen, usually the wrapper script, can be written in bash/sh.  That can wreck my head so here all scripts where possible have been written in python for greater code continuity.
+Where possible I try and script in python only.  Some other work I have seen, usually the wrapper script, can be written in bash/sh.  That can wreck my head, so here all scripts where possible have been written in python for greater code continuity.
 
 ## pytest
 
@@ -27,13 +27,15 @@ So two things are missing out of the box that we need to get, `pip` and `pytest`
 
 We explictly call the python inside blender to install `pip`:
 
-`blender/2.79/python/bin/python3.7m -m ensurepip`
+`blender/2.80/python/bin/python3.7m -m ensurepip`
 
 this will install `pip` locally that when called will install modules into the blender version of python and not the system.
 
-**linux**: `blender/2.79/python/bin/pip3`
+**linux**: `blender/2.80/python/bin/pip3`
 
-**windows**: `blender\2.79\python\Scripts\pip3`
+**windows**: `blender\2.80\python\Scripts\pip3`
+
+**cygwin**: NOT SUPPORTED!
 
 we use this `pip` to install pytest:
 
@@ -63,13 +65,13 @@ To run the test locally you need to have a version of blender present. Since the
 
 **2.79b** : `../blender_2.79b`
 
-**2.79-nightly** : `../blender_2.79-nightly`
+**2.80** : `../blender_2.80`
 
-**2.80-nightly** : `../blender_2.80-nightly`
+**2.81-nightly** : `../blender_2.81-nightly`
 
 To run the tests locally we use the system python to run the script, one could arguably use the one included in blender itself.
 
-`python tests/run_blender.py 2.79-nightly`
+`python scripts/run_blender.py 2.79-nightly`
 
 ```
 ============================= test session starts =============================
@@ -87,7 +89,7 @@ tests\test_pytest.py ..                                                  [100%]
 
 To use TravisCI you need to link your github account.
 
-The script has two modes, 2.79 and 2.80.  The script, `get_blender_name.py`, is used to webscrape the blender downloads site and fetch the current revision numbers of the nightly builds.
+The script takes an argument that is the version of blender you wish to test.  The script, `get_blender_name.py`, is used to webscrape the blender downloads site and fetch the current revision specified, either the current release or the working nightly builds.
 
 When downloading we use a cache for the tar.bz2 file we get.  This allows us to do faster incremental testing.  Keep an eye on your cache sizes over on TravisCI that they don't blow up.
 
