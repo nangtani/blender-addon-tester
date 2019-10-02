@@ -35,6 +35,8 @@ this will install `pip` locally that when called will install modules into the b
 
 **windows**: `blender\2.80\python\Scripts\pip3`
 
+**cygwin**: NOT SUPPORTED!
+
 we use this `pip` to install pytest:
 
 `blender/2.79/python/bin/pip3 install pytest`
@@ -69,7 +71,7 @@ To run the test locally you need to have a version of blender present. Since the
 
 To run the tests locally we use the system python to run the script, one could arguably use the one included in blender itself.
 
-`python tests/run_blender.py 2.79-nightly`
+`python scripts/run_blender.py 2.79-nightly`
 
 ```
 ============================= test session starts =============================
