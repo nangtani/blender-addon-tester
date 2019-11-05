@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import re
+from glob import glob
 
 
 def checkPath(path):
@@ -16,7 +17,7 @@ def main(blender, test_file):
     os.environ["PYTHONPATH"] = os.getcwd() + "/scripts"
     os.environ["PYTHONPATH"] = checkPath(os.environ["PYTHONPATH"])
 
-    cmd = '{0} -b --python "{1}"'.format(blender, test_file)
+    cmd = f'{blender} -b --python "{test_file}"'
     result = int(os.system(cmd))
     if 0 == result:
         return 0
@@ -28,11 +29,18 @@ if __name__ == "__main__":
     if len(sys.argv) >= 2:
         blender_rev = sys.argv[1]
     else:
-        blender_rev = "2.79b"
+        blender_rev = "2.80"
 
-    blender_dir = "../blender-{0}".format(blender_rev)
+    if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
+        ext = ".exe"
+    else:
+        ext = ""
 
-    blender = os.path.realpath("{0}/blender".format(blender_dir))
+    files = glob(f"../blender-{blender_rev}*/blender{ext}")
+    if not 1 == len(files):
+        raise Exception(f"Too many blenders returned: {files}")
+    
+    blender = os.path.realpath(files[0])
 
     test_file = "scripts/load_pytest.py"
 
