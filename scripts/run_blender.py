@@ -18,13 +18,11 @@ def main(blender, test_file):
     os.environ["PYTHONPATH"] = checkPath(os.environ["PYTHONPATH"])
 
     cmd = f'{blender} -b --python "{test_file}"'
-    print(cmd)
-    os.system(cmd)
-#     result = int(os.system(cmd))
-#     if 0 == result:
-#         return 0
-#     else:
-#         return 1
+    result = int(os.system(cmd))
+    if 0 == result:
+        return 0
+    else:
+        return 1
 
 
 if __name__ == "__main__":
@@ -45,7 +43,7 @@ if __name__ == "__main__":
     blender = os.path.realpath(files[0])
 
     test_file = "scripts/load_pytest.py"
-    
+
     exit_val = main(blender, test_file)
 
     sys.exit(exit_val)
