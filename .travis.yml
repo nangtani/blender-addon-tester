@@ -11,10 +11,10 @@ env:
         - VENV_CACHE=$HOME/.cache/venv
         - PYTHON_REV=3.7.5
     matrix:
-        - BLENDER_VERSION="2.78c"
-        - BLENDER_VERSION="2.79b"
-        - BLENDER_VERSION="2.80"
-        - BLENDER_VERSION="2.81"
+#         - BLENDER_VERSION="2.78c"
+#         - BLENDER_VERSION="2.79b"
+#         - BLENDER_VERSION="2.80"
+#         - BLENDER_VERSION="2.81"
         - BLENDER_VERSION="2.82"
 
 language: bash
@@ -47,7 +47,7 @@ install:
 script:
     - cd ${TRAVIS_BUILD_DIR}
     #- ../blender-${BLENDER_VERSION}/blender --version
-    - python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
+    - python $"{TRAVIS_BUILD_DIR}/scripts/run_blender.py" ${BLENDER_VERSION}
 
 #after_success:
 #    - codecov -f tests_output/coverage.xml

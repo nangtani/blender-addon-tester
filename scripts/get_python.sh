@@ -8,9 +8,9 @@ case "${unameOut}" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-PYTHON_VENV="${VENV_CACHE}/${machine}/Python-${PYTHON_REV}"
+PYTHON_VENV="${VENV_CACHE}/${machine}/${BLENDER_VERSION}/Python-${PYTHON_REV}"
 
-rm -rf  "${VENV_CACHE}/${machine}"
+#rm -rf  "${VENV_CACHE}/${machine}"
 #rm -rf  "${VENV_CACHE}/Mac"
 
 mkdir -p "${VENV_CACHE}/${machine}"
