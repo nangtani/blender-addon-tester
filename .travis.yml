@@ -36,18 +36,18 @@ before_install:
     - ls ${BLENDER_CACHE}
     - mkdir -p ${VENV_CACHE}
     - source scripts/get_python.sh
-    - pip3 install -r scripts/requirements.txt --upgrade
+    - pip install -r scripts/requirements.txt --upgrade
     - yolk -l
 
 install:
     - cd $TRAVIS_BUILD_DIR
-    - python3 --version
-    - python3 scripts/get_blender.py ${BLENDER_VERSION}
+    - python --version
+    - python scripts/get_blender.py ${BLENDER_VERSION}
 
 script:
     - cd ${TRAVIS_BUILD_DIR}
     #- ../blender-${BLENDER_VERSION}/blender --version
-    - python3 scripts/run_blender.py ${BLENDER_VERSION}
+    - python scripts/run_blender.py ${BLENDER_VERSION}
 
 #after_success:
 #    - codecov -f tests_output/coverage.xml

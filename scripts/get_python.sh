@@ -10,8 +10,8 @@ esac
 
 PYTHON_VENV="${VENV_CACHE}/${machine}/Python-${PYTHON_REV}"
 
-#rm -rf  "${VENV_CACHE}/${machine}"
-rm -rf  "${VENV_CACHE}/Mac"
+rm -rf  "${VENV_CACHE}/${machine}"
+#rm -rf  "${VENV_CACHE}/Mac"
 
 mkdir -p "${VENV_CACHE}/${machine}"
 ls "${VENV_CACHE}/${machine}"
@@ -19,9 +19,6 @@ ls "${VENV_CACHE}/${machine}"
 if [ ${machine} == "MsysNt" ]; then
     choco install python --version ${PYTHON_REV}
     py -m venv --copies ${PYTHON_VENV}
-#     source ${PYTHON_VENV}/Scripts/activate
-#     python -m pip install pip yolk3k --upgrade
-#     python -m yolk -l
 else
    if [ ! -d "${PYTHON_VENV}" ]; then
         cd ${VENV_CACHE}/${machine}
@@ -44,16 +41,10 @@ else
 #             ./configure > logfile 2>&1
 #             make > logfile 2>&1
 #             ./python.exe -m venv --copies ${PYTHON_VENV}
-#             source ${PYTHON_VENV}/bin/activate
-#             pip install pip yolk3k --upgrade
-#             yolk -l
         else
             ./configure > logfile 2>&1
             make > logfile 2>&1
             ./python -m venv --copies ${PYTHON_VENV}
-#             source ${PYTHON_VENV}/bin/activate
-#             python -m pip install pip yolk3k --upgrade
-#             python -m yolk -l
         fi
     fi
 fi
