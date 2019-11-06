@@ -46,8 +46,6 @@ if __name__ == "__main__":
 
     test_file = "scripts/load_pytest.py"
     
-    print(blender)
-
     exit_val = main(blender, test_file)
 
     sys.exit(exit_val)
