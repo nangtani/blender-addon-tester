@@ -19,11 +19,12 @@ def main(blender, test_file):
 
     cmd = f'{blender} -b --python "{test_file}"'
     print(cmd)
-    result = int(os.system(cmd))
-    if 0 == result:
-        return 0
-    else:
-        return 1
+    os.system(cmd)
+#     result = int(os.system(cmd))
+#     if 0 == result:
+#         return 0
+#     else:
+#         return 1
 
 
 if __name__ == "__main__":
@@ -47,6 +48,6 @@ if __name__ == "__main__":
     
     print(blender)
 
-#     exit_val = main(blender, test_file)
-# 
-#     sys.exit(exit_val)
+    exit_val = main(blender, test_file)
+
+    sys.exit(exit_val)
