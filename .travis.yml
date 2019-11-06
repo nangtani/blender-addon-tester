@@ -49,7 +49,7 @@ script:
     #- ../blender-${BLENDER_VERSION}/blender --version
     #- python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
     - ls /c/Users/travis/build/douglaskastle/blender-2.82-nightly
-    - /c/Users/travis/build/douglaskastle/blender-2.82-nightly/blender.exe -b --python "scripts/load_pytest.py"
+    - /c/Users/travis/build/douglaskastle/blender-2.82-nightly/blender.exe -b --python scripts/load_pytest.py
 
 #after_success:
 #    - codecov -f tests_output/coverage.xml
