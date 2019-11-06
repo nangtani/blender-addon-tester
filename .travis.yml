@@ -3,11 +3,13 @@ dist: xenial
 os:
     - linux
 #    - osx 
-#    - windows #No python support
+    - windows
 
 env:
     global:
         - BLENDER_CACHE=$HOME/.cache/blender
+        - VENV_CACHE=$HOME/.cache/venv
+        - PYTHON_REV=3.7.5
     matrix:
         - BLENDER_VERSION="2.78c"
         - BLENDER_VERSION="2.79b"
@@ -15,15 +17,14 @@ env:
         - BLENDER_VERSION="2.81"
         - BLENDER_VERSION="2.82"
 
-language: python
-python:
-    - 3.7
+language: bash
 
 cache:
     apt: true
     directories:
         - $HOME/.cache/pip
         - ${BLENDER_CACHE}
+        - ${VENV_CACHE}
 
 addons:
     apt:
@@ -33,6 +34,8 @@ addons:
 before_install:
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
+    - mkdir -p ${VENV_CACHE}
+    - source scripts/get_python.sh
     - pip3 install -r scripts/requirements.txt --upgrade
     - yolk -l
 
