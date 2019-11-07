@@ -48,7 +48,7 @@ script:
     - cd ${TRAVIS_BUILD_DIR}
     - ls ../blender-${BLENDER_VERSION}
     - ../blender-${BLENDER_VERSION}/blender --version
-    - python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
+    #- python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
 
 #after_success:
 #    - codecov -f tests_output/coverage.xml
