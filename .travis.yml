@@ -49,7 +49,7 @@ script:
     - cd ../blender-${BLENDER_VERSION}
     #- cmd /c "dir C:\\Windows\\System32\\avifil32.dll"
     #- cmd /c "echo %path%"
-    - powershell Start-Process ./blender --version 
+    - cmd /c "blender --version"
     #- python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
 
 #after_success:
