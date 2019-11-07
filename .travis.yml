@@ -47,9 +47,9 @@ install:
 script:
     - cd ${TRAVIS_BUILD_DIR}
     - cd ../blender-${BLENDER_VERSION}
-    - cmd /c "dir C:\\Windows\\System32\\avifil32.dll"
-    - cmd /c "echo %path%"
-    - ./blender --version --no-warn-script-location
+    #- cmd /c "dir C:\\Windows\\System32\\avifil32.dll"
+    #- cmd /c "echo %path%"
+    - powershell Start-Process ./blender --version 
     #- python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
 
 #after_success:
