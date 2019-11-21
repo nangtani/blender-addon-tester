@@ -1,23 +1,27 @@
 import sys
 import pytest
+
 try:
-    from addon_helper import zip_addon, copy_addon, cleanup
+    from addon_helper import zip_addon, change_addon_dir, cleanup
 except Exception as e:
     print(e)
     sys.exit(1)
 
+
 class SetupPlugin(object):
     def __init__(self, addon):
         self.addon = addon
+        self.addon_dir = "local_addon"
 
     def pytest_configure(self, config):
-        (self.bpy_module, self.zfile) = zip_addon(self.addon)
-        copy_addon(self.bpy_module, self.zfile)
+        (self.bpy_module, self.zfile) = zip_addon(self.addon, self.addon_dir)
+        change_addon_dir(self.bpy_module, self.zfile, self.addon_dir)
         config.cache.set("bpy_module", self.bpy_module)
 
     def pytest_unconfigure(self):
-        cleanup(self.addon, self.bpy_module)
+        cleanup(self.addon, self.bpy_module, self.addon_dir)
         print("*** test run reporting finished")
+
 
 addon = "fake_addon"
 try:

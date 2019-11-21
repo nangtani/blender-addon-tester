@@ -7,8 +7,12 @@ import shutil
 import bpy
 
 
-def zip_addon(addon):
+def zip_addon(addon, addon_dir):
     bpy_module = re.sub(".py", "", os.path.basename(os.path.realpath(addon)))
+
+    if os.path.isdir(addon_dir):
+        shutil.rmtree(addon_dir)
+
     zfile = os.path.realpath(bpy_module + ".zip")
 
     print("Zipping addon - {0}".format(bpy_module))
@@ -25,8 +29,11 @@ def zip_addon(addon):
     return (bpy_module, zfile)
 
 
-def copy_addon(bpy_module, zfile):
-    print("Copying addon - {0}".format(bpy_module))
+def change_addon_dir(bpy_module, zfile, addon_dir):
+    print("Change addon dir - {0}".format(addon_dir))
+
+    bpy.context.preferences.filepaths.script_directory = addon_dir
+    bpy.utils.refresh_script_paths()
 
     if (2, 80, 0) < bpy.app.version:
         bpy.ops.preferences.addon_install(overwrite=True, filepath=zfile)
@@ -36,32 +43,10 @@ def copy_addon(bpy_module, zfile):
         bpy.ops.wm.addon_enable(module=bpy_module)
 
 
-def cleanup(addon, bpy_module):
+def cleanup(addon, bpy_module, addon_dir):
     print("Cleaning up - {}".format(bpy_module))
-    if (2, 80, 0) < bpy.app.version:
-        bpy.ops.preferences.addon_disable(module=bpy_module)
-        
-        # addon_remove does not work correctly in CLI
-        # bpy.ops.preferences.addon_remove(module=bpy_module)
-        addon_dirs = bpy.utils.script_paths(subdir="addons")
-        addon = os.path.join(addon_dirs[-1], addon)
-        if os.path.isdir(addon):
-            time.sleep(0.1)  # give some time for the disable to take effect
-            shutil.rmtree(addon)
-        else:
-            os.remove(addon)
-    else:
-        bpy.ops.wm.addon_disable(module=bpy_module)
-
-        # addon_remove does not work correctly in CLI
-        # bpy.ops.wm.addon_remove(bpy_module=bpy_module)
-        addon_dirs = bpy.utils.script_paths(subdir="addons")
-        addon = os.path.join(addon_dirs[-1], addon)
-        if os.path.isdir(addon):
-            time.sleep(0.1)  # give some time for the disable to take effect
-            shutil.rmtree(addon)
-        else:
-            os.remove(addon)
+    if os.path.isdir(addon_dir):
+        shutil.rmtree(addon_dir)
 
 
 def get_version(bpy_module):
