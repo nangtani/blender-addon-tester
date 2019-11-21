@@ -1,9 +1,9 @@
 dist: xenial
 
 os:
-#    - linux
+     - linux
 #    - osx 
-    - windows
+#    - windows
 
 env:
     global:
@@ -11,11 +11,11 @@ env:
         - VENV_CACHE=$HOME/.cache/venv
         - PYTHON_REV=3.7.5
     matrix:
-#         - BLENDER_VERSION="2.78c"
-#         - BLENDER_VERSION="2.79b"
+        - BLENDER_VERSION="2.78c"
+        - BLENDER_VERSION="2.79b"
         - BLENDER_VERSION="2.80"
-#         - BLENDER_VERSION="2.81"
-#         - BLENDER_VERSION="2.82"
+        - BLENDER_VERSION="2.81"
+        - BLENDER_VERSION="2.82"
 
 language: bash
 
@@ -35,7 +35,7 @@ before_install:
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
     - mkdir -p ${VENV_CACHE}
-    - source ${TRAVIS_BUILD_DIR}/scripts/get_python.sh
+    #- source ${TRAVIS_BUILD_DIR}/scripts/get_python.sh
     - pip install -r ${TRAVIS_BUILD_DIR}/scripts/requirements.txt --upgrade
     - yolk -l
 
@@ -46,11 +46,11 @@ install:
 
 script:
     - cd ${TRAVIS_BUILD_DIR}
-    - cd ../blender-${BLENDER_VERSION}
+    #- cd ../blender-${BLENDER_VERSION}
     #- cmd /c "dir C:\\Windows\\System32\\avifil32.dll"
     #- cmd /c "echo %path%"
-    - powershell Start-Process -NoNewWindow "blender --version"
-    #- python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
+    #- powershell Start-Process -NoNewWindow "blender --version"
+    - python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
 
 #after_success:
 #    - codecov -f tests_output/coverage.xml
