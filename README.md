@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/douglaskastle/blender-fake-addon.svg?branch=master)](https://travis-ci.org/douglaskastle/blender-fake-addon)
-[![codecov.io Code Coverage](https://img.shields.io/codecov/c/github/douglaskastle/blender-fake-addon.svg?maxAge=2592000)](https://codecov.io/github/douglaskastle/blender-fake-addon?branch=master)
 
 # Blender - pytest - TravisCI integration
 
@@ -11,7 +10,7 @@ I have been around python for the better part of 10 years now.  Python is only j
 
 I have been playing around with blender for 3-4 years and the move to blender 2.80 from 2.79 is beginning to look very similar.
 
-One obvious area of concern is that the addon used in blender are hardly ever written with any tests.  If an addon was written for 2.56 it may or may not work for 2.65. It usually did, so that has allowed some great work to live on.  Hoever the move to 2.80 is really beginning to flag where we suffer for lack of regressable testing.
+One obvious area of concern is that the addon used in blender are hardly ever written with any tests.  If an addon was written for 2.56 it may or may not work for 2.65. It usually did, so that has allowed some great work to live on.  However the move to 2.80 is really beginning to flag where we suffer for lack of regressable testing.
 
 My new years resolution (2019) was to at least see if I could put together a decent test framework that could allow for regressable tests, on multiple builts of blender, and have it feed into a continous integration tool, in this case TravisCI, that can run against the nightly builds.  
 
@@ -31,15 +30,15 @@ We explictly call the python inside blender to install `pip`:
 
 this will install `pip` locally that when called will install modules into the blender version of python and not the system.
 
-**linux**: `blender/2.80/python/bin/pip3`
+**linux**: `blender/2.81/python/bin/pip3`
 
-**windows**: `blender\2.80\python\Scripts\pip3`
+**windows**: `blender\2.81\python\Scripts\pip3`
 
 **cygwin**: NOT SUPPORTED!
 
 we use this `pip` to install pytest:
 
-`blender/2.79/python/bin/pip3 install pytest`
+`blender/2.81/python/bin/pip3 install pytest`
 
 You will now be able to import pytest inside python scripts called by blender.
 
@@ -67,7 +66,9 @@ To run the test locally you need to have a version of blender present. Since the
 
 **2.80** : `../blender_2.80`
 
-**2.81-nightly** : `../blender_2.81-nightly`
+**2.82** : `../blender_2.82-nightly`
+
+The script looks for a release version first, followed by looking at the nightly releases (at the time of this writing 2.82 was on nightly releases)
 
 To run the tests locally we use the system python to run the script, one could arguably use the one included in blender itself.
 
@@ -126,10 +127,6 @@ As we want to run against the nightly builds we need to set up some cronjobs to 
 ![cron](images/cron.png)
 
 Please consult the `.travis.yml` file for the remainder of operation it is quite self explanitory.
-
-## Coverage
-
-TBD
 
 ## Wrapup
 
