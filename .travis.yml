@@ -1,7 +1,7 @@
 dist: xenial
 
 os:
-     - linux
+    - linux
 #    - osx 
 #    - windows
 
@@ -35,7 +35,7 @@ before_install:
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
     - mkdir -p ${VENV_CACHE}
-    #- source ${TRAVIS_BUILD_DIR}/scripts/get_python.sh
+    - source ${TRAVIS_BUILD_DIR}/scripts/get_python.sh
     - pip install -r ${TRAVIS_BUILD_DIR}/scripts/requirements.txt --upgrade
     - yolk -l
 
@@ -46,10 +46,7 @@ install:
 
 script:
     - cd ${TRAVIS_BUILD_DIR}
-    #- cd ../blender-${BLENDER_VERSION}
-    #- cmd /c "dir C:\\Windows\\System32\\avifil32.dll"
-    #- cmd /c "echo %path%"
-    #- powershell Start-Process -NoNewWindow "blender --version"
+    #- ../blender-${BLENDER_VERSION}/blender --version
     - python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
 
 #after_success:
