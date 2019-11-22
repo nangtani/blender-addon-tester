@@ -12,6 +12,7 @@ def zip_addon(addon, addon_dir):
 
     if os.path.isdir(addon_dir):
         shutil.rmtree(addon_dir)
+    os.mkdir(addon_dir)
 
     zfile = os.path.realpath(bpy_module + ".zip")
 
