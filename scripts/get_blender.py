@@ -25,8 +25,6 @@ def getSuffix(blender_version):
         machine = "linux.+x86_64"
         ext = "tar.+"
 
-    machine = "linux.+x86_64"
-    ext = "tar.+"
     g = re.search(f"\d\.\d\d", blender_version)
     if g:
         rev = g.group(0)
