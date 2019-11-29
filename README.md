@@ -10,9 +10,9 @@ I have been around python for the better part of 10 years now.  Python is only j
 
 I have been playing around with blender for 3-4 years and the move to blender 2.80 from 2.79 is beginning to look very similar.
 
-One obvious area of concern is that the addon used in blender are hardly ever written with any tests.  If an addon was written for 2.56 it may or may not work for 2.65. It usually did, so that has allowed some great work to live on.  However the move to 2.80 is really beginning to flag where we suffer for lack of regressable testing.
+One obvious area of concern is that the addons used in blender are hardly ever written with any tests.  If an addon was written for 2.56 it may or may not work for 2.65. It usually did, so that has allowed some great work to live on.  However the move to 2.80 is really beginning to flag where we suffer for lack of regressable testing.
 
-My new years resolution (2019) was to at least see if I could put together a decent test framework that could allow for regressable tests, on multiple builts of blender, and have it feed into a continous integration tool, in this case TravisCI, that can run against the nightly builds.  
+My new years resolution (2019) was to at least see if I could put together a decent test framework that could allow for regressable tests, on multiple builds of blender, and have it feed into a continous integration tool, in this case TravisCI, that can run against the nightly builds.  
 
 I have also picked `pytest` as I have experience with this from my day job as a microchip validation engineer.  And it is non standard enough that the work here shows how you can get any python module you want into blender.
 
@@ -20,7 +20,7 @@ Where possible I try and script in python only.  Some other work I have seen, us
 
 ## pytest
 
-Blender comes with it own version of python.  When you run blender, the python it uses, is this one, not the one that has been installed on you system.  This python comes with has `unittest` as a standard module.  `unittest` is a bit long in the tooth, `pytest` has started to become a lot more popular in the industry. 
+Blender comes with it own version of python.  When you run blender, the python it uses, is this one, not the one that has been installed on your system.  This python comes with has `unittest` as a standard module.  `unittest` is a bit long in the tooth, `pytest` has started to become a lot more popular in the industry. 
 
 So two things are missing out of the box that we need to get, `pip` and `pytest`.  
 
@@ -52,7 +52,7 @@ The addon included here is the most basic addon possible.  All it does is print 
     assert  expect_version == return_version
 ```
 
-In the current release, there are two tests, one to check that the right value gets returned for the version ID and one to check if the wrong value returned is detected correctly.  These pass.  If you wish to see a correct failure under pytest, changed the `expect_version` value to something it should now be.
+In the current release, there are two tests, one to check that the right value gets returned for the version ID and one to check if the wrong value returned is detected correctly.  These pass.  If you wish to see a correct failure under pytest, changed the `expect_version` value to something it should not be.
 
 During the `pytest` `configure` phase the helper scripts have been written to handle the zipping of the addon into a zip file, which is then imported into blender.  If this import was unsuccessfuly the `get_version()` would error, which would be captured by `pytest`.
 
@@ -90,9 +90,9 @@ tests\test_pytest.py ..                                                  [100%]
 
 To use TravisCI you need to link your github account.
 
-The script takes an argument that is the version of blender you wish to test.  The script, `get_blender_name.py`, is used to webscrape the blender downloads site and fetch the current revision specified, either the current release or the working nightly builds.
+The script takes an argument that is the version of blender you wish to test.  The script, `get_blender.py`, is used to webscrape the blender downloads site and fetch the current revision specified, either the current release or the working nightly builds.
 
-When downloading we use a cache for the tar.bz2 file we get.  This allows us to do faster incremental testing.  Keep an eye on your cache sizes over on TravisCI that they don't blow up.
+When downloading we use a cache for the tar file we get.  This allows us to do faster incremental testing.  Keep an eye on your cache sizes over on TravisCI that they don't blow up.
 
 Here is an example of a successful run:
 
