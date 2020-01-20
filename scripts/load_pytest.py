@@ -1,7 +1,11 @@
+import os
 import sys
 import pytest
 
+
+
 try:
+    sys.path.append(os.environ["LOCAL_PYTHONPATH"])
     from addon_helper import zip_addon, change_addon_dir, cleanup
 except Exception as e:
     print(e)
