@@ -22,8 +22,10 @@ jobs:
         python --version
         pwd
         ls
+        env
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r scripts/requirements.txt
+        python scripts/get_blender.py ${{ matrix.blender-version }}
     - name: Lint with flake8
       run: |
         echo "hello"
