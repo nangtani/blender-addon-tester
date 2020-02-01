@@ -27,6 +27,7 @@ jobs:
     - name: Set up Blender ${{ matrix.blender-version }}
       run: |
         cd $GITHUB_WORKSPACE
+        sudo apt-get install blender
         python $GITHUB_WORKSPACE/scripts/get_blender.py ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} with pytest
       run: |
