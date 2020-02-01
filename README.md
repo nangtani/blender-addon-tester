@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/douglaskastle/blender-fake-addon.svg?branch=master)](https://travis-ci.org/douglaskastle/blender-fake-addon)
+[![Travis Build Status](https://travis-ci.org/douglaskastle/blender-fake-addon.svg?branch=master)](https://travis-ci.org/douglaskastle/blender-fake-addon)
+[![Github Build Status](https://github.com/douglaskastle/blender-fake-addon/workflows/blender-fake-addon/badge.svg)](https://github.com/douglaskastle/blender-fake-addon/actions)
 
 # Blender - pytest - TravisCI integration
 
