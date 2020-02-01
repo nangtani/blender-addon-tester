@@ -56,6 +56,7 @@ def getSuffix(blender_version):
                         nightly = True
      
     if None == blender_zippath:
+        print(soup)
         raise Exception(f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}")
     
     #print(blender_zippath, nightly)
