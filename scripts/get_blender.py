@@ -22,7 +22,7 @@ def getSuffix(blender_version):
         machine = "windows64"
         ext = "zip"
     else:
-        machine = "linux.+x86_64"
+        machine = "linux.+64"
         ext = "tar.+"
 
     g = re.search(f"\d\.\d\d", blender_version)
@@ -46,6 +46,7 @@ def getSuffix(blender_version):
         versions_found = []
         for link in soup.find_all("a"):
             x = str(link.get("href"))
+            #print(x)
             g = re.search(f"blender-(.+)-{machine}.+{ext}", x)
             if g:
                 version_found = g.group(1).split("-")[0]
