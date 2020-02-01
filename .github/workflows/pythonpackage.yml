@@ -13,27 +13,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Blender ${{ matrix.blender-version }}
+    - name: Set up python and install dependencies
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: Install dependencies
       run: |
+        cd $GITHUB_WORKSPACE
         python --version
-        pwd
-        ls
-        env
         python -m pip install --upgrade pip
-        pip install -r scripts/requirements.txt
-        python scripts/get_blender.py ${{ matrix.blender-version }}
-    - name: Lint with flake8
+        pip install -r $GITHUB_WORKSPACE/scripts/requirements.txt
+        yolk -l
+    - name: Set up Blender ${{ matrix.blender-version }}
       run: |
-        echo "hello"
-        #pip install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        #flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        #flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with blender with pytest
+        cd $GITHUB_WORKSPACE
+        python $GITHUB_WORKSPACE/scripts/get_blender.py ${{ matrix.blender-version }}
+    - name: Test Blender ${{ matrix.blender-version }} with pytest
       run: |
+        cd $GITHUB_WORKSPACE
         python $GITHUB_WORKSPACE/scripts/run_blender.py ${{ matrix.blender-version }}
