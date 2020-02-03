@@ -15,7 +15,7 @@ jobs:
 #         blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82", "2.83"]
 #         os: [ubuntu-latest, windows-latest, macos-latest]
         blender-version: ["2.80"]
-        os: [windows-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v1
@@ -29,14 +29,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r scripts/requirements.txt
         yolk -l
-        env
 
-#     - name: Set up System Blender
-#       run:
-#       - if: startsWith(matrix.os == 'ubuntu')
-#         run: |
-#           sudo apt update
-#           sudo apt install -f -y blender
+    - name: Set up System Blender
+      if: startsWith(matrix.os == 'ubuntu')
+      run: |
+        sudo apt update
+        sudo apt install -f -y blender
 
     - name: Download Blender ${{ matrix.blender-version }}
       run: |
