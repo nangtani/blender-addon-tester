@@ -2,6 +2,9 @@ name: blender-fake-addon
 
 on: [push]
 
+on:
+  schedule:
+    - cron:  '* * 0 * *'
 jobs:
   build:
 
