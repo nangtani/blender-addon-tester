@@ -18,12 +18,14 @@ def checkPath(path):
 
 
 def getSuffix(blender_version):
+    print(sys.platform)
     if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
         machine = "windows64"
         ext = "zip"
     else:
         machine = "linux.*64"
         ext = "tar.+"
+    exit(1)
 
     g = re.search(f"\d\.\d\d", blender_version)
     if g:
