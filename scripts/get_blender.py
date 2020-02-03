@@ -91,6 +91,9 @@ def getBlender(blender_version, blender_zippath, nightly):
     if blender_zipfile.endswith("zip"):
         z = zipfile.ZipFile(blender_zipfile, "r")
         zfiles = z.namelist()
+    elif blender_zipfile.endswith("dmg"):
+        raise Exception(f"dmg Unsupported")
+        #hdiutil attach -mountpoint <path-to-desired-mountpoint> <filename.dmg>
     else:
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
