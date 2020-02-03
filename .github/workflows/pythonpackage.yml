@@ -15,7 +15,7 @@ jobs:
 #         blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82", "2.83"]
 #         os: [ubuntu-latest, windows-latest, macos-latest]
         blender-version: ["2.80"]
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v1
