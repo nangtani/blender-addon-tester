@@ -28,10 +28,11 @@ jobs:
         cd $GITHUB_WORKSPACE
         python --version
         python -m pip install --upgrade pip
+        dir
         pip install -r scripts\requirements.txt
         yolk -l
 
-#     - name: Set up System Blender
+    - name: Set up System Blender
 #       - if: startsWith(matrix.os == 'ubuntu')
 #         run: |
 #           sudo apt update
