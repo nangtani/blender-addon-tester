@@ -27,10 +27,9 @@ jobs:
       run: |
         python --version
         python -m pip install --upgrade pip
-        dir
-        set
-        pip install -r scripts\requirements.txt
+        pip install -r scripts/requirements.txt
         yolk -l
+        env
 
 #     - name: Set up System Blender
 #       run:
