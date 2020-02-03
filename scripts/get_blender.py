@@ -50,7 +50,7 @@ def getSuffix(blender_version):
         versions_found = []
         for link in soup.find_all("a"):
             x = str(link.get("href"))
-            print(x)
+            #print(x)
             g = re.search(f"blender-(.+)-{machine}.+{ext}", x)
             if g:
                 version_found = g.group(1).split("-")[0]
