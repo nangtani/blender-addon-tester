@@ -29,7 +29,7 @@ jobs:
         pip install -r $GITHUB_WORKSPACE/scripts/requirements.txt
         yolk -l
     - name: Set up System Blender
-      - if: matrix.os == 'ubuntu-latest'
+      - if: startsWith(matrix.os == 'ubuntu')
         run: |
           sudo apt update
           sudo apt install -f -y blender
