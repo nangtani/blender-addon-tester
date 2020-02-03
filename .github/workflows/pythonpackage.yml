@@ -32,12 +32,12 @@ jobs:
         pip install -r scripts\requirements.txt
         yolk -l
 
-    - name: Set up System Blender
-      run:
-      - if: startsWith(matrix.os == 'ubuntu')
-        run: |
-          sudo apt update
-          sudo apt install -f -y blender
+#     - name: Set up System Blender
+#       run:
+#       - if: startsWith(matrix.os == 'ubuntu')
+#         run: |
+#           sudo apt update
+#           sudo apt install -f -y blender
 
     - name: Download Blender ${{ matrix.blender-version }}
       run: |
