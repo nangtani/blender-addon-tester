@@ -1,15 +1,21 @@
 name: blender-fake-addon
 
-on: [push]
+on: 
+  push:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
         blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82", "2.83"]
+        os: [ubuntu-latest, windows-latest]
+        #blender-version: ["2.80"]
+        #os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v1
@@ -19,18 +25,20 @@ jobs:
         python-version: 3.7
     - name: Install dependencies
       run: |
-        cd $GITHUB_WORKSPACE
         python --version
         python -m pip install --upgrade pip
-        pip install -r $GITHUB_WORKSPACE/scripts/requirements.txt
+        pip install -r scripts/requirements.txt
         yolk -l
-    - name: Set up Blender ${{ matrix.blender-version }}
+
+    - name: Set up System Blender
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
-        cd $GITHUB_WORKSPACE
         sudo apt update
         sudo apt install -f -y blender
-        python $GITHUB_WORKSPACE/scripts/get_blender.py ${{ matrix.blender-version }}
+
+    - name: Download Blender ${{ matrix.blender-version }}
+      run: |
+        python scripts/get_blender.py ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} with pytest
       run: |
-        cd $GITHUB_WORKSPACE
-        python $GITHUB_WORKSPACE/scripts/run_blender.py ${{ matrix.blender-version }}
+        python scripts/run_blender.py ${{ matrix.blender-version }}
