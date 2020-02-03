@@ -33,10 +33,11 @@ jobs:
         yolk -l
 
     - name: Set up System Blender
-#       - if: startsWith(matrix.os == 'ubuntu')
-#         run: |
-#           sudo apt update
-#           sudo apt install -f -y blender
+      run:
+      - if: startsWith(matrix.os == 'ubuntu')
+        run: |
+          sudo apt update
+          sudo apt install -f -y blender
 
     - name: Download Blender ${{ matrix.blender-version }}
       run: |
