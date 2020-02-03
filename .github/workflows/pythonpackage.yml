@@ -28,11 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r $GITHUB_WORKSPACE/scripts/requirements.txt
         yolk -l
-#     - name: Set up System Blender
-#       - if: startsWith(matrix.os == 'ubuntu')
-#         run: |
-#           sudo apt update
-#           sudo apt install -f -y blender
     - name: Download Blender ${{ matrix.blender-version }}
         cd $GITHUB_WORKSPACE
         python $GITHUB_WORKSPACE/scripts/get_blender.py ${{ matrix.blender-version }}
