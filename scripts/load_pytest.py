@@ -1,8 +1,8 @@
+ADDON = "fake_addon"
+
 import os
 import sys
 import pytest
-
-
 
 try:
     sys.path.append(os.environ["LOCAL_PYTHONPATH"])
@@ -12,7 +12,7 @@ except Exception as e:
     sys.exit(1)
 
 
-class SetupPlugin(object):
+class SetupPlugin:
     def __init__(self, addon):
         self.addon = addon
         self.addon_dir = "local_addon"
@@ -27,9 +27,8 @@ class SetupPlugin(object):
         print("*** test run reporting finished")
 
 
-addon = "fake_addon"
 try:
-    exit_val = pytest.main(["tests"], plugins=[SetupPlugin(addon)])
+    exit_val = pytest.main(["tests", "-v", "-x", "--cov"], plugins=[SetupPlugin(ADDON)])
 except Exception as e:
     print(e)
     exit_val = 1
