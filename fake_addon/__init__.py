@@ -29,5 +29,5 @@ def register():
     print("Hello World")
 
 
-def unregister():
-    print("Goodbye World")
+def unregister(): # pragma: no cover
+    print("Goodbye World") 
