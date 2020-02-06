@@ -48,6 +48,10 @@ def change_addon_dir(bpy_module, zfile, addon_dir):
 
 def cleanup(addon, bpy_module, addon_dir):
     print("Cleaning up - {}".format(bpy_module))
+    if (2, 80, 0) < bpy.app.version:
+        bpy.ops.preferences.addon_disable(module=bpy_module)
+    else:
+        bpy.ops.wm.addon_disable(module=bpy_module)
     if os.path.isdir(addon_dir):
         shutil.rmtree(addon_dir)
 
