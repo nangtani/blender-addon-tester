@@ -1,5 +1,6 @@
 [![Travis Build Status](https://travis-ci.org/douglaskastle/blender-fake-addon.svg?branch=master)](https://travis-ci.org/douglaskastle/blender-fake-addon)
 [![Github Build Status](https://github.com/douglaskastle/blender-fake-addon/workflows/blender-fake-addon/badge.svg)](https://github.com/douglaskastle/blender-fake-addon/actions)
+[![codecov](https://codecov.io/gh/douglaskastle/blender-fake-addon/branch/master/graph/badge.svg)](https://codecov.io/gh/douglaskastle/blender-fake-addon)
 
 # Blender - pytest - TravisCI integration
 
@@ -128,6 +129,10 @@ As we want to run against the nightly builds we need to set up some cronjobs to 
 ![cron](images/cron.png)
 
 Please consult the `.travis.yml` file for the remainder of operation it is quite self explanitory.
+
+## Code Coverage
+
+Supported
 
 ## Wrapup
 
