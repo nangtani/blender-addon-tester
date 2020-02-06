@@ -2,3 +2,4 @@ pip
 yolk3k
 pytest
 coverage
+pytest-cov
