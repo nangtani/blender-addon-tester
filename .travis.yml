@@ -49,6 +49,7 @@ script:
     - cd ${TRAVIS_BUILD_DIR}
     #- ../blender-${BLENDER_VERSION}/blender --version
     - python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
+    - ls
     - bash <(curl -s https://codecov.io/bash)
 
 #after_success:
