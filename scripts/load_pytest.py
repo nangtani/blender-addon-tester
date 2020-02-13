@@ -2,7 +2,12 @@ ADDON = "fake_addon"
 
 import os
 import sys
-import pytest
+
+try:
+    import pytest
+except Exception as e:
+    print(e)
+    sys.exit(1)
 
 try:
     sys.path.append(os.environ["LOCAL_PYTHONPATH"])
