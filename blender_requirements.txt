@@ -3,4 +3,4 @@ yolk3k
 pytest
 coverage
 pytest-cov
-zipp==2.1.0
+#zipp==2.1.0
