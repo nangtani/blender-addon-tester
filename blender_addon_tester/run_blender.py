@@ -12,9 +12,9 @@ def checkPath(path):
     return path
 
 
-def main(blender, test_file):
+def run_blender_with_python_script(blender, test_file):
     test_file = checkPath(test_file)
-    local_python = checkPath(os.getcwd() + "/scripts")
+    local_python = checkPath(os.getcwd())
     os.environ["LOCAL_PYTHONPATH"] = local_python
 
     cmd = f'{blender} -b --python "{test_file}"'
@@ -24,13 +24,7 @@ def main(blender, test_file):
     else:
         return 1
 
-
-if __name__ == "__main__":
-    if len(sys.argv) >= 2:
-        blender_rev = sys.argv[1]
-    else:
-        blender_rev = "2.80"
-
+def run_blender_version_with_pytest_suite(blender_rev):
     if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
         ext = ".exe"
     else:
@@ -42,8 +36,15 @@ if __name__ == "__main__":
     
     blender = os.path.realpath(files[0])
 
-    test_file = "scripts/load_pytest.py"
+    test_file = "load_pytest.py"
 
-    exit_val = main(blender, test_file)
+    return run_blender_with_python_script(blender, test_file)
 
-    sys.exit(exit_val)
+
+if __name__ == "__main__":
+    if len(sys.argv) >= 2:
+        blender_rev = sys.argv[1]
+    else:
+        blender_rev = "2.80"
+
+    sys.exit(run_blender_version_with_pytest_suite(blender_rev))

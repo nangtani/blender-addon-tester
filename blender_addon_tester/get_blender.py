@@ -109,12 +109,6 @@ def getBlender(blender_version, blender_zippath, nightly):
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d", zfile):
             python = os.path.realpath(zfile)
 
-    # TODO delete this when really not needed anymore (using setup.py/python's package requirements instead)
-    ## cmd = f"{python} -m ensurepip"
-    ## os.system(cmd)
-    ## cmd = f"{python} -m pip install --upgrade -r {cwd}/blender_requirements.txt -r {cwd}/scripts/requirements.txt"
-    ## os.system(cmd)
-
     os.chdir(cwd)
 
     shutil.rmtree("tests/__pycache__", ignore_errors=True)
