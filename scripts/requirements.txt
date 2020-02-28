@@ -1,4 +1,0 @@
-pip
-yolk3k
-bs4
-requests
