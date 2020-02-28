@@ -26,4 +26,5 @@ jobs:
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
         sh rebuild_and_pipreinstall.sh
-        python examples/testing-fake-addon/test_fake_addon_blender_280.py
+        cd examples/testing-fake-addon/
+        python test_fake_addon_blender_280.py

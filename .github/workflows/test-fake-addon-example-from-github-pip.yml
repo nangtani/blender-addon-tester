@@ -25,5 +25,6 @@ jobs:
         python-version: 3.7
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
-        pip install -r examples/testing-fake-addon/requirements.txt
-        python examples/testing-fake-addon/test_fake_addon_blender_280.py
+        cd examples/testing-fake-addon/
+        pip install -r requirements.txt
+        python test_fake_addon_blender_280.py
