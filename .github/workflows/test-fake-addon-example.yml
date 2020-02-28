@@ -1,4 +1,4 @@
-name: blender-fake-addon
+name: test-fake-addon-example
 
 on: 
   push:
