@@ -1,4 +1,4 @@
-name: test-fake-addon-example
+name: test-fake-addon-example-from-github-pip
 
 on: 
   push:
@@ -25,5 +25,5 @@ jobs:
         python-version: 3.7
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
-        sh rebuild_and_pipreinstall.sh
+        pip install -r examples/testing-fake-addon/requirements.txt
         python examples/testing-fake-addon/test_fake_addon_blender_280.py

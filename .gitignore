@@ -10,3 +10,5 @@ coverage.xml
 build/
 dist/
 *.egg-info/
+blender-2*/
+examples/blender-*z*
