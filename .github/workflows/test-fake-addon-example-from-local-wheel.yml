@@ -27,4 +27,4 @@ jobs:
       run: |
         sh rebuild_and_pipreinstall.sh
         cd examples/testing-fake-addon/
-        python test_fake_addon_blender_280.py
+        python test_fake_addon_blender.py ${{ matrix.blender-version }}
