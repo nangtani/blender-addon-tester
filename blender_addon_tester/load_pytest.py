@@ -27,8 +27,6 @@ class SetupPlugin:
         config.cache.set("bpy_module", self.bpy_module)
 
     def pytest_unconfigure(self):
-#         cmd = "coverage xml"
-#         os.system(cmd)
         cleanup(self.addon, self.bpy_module, self.addon_dir)
         print("*** test run reporting finished")
 

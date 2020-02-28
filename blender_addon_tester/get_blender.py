@@ -11,13 +11,6 @@ from bs4 import BeautifulSoup
 
 CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 
-def checkPath(path):
-    if "cygwin" == sys.platform:
-        cmd = "cygpath -wa {0}".format(path)
-        path = subprocess.check_output(cmd.split()).decode("ascii").rstrip()
-    return path
-
-
 def getSuffix(blender_version):
     print(sys.platform)
     if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
@@ -124,6 +117,10 @@ def getBlender(blender_version, blender_zippath, nightly):
     for zfile in zfiles:
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d", zfile):
             python = os.path.realpath(zfile)
+
+    if "cygwin" == sys.platform:
+        print("ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!")
+        exit()
 
     cmd = f"{python} -m ensurepip"
     os.system(cmd)
