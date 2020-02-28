@@ -1,1 +1,1 @@
-blender-addon-tester
+-e git://github.com/myselfhimself/blender-fake-addon.git#egg=blender_addon_tester
