@@ -1,1 +1,1 @@
--e git://github.com/douglaskastle/blender-fake-addon.git@blender-addon-tester#egg=blender_addon_tester
+-e git://github.com/myselfhimself/blender-fake-addon.git#egg=blender_addon_tester
