@@ -134,6 +134,9 @@ Please consult the `.travis.yml` file for the remainder of operation it is quite
 
 Supported
 
+## Building the wheel distribution
+The `blender-addon-tester` package can be built by running `python setup.py bdist_wheel`, then look for a `pip`-installable `*.whl` file  in the `dist/` directory.
+
 ## Wrapup
 
 This is just one attempt at building a verification flow.  If you have any comments for improvements please get in touch.
