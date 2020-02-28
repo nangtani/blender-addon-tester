@@ -34,7 +34,7 @@ class SetupPlugin:
 
 
 try:
-    exit_val = pytest.main(["tests", "-v", "-x", "--cov", "--cov-report", "term-missing", "--cov-report", "xml",], plugins=[SetupPlugin(ADDON)])
+    exit_val = pytest.main(["tests", "-v", "-x", "--cov", "--cov-report", "term", "--cov-report", "xml",], plugins=[SetupPlugin(ADDON)])
 except Exception as e:
     print(e)
     exit_val = 1
