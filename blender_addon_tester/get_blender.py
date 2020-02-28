@@ -71,13 +71,28 @@ def getSuffix(blender_version):
 
 
 def getBlender(blender_version, blender_zippath, nightly):
-    cwd = checkPath(os.getcwd())
+    remove = False
+    cwd = os.getcwd()
     if "BLENDER_CACHE" in os.environ.keys():
         print(f"BLENDER_CACHE found {os.environ['BLENDER_CACHE']}")
-        os.chdir(os.environ["BLENDER_CACHE"])
+        cache_path = os.environ["BLENDER_CACHE"]
     else:
-        os.chdir("..")
-    cache_dir = checkPath(os.getcwd())
+        cache_path = ".."
+    os.chdir(cache_path)
+    
+    cache_dir = os.getcwd()
+
+    ext = ""
+    if nightly == True:
+        ext = "-nightly"
+    dst = f"{cache_dir}/blender-{blender_version}{ext}"
+
+    if os.path.exists(dst):
+        if nightly == True or remove:
+            shutil.rmtree(dst)
+        else:
+            os.chdir(cwd)
+            return
 
     blender_zipfile = blender_zippath.split("/")[-1]
 
@@ -115,21 +130,13 @@ def getBlender(blender_version, blender_zippath, nightly):
     cmd = f"{python} -m pip install --upgrade -r {CURRENT_MODULE_DIRECTORY}/blender_requirements.txt -r {CURRENT_MODULE_DIRECTORY}/requirements.txt"
     os.system(cmd)
 
-    os.chdir(cwd)
 
     shutil.rmtree("tests/__pycache__", ignore_errors=True)
-
-    ext = ""
-    if nightly == True:
-        ext = "-nightly"
-    dst = f"../blender-{blender_version}{ext}"
-
-    if os.path.exists(dst):
-        shutil.rmtree(dst)
 
     src = f"{cache_dir}/{blender_archive}"
     print(f"Move {src} to {dst}")
     shutil.move(src, dst)
+    os.chdir(cwd)
 
 
 def get_blender_from_suffix(blender_version):
