@@ -18,7 +18,9 @@ env:
         - BLENDER_VERSION="2.82"
         - BLENDER_VERSION="2.83"
 
-language: bash
+language: python
+python:
+    - 3.7
 
 cache:
     apt: true
@@ -37,12 +39,12 @@ before_install:
     - ls ${BLENDER_CACHE}
     - mkdir -p ${VENV_CACHE}
     #- source ${TRAVIS_BUILD_DIR}/scripts/get_python.sh
-    - pip3 install -r ${TRAVIS_BUILD_DIR}/scripts/requirements.txt --upgrade
-    - yolk -l
+    - pip install -r ${TRAVIS_BUILD_DIR}/requirements.txt --upgrade
+    - pip list
 
 install:
     - cd $TRAVIS_BUILD_DIR
-    - python3 --version
+    - python --version
     - python ${TRAVIS_BUILD_DIR}/scripts/get_blender.py ${BLENDER_VERSION}
 
 script:
