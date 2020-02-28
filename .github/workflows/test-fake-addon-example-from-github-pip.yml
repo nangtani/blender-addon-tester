@@ -27,4 +27,4 @@ jobs:
       run: |
         cd examples/testing-fake-addon/
         pip install -r requirements.txt
-        python test_fake_addon_blender_280.py
+        python test_fake_addon_blender.py
