@@ -9,6 +9,7 @@ import re
 from glob import glob
 from bs4 import BeautifulSoup
 
+CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 
 def checkPath(path):
     if "cygwin" == sys.platform:
@@ -108,6 +109,11 @@ def getBlender(blender_version, blender_zippath, nightly):
     for zfile in zfiles:
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d", zfile):
             python = os.path.realpath(zfile)
+
+    cmd = f"{python} -m ensurepip"
+    os.system(cmd)
+    cmd = f"{python} -m pip install --upgrade -r {CURRENT_MODULE_DIRECTORY}/blender_requirements.txt -r {CURRENT_MODULE_DIRECTORY}/requirements.txt"
+    os.system(cmd)
 
     os.chdir(cwd)
 

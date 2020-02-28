@@ -17,7 +17,7 @@ setup(name='blender_addon_tester',
       install_requires=['bs4','pytest','requests','pip', 'yolk3k', 'coverage', 'pytest-cov'],
       long_description=read('README.md'),
       python_requires='>=3',
-      package_data={'coverage_config': ['.coveragerc'], 'codestyle': ['setup.cfg']},
+      include_package_data=True, # Make us of MANIFEST.in including extra files
       classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Topic :: Artistic Software",

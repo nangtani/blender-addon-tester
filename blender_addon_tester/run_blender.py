@@ -4,6 +4,8 @@ import subprocess
 import re
 from glob import glob
 
+CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
+
 
 def checkPath(path):
     if "cygwin" == sys.platform:
@@ -14,7 +16,7 @@ def checkPath(path):
 
 def run_blender_with_python_script(blender, test_file):
     test_file = checkPath(test_file)
-    local_python = checkPath(os.getcwd())
+    local_python = checkPath(CURRENT_MODULE_DIRECTORY)
     os.environ["LOCAL_PYTHONPATH"] = local_python
 
     cmd = f'{blender} -b --python "{test_file}"'
@@ -36,7 +38,7 @@ def run_blender_version_with_pytest_suite(blender_rev):
     
     blender = os.path.realpath(files[0])
 
-    test_file = "load_pytest.py"
+    test_file = os.path.join(CURRENT_MODULE_DIRECTORY, "load_pytest.py")
 
     return run_blender_with_python_script(blender, test_file)
 
