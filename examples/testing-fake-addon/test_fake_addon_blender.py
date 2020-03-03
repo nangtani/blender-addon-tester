@@ -7,4 +7,4 @@ if len(sys.argv) >= 2:
 else:
     blender_rev = "2.80"
 
-BAT.test_blender_addon(blender_rev, addon, "tests/")
+BAT.test_blender_addon(addon_path=addon, blender_rev=blender_rev)

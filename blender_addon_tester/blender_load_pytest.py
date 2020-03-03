@@ -1,4 +1,6 @@
-ADDON = "fake_addon"
+# This is a script that can you pipe to Blender directly. It populates and runs pytest tests.
+# You may have your own version of this file, by copying it and piping its filename to
+# run_blender_version_with_pytest_suite(override_test_file="my_load_test.py")
 
 import os
 import sys
@@ -6,6 +8,12 @@ try:
     import pytest
 except Exception as e:
     print(e)
+    sys.exit(1)
+
+# Make sure to have BLENDER_ADDON_TO_TEST set as an environment variable first
+ADDON = os.environ.get("BLENDER_ADDON_TO_TEST", False)
+if not ADDON:
+    print("No addon to test was found in the 'BLENDER_ADDON_TO_TEST' environment variable. Exiting.")
     sys.exit(1)
 
 try:
@@ -20,6 +28,8 @@ class SetupPlugin:
     def __init__(self, addon):
         self.addon = addon
         self.addon_dir = "local_addon"
+        self.bpy_module = None
+        self.zfile = None
 
     def pytest_configure(self, config):
         (self.bpy_module, self.zfile) = zip_addon(self.addon, self.addon_dir)
@@ -32,7 +42,7 @@ class SetupPlugin:
 
 
 try:
-    exit_val = pytest.main(["tests", "-v", "-x", "--cov", "--cov-report", "term", "--cov-report", "xml",], plugins=[SetupPlugin(ADDON)])
+    exit_val = pytest.main(["tests", "-v", "-x", "--cov", "--cov-report", "term", "--cov-report", "xml"], plugins=[SetupPlugin(ADDON)])
 except Exception as e:
     print(e)
     exit_val = 1
