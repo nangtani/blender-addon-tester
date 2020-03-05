@@ -40,7 +40,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
                     "tests": str: absolute or CWD-relative path to a directory of tests or test script that the blender_load_tests_script can use. Default: "tests/" (CWD-relative)
     :return: None, will sys-exit with 1 on failure
     """
-    print("testing ", addon_path, "under", blender_rev, "with config", config)
+    print("testing ", addon_path, "under", blender_revision, "with config", config)
 
     # Get Blender for the given version in a cached way
     get_blender_from_suffix(blender_revision)
