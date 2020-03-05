@@ -43,7 +43,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     print("testing ", addon_path, "under", blender_rev, "with config", config)
 
     # Get Blender for the given version in a cached way
-    get_blender_from_suffix(blender_rev)
+    get_blender_from_suffix(blender_revision)
 
     # Tune configuration
     DEFAULT_CONFIG = {"blender_load_tests_script": BUILTIN_BLENDER_LOAD_TESTS_SCRIPT, "coverage": False}
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 3:
         blender_rev = sys.argv[1]
         addon = sys.argv[2]
-        sys.exit(run_blender_version_with_pytest_suite(blender_rev, addon))
+        sys.exit(run_blender_version_for_addon_with_pytest_suite(blender_revision=blender_rev, addon_path=addon))
     else:
         print("Usage:", sys.argv[0], "blender_rev addon")
         sys.exit(1)
