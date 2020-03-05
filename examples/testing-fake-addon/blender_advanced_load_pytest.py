@@ -1,3 +1,6 @@
+# Custom tests loader and runner for Blender's Python environment
+print("Running", __file__, "from Blender")
+
 # This is a script that can you pipe to Blender directly. It populates and runs pytest tests.
 # You may have your own version of this file, by copying it and piping its filename to
 # run_blender_version_with_pytest_suite(override_test_file="my_load_test.py")
