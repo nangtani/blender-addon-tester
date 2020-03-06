@@ -16,6 +16,9 @@ def zip_addon(addon, addon_dir):
 
     zfile = os.path.realpath(bpy_module + ".zip")
 
+    print("Addon dir is - {0}".format(os.path.realpath(addon_dir)))
+    print("Future zip path is - {0}".format(zfile))
+
     print("Zipping addon - {0}".format(bpy_module))
 
     zf = zipfile.ZipFile(zfile, "w")
