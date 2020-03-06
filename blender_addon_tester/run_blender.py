@@ -69,12 +69,14 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
         test_file = config["blender_load_tests_script"]
 
     if not config["coverage"]:
-        del os.environ["BLENDER_ADDON_COVERAGE_REPORTING"]
+        if os.environ.get("BLENDER_ADDON_COVERAGE_REPORTING", False):
+            del os.environ["BLENDER_ADDON_COVERAGE_REPORTING"]
     else:
         os.environ["BLENDER_ADDON_COVERAGE_REPORTING"] = "y"
 
     if not config["tests"]:
-        del os.environ["BLENDER_ADDON_TESTS_PATH"]
+        if os.environ.get("BLENDER_ADDON_TESTS_PATH", False):
+            del os.environ["BLENDER_ADDON_TESTS_PATH"]
     else:
         os.environ["BLENDER_ADDON_TESTS_PATH"] = config["tests"] 
 
