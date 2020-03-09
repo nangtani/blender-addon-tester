@@ -27,7 +27,7 @@ def getSuffix(blender_version):
     if g:
         rev = g.group(0)
     else:
-        raise
+        raise RuntimeError("Blender version cannot be guessed in the following string: {0}".format(blender_version))
         
     urls = [
         f"https://ftp.nluug.nl/pub/graphics/blender/release/Blender{rev}",
