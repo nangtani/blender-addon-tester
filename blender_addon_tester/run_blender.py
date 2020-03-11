@@ -38,6 +38,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
                     "blender_load_tests_script": str: absolute or CWD-relative path to the Blender Python scripts that loads and runs tests. Default: "blender_load_tests_script.py" (packaged with this module)
                     "coverage": bool: whether or not run coverage evaluation along tests; Default: False (no coverage evaluation) 
                     "tests": str: absolute or CWD-relative path to a directory of tests or test script that the blender_load_tests_script can use. Default: "tests/" (CWD-relative)
+                    "blender_cache": str: absolute or CWD-relative path to a directory where to download and extract Blender3d releases.
     :return: None, will sys-exit with 1 on failure
     """
     print("testing addon_path:", addon_path, "under blender_revision:", blender_revision, "with config dict:", config)
@@ -62,6 +63,9 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     blender = os.path.realpath(files[0])
 
     os.environ["BLENDER_ADDON_TO_TEST"] = addon_path
+
+    if config.get("blender_cache", None):
+        os.environ["BLENDER_CACHE"] = config["blender_cache"]
 
     if not config["blender_load_tests_script"]:
         test_file = BUILTIN_BLENDER_LOAD_TESTS_SCRIPT
