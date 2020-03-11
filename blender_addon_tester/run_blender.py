@@ -44,7 +44,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     print("testing addon_path:", addon_path, "under blender_revision:", blender_revision, "with config dict:", config)
 
     # Get Blender for the given version in a cached way
-    get_blender_from_suffix(blender_revision)
+    downloaded_blender_dir = get_blender_from_suffix(blender_revision)
 
     # Tune configuration
     DEFAULT_CONFIG = {"blender_load_tests_script": BUILTIN_BLENDER_LOAD_TESTS_SCRIPT, "coverage": False}
@@ -56,7 +56,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     else:
         ext = ""
 
-    files = glob(f"../blender-{blender_revision}*/blender{ext}")
+    files = glob(f"{downloaded_blender_dir}/blender{ext}")
     if not 1 == len(files):
         raise Exception(f"Too many blenders returned: {files}")
     

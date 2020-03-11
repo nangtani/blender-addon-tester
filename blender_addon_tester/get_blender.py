@@ -137,12 +137,14 @@ def getBlender(blender_version, blender_zippath, nightly):
     shutil.move(src, dst)
     os.chdir(cwd)
 
+    return dst
+
 
 def get_blender_from_suffix(blender_version):
 
     blender_zipfile, nightly = getSuffix(blender_version)
 
-    getBlender(blender_version, blender_zipfile, nightly)
+    return getBlender(blender_version, blender_zipfile, nightly)
 
 
 if __name__ == "__main__":
