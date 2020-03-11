@@ -17,7 +17,7 @@ jobs:
         #blender-version: ["2.80"]
         #os: [ubuntu-latest, windows-latest, macos-latest]
     env:
-      BLENDER_CACHE: ${{ github.workspace }}/.blender_addon_tester # The place where blender releases are downloaded
+      BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
 
     steps:
     - uses: actions/checkout@v1
@@ -29,7 +29,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ${{ env.BLENDER_CACHE }}
-        key: ${{ runner.os }}-build-${{ matrix.blender-version }}
+        key: ${{ runner.os }}-blender-${{ matrix.blender-version }}
         restore-keys: |
           ${{ runner.os }}-build-${{ matrix.blender-version }}
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}

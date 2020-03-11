@@ -69,6 +69,8 @@ def getBlender(blender_version, blender_zippath, nightly):
     if "BLENDER_CACHE" in os.environ.keys():
         print(f"BLENDER_CACHE found {os.environ['BLENDER_CACHE']}")
         cache_path = os.environ["BLENDER_CACHE"]
+        if not os.path.exists(cache_path):
+            os.makedirs(cache_path)
     else:
         cache_path = ".."
     os.chdir(cache_path)
