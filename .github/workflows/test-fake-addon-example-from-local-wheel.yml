@@ -28,7 +28,7 @@ jobs:
     - name: Cache Blender release download
       uses: actions/cache@v1
       with:
-        path: ${{ env.cache-name }}
+        path: ${{ env.BLENDER_CACHE }}
         key: ${{ runner.os }}-build-${{ matrix.blender-version }}
         restore-keys: |
           ${{ runner.os }}-build-${{ matrix.blender-version }}
