@@ -135,7 +135,7 @@ Please consult the `.travis.yml` file for the remainder of operation it is quite
 Supported. If enabled, see `coverage.xml` in the current working directory of your Python script runner.
 
 ## Building the wheel distribution
-The `blender-addon-tester` package can be built by running `pip install -r requirements.txt; python setup.py bdist_wheel`, then look for a `pip`-installable `*.whl` file  in the `dist/` directory.
+The `blender-addon-tester` package can be built by running `pip install -r requirements.txt; python setup.py bdist_wheel`, then look for a `pip`-installable `*.whl` file  inside the `dist/` directory.
 
 ## Wrapup
 
