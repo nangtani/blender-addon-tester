@@ -45,6 +45,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
 
     # Get Blender for the given version in a cached way
     downloaded_blender_dir = get_blender_from_suffix(blender_revision)
+    print("Downloaded Blender is expected in this directory: ", downloaded_blender_dir)
 
     # Tune configuration
     DEFAULT_CONFIG = {"blender_load_tests_script": BUILTIN_BLENDER_LOAD_TESTS_SCRIPT, "coverage": False}
@@ -58,7 +59,10 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
 
     files = glob(f"{downloaded_blender_dir}/blender{ext}")
     if not 1 == len(files):
-        raise Exception(f"Too many blenders returned: {files}")
+        if len(files) == 0:
+            raise Exception(f"No blenders returned: {files}")
+        else:
+            raise Exception(f"Too many blenders returned: {files}")
     
     blender = os.path.realpath(files[0])
 

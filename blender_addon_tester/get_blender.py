@@ -64,13 +64,18 @@ def getSuffix(blender_version):
 
 
 def getBlender(blender_version, blender_zippath, nightly):
+    """ Downloads Blender v'blender_version'//'nightly' if not yet in cache. Returns a decompressed Blender release path.
+    """
     remove = False
     cwd = os.getcwd()
     if "BLENDER_CACHE" in os.environ.keys():
-        print(f"BLENDER_CACHE found {os.environ['BLENDER_CACHE']}")
-        cache_path = os.environ["BLENDER_CACHE"]
+        print(f"BLENDER_CACHE environment variable found {os.environ['BLENDER_CACHE']}")
+        cache_path = os.path.expanduser(os.environ["BLENDER_CACHE"])
         if not os.path.exists(cache_path):
+            print(f"Creating cache directory: {cache_path}")
             os.makedirs(cache_path)
+        else:
+            print(f"Cache directory already exists: {cache_path}")
     else:
         cache_path = ".."
     os.chdir(cache_path)
@@ -80,14 +85,16 @@ def getBlender(blender_version, blender_zippath, nightly):
     ext = ""
     if nightly == True:
         ext = "-nightly"
-    dst = f"{cache_dir}/blender-{blender_version}{ext}"
+    dst = os.path.join(cache_dir, f"blender-{blender_version}{ext}")
 
     if os.path.exists(dst):
         if nightly == True or remove:
+            print(f"Removing directory (nightly:{nightly}, remove:{remove}): {dst}")
             shutil.rmtree(dst)
         else:
+            print(f"Blender {blender_version} (non-nightly) release found at: {dst}")
             os.chdir(cwd)
-            return
+            return dst
 
     blender_zipfile = blender_zippath.split("/")[-1]
 

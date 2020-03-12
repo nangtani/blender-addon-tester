@@ -1,3 +1,4 @@
+export BLENDER_CACHE=~/.blender_cache
 rm -rf build/ dist/ *.egg-info
 pip3 install -r requirements.txt
 pip uninstall blender_addon_tester -y
