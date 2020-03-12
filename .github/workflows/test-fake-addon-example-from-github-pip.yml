@@ -29,7 +29,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ${{ env.BLENDER_CACHE }}
-        key: ${{ runner.os }}-blender-${{ matrix.blender-version }}
+        key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
         cd examples/testing-fake-addon/
