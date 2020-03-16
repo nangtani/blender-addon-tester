@@ -14,7 +14,7 @@ env:
         - BLENDER_VERSION="2.79b"
         - BLENDER_VERSION="2.80"
         - BLENDER_VERSION="2.81a"
-        - BLENDER_VERSION="2.82"
+        - BLENDER_VERSION="2.82a"
         - BLENDER_VERSION="2.83"
 
 language: python
@@ -44,12 +44,8 @@ script:
     - cd ${TRAVIS_BUILD_DIR}
     - cd examples/testing-fake-addon/
     - pip install -r requirements.txt
-    - python test_fake_addon_blender.py ${BLENDER_VERSION}
-    #- ls
+    - python test_addon_blender.py ${BLENDER_VERSION} fake_addon
     - bash <(curl -s https://codecov.io/bash)
-
-#after_success:
-#    - codecov -f tests_output/coverage.xml
 
 notifications:
     email:
