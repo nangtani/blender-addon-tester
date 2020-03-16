@@ -1,4 +1,5 @@
 temp.txt
+.idea
 *.pyc
 blender_build
 __pycache__
