@@ -4,7 +4,7 @@
 
 # Blender - pytest - TravisCI integration
 
-The code to shows how the `pytest` can be used inside blender to test an addon.  Once a checkin has been performed TravisCI runs the tests on the current releases and nightly builds for blender.
+The code shows how the `pytest` can be used inside blender to test an addon.  Once a checkin has been performed TravisCI runs the tests on the current releases and nightly builds for blender.
 
 ## Motivation
 
