@@ -4,7 +4,7 @@
 
 # Blender - pytest - TravisCI integration
 
-The code to shows how the `pytest` can be used inside blender to test an addon.  Once a checkin has been performed TravisCI runs the tests on the current releases and nightly builds for blender.
+The code shows how the `pytest` can be used inside blender to test an addon.  Once a checkin has been performed TravisCI runs the tests on the current releases and nightly builds for blender.
 
 ## Motivation
 
@@ -132,7 +132,10 @@ Please consult the `.travis.yml` file for the remainder of operation it is quite
 
 ## Code Coverage
 
-Supported
+Supported. If enabled, see `coverage.xml` in the current working directory of your Python script runner.
+
+## Building the wheel distribution
+The `blender-addon-tester` package can be built by running `pip install -r requirements.txt; python setup.py bdist_wheel`, then look for a `pip`-installable `*.whl` file  inside the `dist/` directory.
 
 ## Wrapup
 

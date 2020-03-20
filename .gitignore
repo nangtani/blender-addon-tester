@@ -1,4 +1,5 @@
 temp.txt
+.idea
 *.pyc
 blender_build
 __pycache__
@@ -7,3 +8,8 @@ __pycache__
 ~*
 .coverage
 coverage.xml
+build/
+dist/
+*.egg-info/
+blender-2*/
+examples/blender-*z*
