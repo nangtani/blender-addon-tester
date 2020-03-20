@@ -1,6 +1,6 @@
-[![Travis Build Status](https://travis-ci.org/douglaskastle/blender-fake-addon.svg?branch=master)](https://travis-ci.org/douglaskastle/blender-fake-addon)
-[![Github Build Status](https://github.com/douglaskastle/blender-fake-addon/workflows/blender-fake-addon/badge.svg)](https://github.com/douglaskastle/blender-fake-addon/actions)
-[![codecov](https://codecov.io/gh/douglaskastle/blender-fake-addon/branch/master/graph/badge.svg)](https://codecov.io/gh/douglaskastle/blender-fake-addon)
+[![Travis Build Status](https://travis-ci.org/douglaskastle/blender-addon-tester.svg?branch=master)](https://travis-ci.org/douglaskastle/blender-addon-tester)
+[![Github Build Status](https://github.com/douglaskastle/blender-addon-tester/workflows/blender-addon-tester/badge.svg)](https://github.com/douglaskastle/blender-addon-tester/actions)
+[![codecov](https://codecov.io/gh/douglaskastle/blender-addon-tester/branch/master/graph/badge.svg)](https://codecov.io/gh/douglaskastle/blender-addon-tester)
 
 # Blender - pytest - TravisCI integration
 
