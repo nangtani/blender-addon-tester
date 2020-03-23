@@ -125,6 +125,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             else:
                 print("executable not found at:", executable_path)
             # TODO debug further :)
+            zdir = os.path.realpath("./Blender")
     else:
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()

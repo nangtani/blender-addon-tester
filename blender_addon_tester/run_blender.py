@@ -57,7 +57,12 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     else:
         ext = ""
 
-    files = glob(f"{downloaded_blender_dir}/blender{ext}")
+    if "darwin" == sys.platform:
+        blender_executable_root = f"{downloaded_blender_dir}/blender{ext}/Blender.app/MacOS/"
+    else:
+        blender_executable_root = f"{downloaded_blender_dir}/blender{ext}"
+
+    files = glob(blender_executable_root)
     if not 1 == len(files):
         if len(files) == 0:
             raise Exception(f"No blenders returned: {files}")
