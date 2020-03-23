@@ -116,7 +116,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             print(mounted_dmg)
             print("PWD is:", os.path.realpath("."))
             #print(glob(mounted_dmg[0] + "/**/*", recursive=True))
-            shutil.move(mounted_dmg[0], ".")
+            shutil.copytree(mounted_dmg[0], ".")
             executable_path = os.path.realpath("./Blender/Blender.app/Contents/MacOS/Blender")
             executable_found = os.path.exists(executable_path)
             if executable_found:
