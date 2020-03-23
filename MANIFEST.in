@@ -1,0 +1,4 @@
+include blender_addon_tester/requirements.txt
+include blender_addon_tester/blender_requirements.txt
+include .coveragerc
+include setup.cfg

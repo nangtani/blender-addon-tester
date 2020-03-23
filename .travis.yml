@@ -9,16 +9,17 @@ env:
     global:
         - BLENDER_CACHE=$HOME/.cache/blender
         - VENV_CACHE=$HOME/.cache/venv
-        - PYTHON_REV=3.7.5
     matrix:
         #- BLENDER_VERSION="2.78c"
         - BLENDER_VERSION="2.79b"
         - BLENDER_VERSION="2.80"
         - BLENDER_VERSION="2.81a"
-        - BLENDER_VERSION="2.82"
+        - BLENDER_VERSION="2.82a"
         - BLENDER_VERSION="2.83"
 
-language: bash
+language: python
+python:
+    - 3.7
 
 cache:
     apt: true
@@ -36,6 +37,7 @@ before_install:
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
     - mkdir -p ${VENV_CACHE}
+<<<<<<< HEAD
     - source ${TRAVIS_BUILD_DIR}/scripts/get_python.sh
     - pip install -U pip
     - pip install -r ${TRAVIS_BUILD_DIR}/scripts/requirements.txt --upgrade
@@ -51,10 +53,17 @@ script:
     - cd ${TRAVIS_BUILD_DIR}
     #- ../blender-${BLENDER_VERSION}/blender --version
     - python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
-    - bash <(curl -s https://codecov.io/bash)
+=======
+    - pip install -r ${TRAVIS_BUILD_DIR}/requirements.txt --upgrade
+    - pip list
 
-#after_success:
-#    - codecov -f tests_output/coverage.xml
+script:
+    - cd ${TRAVIS_BUILD_DIR}
+    - cd examples/testing-fake-addon/
+    - pip install -r requirements.txt
+    - python test_addon_blender.py ${BLENDER_VERSION} fake_addon
+>>>>>>> master
+    - bash <(curl -s https://codecov.io/bash)
 
 notifications:
     email:
