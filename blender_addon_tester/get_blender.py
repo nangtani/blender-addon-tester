@@ -114,6 +114,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         from dmglib import attachedDiskImage
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(mounted_dmg)
+            print(glob(mounted_dmg[0] + "/**/*", recursive=True)
             # TODO debug further :)
     else:
         z = tarfile.open(blender_zipfile)
