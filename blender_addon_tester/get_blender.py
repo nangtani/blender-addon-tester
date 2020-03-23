@@ -120,7 +120,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             executable_path = os.path.realpath("./Blender/Blender.app/Contents/MacOS/Blender")
             executable_found = os.path.exists(executable_path)
             if executable_found:
-                print("executable found at:", executable_path
+                print("executable found at:", executable_path)
             else:
                 print("executable not found at:", executable_path)
             # TODO debug further :)
