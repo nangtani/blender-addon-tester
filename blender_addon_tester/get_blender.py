@@ -131,8 +131,15 @@ def getBlender(blender_version, blender_zippath, nightly):
         print("ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!")
         exit()
 
-    cmd = f"{python} -m ensurepip"
-    os.system(cmd)
+    if sys.platform.startswith("win"):
+        import urllib.request
+        urllib.request.urlretrieve("https://bootstrap.pypa.io/get-pip.py", "get-pip.py")
+        cmd = f"{python} get-pip.py"
+        os.system(cmd)
+    else:
+        cmd = f"{python} -m ensurepip"
+        os.system(cmd)
+
     cmd = f"{python} -m pip install --upgrade -r {CURRENT_MODULE_DIRECTORY}/blender_requirements.txt -r {CURRENT_MODULE_DIRECTORY}/requirements.txt"
     os.system(cmd)
 
