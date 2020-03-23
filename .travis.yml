@@ -37,23 +37,6 @@ before_install:
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
     - mkdir -p ${VENV_CACHE}
-<<<<<<< HEAD
-    - source ${TRAVIS_BUILD_DIR}/scripts/get_python.sh
-    - pip install -U pip
-    - pip install -r ${TRAVIS_BUILD_DIR}/scripts/requirements.txt --upgrade
-    #- yolk -l
-    - pip list
-
-install:
-    - cd $TRAVIS_BUILD_DIR
-    - python --version
-    - python ${TRAVIS_BUILD_DIR}/scripts/get_blender.py ${BLENDER_VERSION}
-
-script:
-    - cd ${TRAVIS_BUILD_DIR}
-    #- ../blender-${BLENDER_VERSION}/blender --version
-    - python ${TRAVIS_BUILD_DIR}/scripts/run_blender.py ${BLENDER_VERSION}
-=======
     - pip install -r ${TRAVIS_BUILD_DIR}/requirements.txt --upgrade
     - pip list
 
@@ -62,7 +45,6 @@ script:
     - cd examples/testing-fake-addon/
     - pip install -r requirements.txt
     - python test_addon_blender.py ${BLENDER_VERSION} fake_addon
->>>>>>> master
     - bash <(curl -s https://codecov.io/bash)
 
 notifications:
