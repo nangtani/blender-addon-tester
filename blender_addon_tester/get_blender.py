@@ -117,7 +117,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             print(mounted_dmg)
             print("PWD is:", os.path.realpath("."))
             #print(glob(mounted_dmg[0] + "/**/*", recursive=True))
-            print(f'WILL DRY RUN: copy_tree({mounted_dmg[0]}/Blender.app, {os.path.realpath(".")})')
+            print(f'WILL RUN: copy_tree({mounted_dmg[0]}/Blender.app, {os.path.realpath(".")})')
             copy_tree(f'{mounted_dmg[0]}/Blender.app', os.path.realpath("."))
             print("Contents of CWD:", os.listdir("."))
             executable_path = os.path.realpath("./Blender.app/Contents/MacOS/Blender")
