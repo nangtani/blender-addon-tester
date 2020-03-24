@@ -142,10 +142,10 @@ def getBlender(blender_version, blender_zippath, nightly):
     for zfile in zfiles:
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\dm?", zfile):
             python = os.path.realpath(zfile)
-            print(f"Blender's embedded python executable was found: {python}")
+            print(f"Blender's bundled python executable was found: {python}")
             break
     if not python:
-        print("ERROR, Blender's embedded python executable could not be found within Blender's files")
+        print("ERROR, Blender's bundled python executable could not be found within Blender's files")
         exit(1)
 
     if "cygwin" == sys.platform:
