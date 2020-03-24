@@ -138,7 +138,7 @@ def getBlender(blender_version, blender_zippath, nightly):
     if not os.path.isdir(zdir):
         print(f"Unpacking {blender_zipfile}")
         z.extractall()
-    z.close()
+        z.close()
     blender_archive = zdir
 
     for zfile in zfiles:
