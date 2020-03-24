@@ -146,6 +146,7 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     python = None
     for zfile in zfiles:
+        print("Is that a python executable..?", zfile)
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d[m]?", zfile):
             python = os.path.realpath(zfile)
             print(f"Blender's python executable was found: {python}")
