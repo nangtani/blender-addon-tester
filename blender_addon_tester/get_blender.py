@@ -120,14 +120,14 @@ def getBlender(blender_version, blender_zippath, nightly):
 
         if is_osx_archive:
             print("Detected old-style type of MacOSX release: a .zip archive (instead of .dmg) containing a directory.")
-            zdir = os.path.join(zdir, "blender.app")
+            zdir = os.path.join(zdir, "blender.app/Contents")
     elif blender_zipfile.endswith("dmg"):
         is_osx_archive = True
         from dmglib import attachedDiskImage
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(f"Mounted {blender_zipfile}")
-            print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app to {os.path.realpath(".")}...')
-            copy_tree(f'{mounted_dmg[0]}/Blender.app', os.path.realpath("."))
+            print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app/Contents to {os.path.realpath(".")}...')
+            copy_tree(f'{mounted_dmg[0]}/Blender.app/Contents', os.path.realpath("."))
         zdir = "./"
     elif blender_zipfile.endswith("tar.bz2"):
         z = tarfile.open(blender_zipfile)
@@ -146,7 +146,7 @@ def getBlender(blender_version, blender_zippath, nightly):
     # Directories for MacOSX have a special structure, doing more checks first
     if is_osx_archive:
         print("OSX DETECTED, files in current dir:", os.listdir("."))
-        expected_executable_dir = os.path.realpath(os.path.join(zdir, "Contents/MacOS"))
+        expected_executable_dir = os.path.realpath(os.path.join(zdir, "MacOS"))
         executable_path = glob(f"{expected_executable_dir}/*lender")
         if executable_path:
             print("Blender MacOS executable found at:", executable_path)
