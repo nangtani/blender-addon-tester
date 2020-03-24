@@ -99,6 +99,8 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     files = glob(blender_zipfile)
 
+    is_osx_archive = False
+
     if 0 == len(files):
         if not os.path.exists(blender_zipfile):
             r = requests.get(blender_zippath, stream=True)
@@ -112,7 +114,6 @@ def getBlender(blender_version, blender_zippath, nightly):
 
         # Some .zip archives main abnormally contain an OSX release
         # Example case: https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.78/blender-2.78c-OSX_10.6-x86_64.zip
-        is_osx_archive = False
         for zfile in zfiles:
             if re.search(".*OSX.*"):
                 is_osx_archive = True
