@@ -117,16 +117,17 @@ def getBlender(blender_version, blender_zippath, nightly):
             print(mounted_dmg)
             print("PWD is:", os.path.realpath("."))
             #print(glob(mounted_dmg[0] + "/**/*", recursive=True))
-            print(f'WILL DRY RUN: copy_tree({mounted_dmg[0]}, {os.path.realpath(".")})')
-            #copy_tree(mounted_dmg[0], os.path.realpath("."))
-            executable_path = os.path.realpath("./Blender/Blender.app/Contents/MacOS/Blender")
+            print(f'WILL DRY RUN: copy_tree({mounted_dmg[0]/Blender.app}, {os.path.realpath(".")})')
+            copy_tree(f'mounted_dmg[0]/Blender.app', os.path.realpath("."))
+            print("Contents of CWD:", os.listdir("."))
+            executable_path = os.path.realpath("./Blender.app/Contents/MacOS/Blender")
             executable_found = os.path.exists(executable_path)
             if executable_found:
                 print("executable found at:", executable_path)
             else:
                 print("executable not found at:", executable_path)
             # TODO debug further :)
-            zdir = os.path.realpath("./Blender")
+            zdir = os.path.realpath("./Blender.app")
     else:
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
