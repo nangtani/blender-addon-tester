@@ -110,6 +110,7 @@ def getBlender(blender_version, blender_zippath, nightly):
     if blender_zipfile.endswith("zip"):
         z = zipfile.ZipFile(blender_zipfile, "r")
         zfiles = z.namelist()
+        zdir = zfiles[0].split("/")[0]
     elif blender_zipfile.endswith("dmg"):
         #hdiutil attach -mountpoint <path-to-desired-mountpoint> <filename.dmg>
         from dmglib import attachedDiskImage
@@ -120,19 +121,20 @@ def getBlender(blender_version, blender_zippath, nightly):
             print(f'WILL RUN: copy_tree({mounted_dmg[0]}/Blender.app, {os.path.realpath(".")})')
             copy_tree(f'{mounted_dmg[0]}/Blender.app', os.path.realpath("."))
             print("Contents of CWD:", os.listdir("."))
-            executable_path = os.path.realpath("./Blender.app/Contents/MacOS/Blender")
+            executable_path = os.path.realpath("./Contents/MacOS/Blender")
             executable_found = os.path.exists(executable_path)
             if executable_found:
                 print("executable found at:", executable_path)
             else:
                 print("executable not found at:", executable_path)
             # TODO debug further :)
-            zdir = os.path.realpath("./Blender.app")
+            zdir = os.path.realpath("./Contents")
+            zfiles = os.listdir(zdir)
     else:
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
+        zdir = zfiles[0].split("/")[0]
 
-    zdir = zfiles[0].split("/")[0]
     if not os.path.isdir(zdir):
         print(f"Unpacking {blender_zipfile}")
         z.extractall()
