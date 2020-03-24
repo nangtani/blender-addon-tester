@@ -59,8 +59,6 @@ def getSuffix(blender_version):
         print(soup)
         raise Exception(f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}")
     
-    #print(blender_zippath, nightly)
-    #exit()
     return blender_zippath, nightly
 
 
@@ -127,8 +125,7 @@ def getBlender(blender_version, blender_zippath, nightly):
                 print("executable found at:", executable_path)
             else:
                 print("executable not found at:", executable_path)
-            # TODO debug further :)
-            zdir = os.path.realpath("./Contents")
+            zdir = "./Contents"
             zfiles = []
             for root, directories, filenames in os.walk(zdir):
                 for filename in filenames:
@@ -142,14 +139,14 @@ def getBlender(blender_version, blender_zippath, nightly):
         print(f"Unpacking {blender_zipfile}")
         z.extractall()
         z.close()
-    blender_archive = zdir
+    blender_archive = os.path.realpath(zdir)
 
     python = None
     for zfile in zfiles:
-        print("Is that a python executable..?", zfile)
-        if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d[m]?", zfile):
+        if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\dm?", zfile):
             python = os.path.realpath(zfile)
             print(f"Blender's python executable was found: {python}")
+            break
     if not python:
         print("ERROR, python executable could not be found within Blender's files")
         exit(1)
@@ -173,7 +170,7 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     shutil.rmtree("tests/__pycache__", ignore_errors=True)
 
-    src = f"{cache_dir}/{blender_archive}"
+    src = blender_archive
     print(f"Move {src} to {dst}")
     shutil.move(src, dst)
     os.chdir(cwd)
