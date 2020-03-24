@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-    if: ${{ matrix.os }} != "macos-latest" && ${{ matrix.blender-version }} != "2.78c" # Never run for this always failing combination
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
@@ -31,6 +30,7 @@ jobs:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
+      if: ${{ matrix.os }} != "macos-latest" && ${{ matrix.blender-version }} != "2.78c" # Never run for this always failing combination
       run: |
         bash rebuild_pipreinstall_and_testexamples.sh
         cd examples/testing-fake-addon/
