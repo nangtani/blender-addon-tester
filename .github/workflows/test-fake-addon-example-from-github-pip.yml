@@ -36,7 +36,7 @@ jobs:
         cd examples/testing-fake-addon/
         pip install -r requirements.txt
         # These scripts will detect and use the BLENDER_CACHE environment variable
-        python test_addon_blender.py ${{ matrix.blender-version }} fake_addon && python test_fake_addon_blender_advanced.py ${{ matrix.blender-version }} && python test_fake_addon_blender_prezipped_addon.py ${{ matrix.blender-version }}
+        python test_addon_blender.py ${{ matrix.blender-version }} && python test_fake_addon_blender_advanced.py ${{ matrix.blender-version }} && python test_fake_addon_blender_prezipped_addon.py ${{ matrix.blender-version }}
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:
