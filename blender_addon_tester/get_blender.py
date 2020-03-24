@@ -128,7 +128,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             print(f"Mounted {blender_zipfile}")
             print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app to {os.path.realpath(".")}...')
             copy_tree(f'{mounted_dmg[0]}/Blender.app', os.path.realpath("."))
-        zdir = "./Contents"
+        zdir = "./"
     elif blender_zipfile.endswith("tar.bz2"):
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
