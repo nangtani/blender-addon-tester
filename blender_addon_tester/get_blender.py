@@ -110,21 +110,18 @@ def getBlender(blender_version, blender_zippath, nightly):
         zfiles = z.namelist()
         zdir = zfiles[0].split("/")[0]
     elif blender_zipfile.endswith("dmg"):
-        #hdiutil attach -mountpoint <path-to-desired-mountpoint> <filename.dmg>
         from dmglib import attachedDiskImage
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
-            print(mounted_dmg)
-            print("PWD is:", os.path.realpath("."))
-            #print(glob(mounted_dmg[0] + "/**/*", recursive=True))
-            print(f'WILL RUN: copy_tree({mounted_dmg[0]}/Blender.app, {os.path.realpath(".")})')
+            print(f"Mounted {blender_zipfile}")
+            print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app to {os.path.realpath(".")}...')
             copy_tree(f'{mounted_dmg[0]}/Blender.app', os.path.realpath("."))
-            print("Contents of CWD:", os.listdir("."))
             executable_path = os.path.realpath("./Contents/MacOS/Blender")
             executable_found = os.path.exists(executable_path)
             if executable_found:
-                print("executable found at:", executable_path)
+                print("Blender MacOS executable found at:", executable_path)
             else:
-                print("executable not found at:", executable_path)
+                print("Error, Blender MacOS executable not found at:", executable_path)
+                exit(1)
             zdir = "./Contents"
             zfiles = []
             for root, directories, filenames in os.walk(zdir):
@@ -145,10 +142,10 @@ def getBlender(blender_version, blender_zippath, nightly):
     for zfile in zfiles:
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\dm?", zfile):
             python = os.path.realpath(zfile)
-            print(f"Blender's python executable was found: {python}")
+            print(f"Blender's embedded python executable was found: {python}")
             break
     if not python:
-        print("ERROR, python executable could not be found within Blender's files")
+        print("ERROR, Blender's embedded python executable could not be found within Blender's files")
         exit(1)
 
     if "cygwin" == sys.platform:
