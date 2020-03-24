@@ -24,4 +24,5 @@ if __name__ == "__main__":
     here = os.path.dirname(os.path.realpath(__file__))
     config = {"coverage": True, "tests": "advanced_tests/"}
 
+    print("WILL TEST WITH BLENDER_REVISION=", blender_rev)
     BAT.test_blender_addon(addon_path=addon, blender_revision=blender_rev, config=config)
