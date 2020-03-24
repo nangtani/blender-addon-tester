@@ -117,7 +117,6 @@ def getBlender(blender_version, blender_zippath, nightly):
             if re.search(".*OSX.*"):
                 is_osx_archive = True
                 zdir = os.path.join(zdir, "blender.app/Contents")
-        if is_osx_archive:
     elif blender_zipfile.endswith("dmg"):
         from dmglib import attachedDiskImage
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
