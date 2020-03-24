@@ -129,7 +129,10 @@ def getBlender(blender_version, blender_zippath, nightly):
                 print("executable not found at:", executable_path)
             # TODO debug further :)
             zdir = os.path.realpath("./Contents")
-            zfiles = os.listdir(zdir)
+            zfiles = []
+            for root, directories, filenames in os.walk('/tmp/'):
+                for filename in filenames:
+                    zfiles.append(os.path.realpath(os.path.join(root,filename)))
     else:
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
@@ -143,11 +146,11 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     python = None
     for zfile in zfiles:
-        if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d", zfile):
+        if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d[m]?", zfile):
             python = os.path.realpath(zfile)
             print(f"Blender's python executable was found: {python}")
     if not python:
-        print("ERROR, python executable could not be found with Blender's files")
+        print("ERROR, python executable could not be found within Blender's files")
         exit(1)
 
     if "cygwin" == sys.platform:
