@@ -130,7 +130,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             # TODO debug further :)
             zdir = os.path.realpath("./Contents")
             zfiles = []
-            for root, directories, filenames in os.walk('/tmp/'):
+            for root, directories, filenames in os.walk(zdir):
                 for filename in filenames:
                     zfiles.append(os.path.realpath(os.path.join(root,filename)))
     else:
