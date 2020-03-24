@@ -21,6 +21,7 @@ def _run_blender_with_python_script(blender, blender_python_script):
     os.environ["LOCAL_PYTHONPATH"] = local_python
 
     cmd = f'{blender} -b --python "{blender_python_script}"'
+    print(f"Will run the following command: {cmd}")
     result = int(os.system(cmd))
     if 0 == result:
         return 0
