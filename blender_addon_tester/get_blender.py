@@ -115,8 +115,9 @@ def getBlender(blender_version, blender_zippath, nightly):
         # Some .zip archives main abnormally contain an OSX release
         # Example case: https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.78/blender-2.78c-OSX_10.6-x86_64.zip
         for zfile in zfiles:
-            if re.search(".*OSX.*"):
+            if re.search(".*OSX.*", zfile):
                 is_osx_archive = True
+                print("Detected old-style type of MacOSX release: a .zip archive (instead of .dmg) containing a directory.")
                 zdir = os.path.join(zdir, "blender.app/Contents")
     elif blender_zipfile.endswith("dmg"):
         is_osx_archive = True
