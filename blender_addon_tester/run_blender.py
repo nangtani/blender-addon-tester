@@ -29,12 +29,12 @@ def _run_blender_with_python_script(blender, blender_python_script):
         return 1
 
 
-def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision="2.80", config={}):
+def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision=None, config={}):
     """
     Run tests for "blender_revision" x "addon" using the builtin "blender_load_pytest.py" script or "custom_blender_load_tests_script"
 
     :param addon: Addon path to test, can be a path to a directory (will be zipped for you) or to a .zip file. The Python module name will be that of the (directory or) zip file without extension, try to make it as pythonic as possible for Blender's Python importer to work properly with it: letters, digits, underscores.
-    :param blender_revision: Version of Blender3d. Eg. "2.80"
+    :param blender_revision: Version of Blender3d. Default: "2.80"
     :param config: A options dictionary, its keys allow to override some defaults:
                     "blender_load_tests_script": str: absolute or CWD-relative path to the Blender Python scripts that loads and runs tests. Default: "blender_load_tests_script.py" (packaged with this module)
                     "coverage": bool: whether or not run coverage evaluation along tests; Default: False (no coverage evaluation) 
@@ -42,6 +42,10 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
                     "blender_cache": str: absolute or CWD-relative path to a directory where to download and extract Blender3d releases.
     :return: None, will sys-exit with 1 on failure
     """
+    if not blender_revision:
+        blender_revision = "2.80"
+        print("No blender_revision given, defaulting to {blender_revision}.")
+
     print("testing addon_path:", addon_path, "under blender_revision:", blender_revision, "with config dict:", config)
 
     # Get Blender for the given version in a cached way

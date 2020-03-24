@@ -210,10 +210,10 @@ if __name__ == "__main__":
         print("ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!")
         exit(1)
 
-    if len(sys.argv) >= 2:
+    if len(sys.argv) > 1:
         blender_rev = sys.argv[1]
     else:
-        blender_rev = "2.79b"
+        blender_rev = "2.80"
 
     if re.search("-", blender_rev):
         blender_rev, _ = blender_rev.split("-")
