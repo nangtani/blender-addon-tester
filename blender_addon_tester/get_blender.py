@@ -18,8 +18,8 @@ def getSuffix(blender_version):
         machine = "windows64"
         ext = "zip"
     elif "darwin" == sys.platform:
-        machine = "macOS"
-        ext = "dmg"
+        machine = "(macOS|OSX)"
+        ext = "(dmg|zip)"
     else:
         machine = "linux.*64"
         ext = "tar.+"
@@ -109,28 +109,44 @@ def getBlender(blender_version, blender_zippath, nightly):
         z = zipfile.ZipFile(blender_zipfile, "r")
         zfiles = z.namelist()
         zdir = zfiles[0].split("/")[0]
+
+        # Some .zip archives main abnormally contain an OSX release
+        # Example case: https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.78/blender-2.78c-OSX_10.6-x86_64.zip
+        is_osx_archive = False
+        for zfile in zfiles:
+            if re.search(".*OSX.*"):
+                is_osx_archive = True
+                zdir = os.path.join(zdir, "blender.app/Contents")
+        if is_osx_archive:
     elif blender_zipfile.endswith("dmg"):
         from dmglib import attachedDiskImage
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(f"Mounted {blender_zipfile}")
             print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app to {os.path.realpath(".")}...')
             copy_tree(f'{mounted_dmg[0]}/Blender.app', os.path.realpath("."))
-            executable_path = os.path.realpath("./Contents/MacOS/Blender")
-            executable_found = os.path.exists(executable_path)
-            if executable_found:
-                print("Blender MacOS executable found at:", executable_path)
-            else:
-                print("Error, Blender MacOS executable not found at:", executable_path)
-                exit(1)
-            zdir = "./Contents"
-            zfiles = []
-            for root, directories, filenames in os.walk(zdir):
-                for filename in filenames:
-                    zfiles.append(os.path.realpath(os.path.join(root,filename)))
-    else:
+        zdir = "./Contents"
+    elif blender_zipfile.endswith("tar.bz2"):
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
         zdir = zfiles[0].split("/")[0]
+    else:
+        print("Error, unknown archive extension: {blender_zipfile}. Will not extract it.}")
+        exit(1)
+
+    # Directories for MacOSX have a special structure, doing more checks first
+    if is_osx_archive:
+        executable_path = os.path.realpath("./Contents/MacOS/Blender")
+        executable_found = os.path.exists(executable_path)
+        if executable_found:
+            print("Blender MacOS executable found at:", executable_path)
+        else:
+            print("Error, Blender MacOS executable not found at:", executable_path)
+            exit(1)
+ 
+        zfiles = []
+        for root, directories, filenames in os.walk(zdir):
+            for filename in filenames:
+                zfiles.append(os.path.realpath(os.path.join(root,filename)))
 
     if not os.path.isdir(zdir):
         print(f"Unpacking {blender_zipfile}")
