@@ -33,6 +33,7 @@ jobs:
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       if: ${{ matrix.os }} != "macos-latest" && ${{ matrix.blender-version }} != "2.78c" # Never run for this always failing combination
       run: |
+        echo "BLENDER_VERSION IS: $BLENDER_VERSION"
         bash rebuild_pipreinstall_and_testexamples.sh
         cd examples/testing-fake-addon/
         # Following scripts will detect and use the BLENDER_CACHE environment variable

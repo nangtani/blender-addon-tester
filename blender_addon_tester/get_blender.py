@@ -138,12 +138,13 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     # Directories for MacOSX have a special structure, doing more checks first
     if is_osx_archive:
+        print("OSX DETECTED, files in current dir:", os.listdir("."))
         expected_executable_dir = os.path.realpath("./Contents/MacOS")
         executable_path = glob(f"{expected_executable_dir}/*lender")
         if executable_path:
             print("Blender MacOS executable found at:", executable_path)
         else:
-            print("Error, Blender MacOS executable not found in directory:", expected_executable_dir)
+            print("Error, Blender MacOS executable not found in directory:", expected_executable_dir, "glob result:", executable_path, "files in target directory:", os.listdir(expected_executable_dir))
             exit(1)
  
         zfiles = []
