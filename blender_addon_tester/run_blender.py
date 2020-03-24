@@ -58,16 +58,16 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
         ext = ""
 
     if "darwin" == sys.platform:
-        blender_executable_root = f"{downloaded_blender_dir}/MacOS/Blender"
+        blender_executable_root = f"{downloaded_blender_dir}/MacOS/*lender"
     else:
         blender_executable_root = f"{downloaded_blender_dir}/blender{ext}"
 
     files = glob(blender_executable_root)
     if not 1 == len(files):
         if len(files) == 0:
-            raise Exception(f"No blenders returned: {files}")
+            raise Exception(f"No blenders found in directory {blender_executable_root}: {files}")
         else:
-            raise Exception(f"Too many blenders returned: {files}")
+            raise Exception(f"Too many blenders found in directory {blender_executable_root}: {files}")
     
     blender = os.path.realpath(files[0])
 
