@@ -117,8 +117,9 @@ def getBlender(blender_version, blender_zippath, nightly):
         for zfile in zfiles:
             if re.search(".*OSX.*", zfile):
                 is_osx_archive = True
-                print("Detected old-style type of MacOSX release: a .zip archive (instead of .dmg) containing a directory.")
                 zdir = os.path.join(zdir, "blender.app/Contents")
+        if is_osx_archive:
+            print("Detected old-style type of MacOSX release: a .zip archive (instead of .dmg) containing a directory.")
     elif blender_zipfile.endswith("dmg"):
         is_osx_archive = True
         from dmglib import attachedDiskImage
@@ -137,12 +138,12 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     # Directories for MacOSX have a special structure, doing more checks first
     if is_osx_archive:
-        executable_path = os.path.realpath("./Contents/MacOS/Blender")
-        executable_found = os.path.exists(executable_path)
-        if executable_found:
+        expected_executable_dir = os.path.realpath("./Contents/MacOS")
+        executable_path = glob(f"{expected_executable_dir}/*lender")
+        if executable_path:
             print("Blender MacOS executable found at:", executable_path)
         else:
-            print("Error, Blender MacOS executable not found at:", executable_path)
+            print("Error, Blender MacOS executable not found in directory:", expected_executable_dir)
             exit(1)
  
         zfiles = []
