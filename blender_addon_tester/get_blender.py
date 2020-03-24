@@ -65,6 +65,7 @@ def getSuffix(blender_version):
 def getBlender(blender_version, blender_zippath, nightly):
     """ Downloads Blender v'blender_version'//'nightly' if not yet in cache. Returns a decompressed Blender release path.
     """
+    print(f"About to try to download Blender {blender_version} from {blender_zippath} nightly: {nightly}")
     remove = False
     cwd = os.getcwd()
     if "BLENDER_CACHE" in os.environ.keys():
@@ -197,6 +198,7 @@ def getBlender(blender_version, blender_zippath, nightly):
 
 
 def get_blender_from_suffix(blender_version):
+    print(f"Request to get Blender from suffix, with blender_version: {blender_version}")
 
     blender_zipfile, nightly = getSuffix(blender_version)
 
