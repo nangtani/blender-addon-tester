@@ -58,7 +58,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
         ext = ""
 
     if "darwin" == sys.platform:
-        blender_executable_root = f"{downloaded_blender_dir}/blender{ext}/MacOS/"
+        blender_executable_root = f"{downloaded_blender_dir}/MacOS/Blender"
     else:
         blender_executable_root = f"{downloaded_blender_dir}/blender{ext}"
 
