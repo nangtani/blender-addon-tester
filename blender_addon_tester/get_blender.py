@@ -141,13 +141,18 @@ def getBlender(blender_version, blender_zippath, nightly):
         z.close()
     blender_archive = zdir
 
+    python = None
     for zfile in zfiles:
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\d", zfile):
             python = os.path.realpath(zfile)
+            print(f"Blender's python executable was found: {python}")
+    if not python:
+        print("ERROR, python executable could not be found with Blender's files")
+        exit(1)
 
     if "cygwin" == sys.platform:
         print("ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!")
-        exit()
+        exit(1)
 
     if sys.platform.startswith("win"):
         import urllib.request
@@ -182,7 +187,7 @@ def get_blender_from_suffix(blender_version):
 if __name__ == "__main__":
     if "cygwin" == sys.platform:
         print("ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!")
-        exit()
+        exit(1)
 
     if len(sys.argv) >= 2:
         blender_rev = sys.argv[1]
