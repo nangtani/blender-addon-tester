@@ -103,6 +103,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
 
 
 if __name__ == "__main__":
+    print("INCOMING ARGV", sys.argv)
     if len(sys.argv) == 3:
         blender_rev = sys.argv[1]
         addon = sys.argv[2]
