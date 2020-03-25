@@ -126,7 +126,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             print(f"Mounted {blender_zipfile}")
             osx_mounted_contents_parent = None
             for root, dirs, files in os.walk(mounted_dmg[0]):
-                if osx_mounted_contents:
+                if osx_mounted_contents_parent:
                     break
                 #for dir in dirs:
                 print(f"root is {root}")
