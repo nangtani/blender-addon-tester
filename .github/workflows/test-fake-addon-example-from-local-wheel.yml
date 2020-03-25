@@ -34,6 +34,7 @@ jobs:
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
         # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
+        curl https://bootstrap.pypa.io/get-pip.py | python # upgrading pip manually to avoid a TLS problem https://github.com/adobe-type-tools/afdko/issues/238
         bash rebuild_pipreinstall_and_testexamples.sh
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
