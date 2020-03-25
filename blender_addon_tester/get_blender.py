@@ -125,6 +125,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(f"Mounted {blender_zipfile}")
             print(f"Contents of {mounted_dmg[0]}:", os.listdir(mounted_dmg[0]))
+            print(f"Contents of {mounted_dmg[0]}/Blender:", os.listdir(f"{mounted_dmg[0]}/Blender"))
             print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app/Contents to {os.path.realpath(".")}...')
             copy_tree(f'{mounted_dmg[0]}/Blender.app/Contents', os.path.realpath("."))
         zdir = "./"
