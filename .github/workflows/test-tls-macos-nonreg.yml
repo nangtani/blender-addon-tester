@@ -1,5 +1,8 @@
 name: test-tls-macos-nonreg
 
+on:
+  push:
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
