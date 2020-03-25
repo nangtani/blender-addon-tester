@@ -124,15 +124,15 @@ def getBlender(blender_version, blender_zippath, nightly):
         from dmglib import attachedDiskImage
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(f"Mounted {blender_zipfile}")
-            osx_mounted_contents = None
+            osx_mounted_contents_parent = None
             for root, dirs, files in os.walk(mounted_dmg[0]):
                 if osx_mounted_contents:
                     break
                 #for dir in dirs:
                 print(f"root is {root}")
                 if os.path.basename(root) == "Contents":
-                    osx_mounted_contents = os.path.realpath(root)
-                    print("Found", os.path.realpath(osx_mounted_contents))
+                    osx_mounted_contents_parent = os.path.realpath(os.path.dirname(root))
+                    print("Found Contents parent", os.path.realpath(osx_mounted_contents_parent))
                     print("Contents of Contents/:", os.listdir(root))
                     break
                 path = root.split(os.sep)
@@ -140,13 +140,13 @@ def getBlender(blender_version, blender_zippath, nightly):
                 for file in files:
                     print(len(path) * '---', file)
 
-            if not osx_mounted_contents:
+            if not osx_mounted_contents_parent:
                 print(f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive")
                 exit(1)
-            print(f'Copying Blender out of mounted space from {osx_mounted_contents} to {cache_dir}...')
-            copy_tree(osx_mounted_contents, cache_dir)
+            print(f'Copying Blender out of mounted space from {osx_mounted_contents_parent} to {cache_dir}...')
+            copy_tree(osx_mounted_contents_parent, cache_dir)
         os.chdir(cache_dir)
-        zdir = cache_dir
+        zdir = os.path.join(cache_dir, "Contents")
         print("DEBUG: zdir is:", zdir)
         print("DEBUG: is zdir a dir?", os.path.isdir(zdir))
     elif blender_zipfile.endswith("tar.bz2") or blender_zipfile.endswith("tar.gz"):
