@@ -128,11 +128,13 @@ def getBlender(blender_version, blender_zippath, nightly):
             for root, dirs, files in os.walk(mounted_dmg[0]):
                 if osx_mounted_contents:
                     break
-                for dir in dirs:
-                    if dir == "Contents":
-                        osx_mounted_contents = os.path.realpath(os.path.join(root, dir))
-                        print("Found", os.path.realpath(osx_mounted_contents))
-                        # break
+                #for dir in dirs:
+                print(f"root is {root}")
+                if os.path.basename(root) == "Contents":
+                    osx_mounted_contents = os.path.realpath(root)
+                    print("Found", os.path.realpath(osx_mounted_contents))
+                    print("Contents of Contents/:", os.listdir(root))
+                    # break
                 path = root.split(os.sep)
                 print((len(path) - 1) * '---', os.path.basename(root))
                 for file in files:
