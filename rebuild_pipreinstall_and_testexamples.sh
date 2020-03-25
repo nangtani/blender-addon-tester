@@ -11,5 +11,6 @@ cd examples/testing-*/
 pwd
 for testable_file in $(ls test_fake_addon*.py); do
   python "$testable_file" $BLENDER_VERSION;
+  break #run once only for now
 done
 cd ../..
