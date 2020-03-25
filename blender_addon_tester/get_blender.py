@@ -37,7 +37,10 @@ def getSuffix(blender_version):
     ]
     blender_zippath = None
     nightly = False
+    release_file_found = False
     for url in urls:
+        if release_file_found:
+            break
         page = requests.get(url)
         data = page.text
         soup = BeautifulSoup(data, features="html.parser")
@@ -55,7 +58,8 @@ def getSuffix(blender_version):
                     blender_zippath = f"{url}/{g.group(0)}"
                     if url == urls[1]:
                         nightly = True
-                        break
+                    release_file_found = True
+                    break
      
     if None == blender_zippath:
         print(soup)
