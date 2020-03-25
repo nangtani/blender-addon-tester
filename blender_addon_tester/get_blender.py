@@ -146,7 +146,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             print(f'Copying Blender out of mounted space from {osx_mounted_contents} to {cache_dir}...')
             copy_tree(osx_mounted_contents, cache_dir)
         os.chdir(cache_dir)
-        zdir = os.path.realpath("./Contents")
+        zdir = cache_dir
         print("DEBUG: zdir is:", zdir)
         print("DEBUG: is zdir a dir?", os.path.isdir(zdir))
     elif blender_zipfile.endswith("tar.bz2") or blender_zipfile.endswith("tar.gz"):
