@@ -170,7 +170,8 @@ def getBlender(blender_version, blender_zippath, nightly):
                 zdir = os.path.realpath(contents_dir[0])
                 break
 
-    if not os.path.isdir(zdir):
+    if not is_osx_archive and not os.path.isdir(zdir):
+        # OSX directories are not always recognized by os.path.isdir, so skipping OSX situations here
         print(f"Unpacking {blender_zipfile}")
         z.extractall()
         z.close()
