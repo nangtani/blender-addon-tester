@@ -39,7 +39,7 @@ def getSuffix(blender_version):
     nightly = False
     release_file_found = False
     for url in urls:
-        print("FETCHING RELEASES FROM: {url}")
+        print(f"FETCHING RELEASES FROM: {url}")
         if release_file_found:
             break
         page = requests.get(url)
@@ -51,6 +51,7 @@ def getSuffix(blender_version):
         for link in soup.find_all("a"):
             x = str(link.get("href"))
             #print(x)
+            print(f"LINK CHECKING: Does 'blender-(.+)-{machine}.+{ext}' match for {x} ?")
             g = re.search(f"blender-(.+)-{machine}.+{ext}", x)
             if g:
                 version_found = g.group(1).split("-")[0]
