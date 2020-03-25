@@ -179,7 +179,7 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     # Directories for MacOSX have a special structure, doing more checks first
     if is_osx_archive:
-        print("OSX DETECTED, current dir is:", os.cwd())
+        print("OSX DETECTED, current dir is:", os.getcwd())
         print("OSX DETECTED, files in current dir:", os.listdir("."))
         print("OSX DETECTED, files in zdir:", os.listdir(zdir))
         expected_executable_dir = os.path.realpath(os.path.join(zdir, "MacOS"))
