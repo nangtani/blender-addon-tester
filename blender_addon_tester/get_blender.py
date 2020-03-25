@@ -166,7 +166,12 @@ def getBlender(blender_version, blender_zippath, nightly):
             if re.search(".*OSX.*|.lender\.app", zfile):
                 print("Detected old-style type of MacOSX release: a .zip/.tar.gz archive (instead of .dmg) containing a directory.")
                 is_osx_archive = True
+                print("CWD IS:", os.getcwd())
+                print("zfile:", zfile)
+                print("zfiles:", zfiles)
+                print("CWD listdir:", os.listdir())
                 contents_dir = glob("./*lender.app/Contents")
+                print("contents_dir:", contents_dir)
                 zdir = os.path.realpath(contents_dir[0])
                 break
 
