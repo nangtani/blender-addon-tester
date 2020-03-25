@@ -124,10 +124,24 @@ def getBlender(blender_version, blender_zippath, nightly):
         from dmglib import attachedDiskImage
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(f"Mounted {blender_zipfile}")
-            print(f"Contents of {mounted_dmg[0]}:", os.listdir(mounted_dmg[0]))
-            print(f"Contents of {mounted_dmg[0]}/Blender:", os.listdir(f"{mounted_dmg[0]}/Blender"))
+            osx_mounteed_contents = None
+            for root, dirs, files in os.walk("."):
+                if osx_mounted_contents:
+                    break
+                for dir in dirs:
+                    if dir.lower() == "blender.app":
+                        osx_mounted_contents = os.path.join(dir, "Contents")
+                        print("Found", os.path.realpath(dir))
+                        break 
+                path = root.split(os.sep)
+                print((len(path) - 1) * '---', os.path.basename(root))
+                for file in files:
+                    print(len(path) * '---', file)
+            if not osx_mounted_contents:
+                print(f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive")
+                exit(1)
             print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app/Contents to {os.path.realpath(".")}...')
-            copy_tree(f'{mounted_dmg[0]}/Blender.app/Contents', os.path.realpath("."))
+            copy_tree(f'{mounted_dmg[0]}/Blender.app/Contents', osx_mounted_contents)
         zdir = "./"
     elif blender_zipfile.endswith("tar.bz2") or blender_zipfile.endswith("tar.gz"):
         z = tarfile.open(blender_zipfile)
