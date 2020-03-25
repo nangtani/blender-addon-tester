@@ -129,8 +129,8 @@ def getBlender(blender_version, blender_zippath, nightly):
                 if osx_mounted_contents:
                     break
                 for dir in dirs:
-                    if dir.lower() == "blender.app":
-                        osx_mounted_contents = os.path.realpath(os.path.join(root, dir, "Contents"))
+                    if dir == "Contents":
+                        osx_mounted_contents = os.path.realpath(os.path.join(root, dir))
                         print("Found", os.path.realpath(osx_mounted_contents))
                         # break
                 path = root.split(os.sep)
