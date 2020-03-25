@@ -55,6 +55,7 @@ def getSuffix(blender_version):
                     blender_zippath = f"{url}/{g.group(0)}"
                     if url == urls[1]:
                         nightly = True
+                        break
      
     if None == blender_zippath:
         print(soup)
