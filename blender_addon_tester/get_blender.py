@@ -125,7 +125,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(f"Mounted {blender_zipfile}")
             osx_mounted_contents = None
-            for root, dirs, files in os.walk("."):
+            for root, dirs, files in os.walk(mounted_dmg[0]):
                 if osx_mounted_contents:
                     break
                 for dir in dirs:
