@@ -20,7 +20,7 @@ def getSuffix(blender_version):
         ext = "zip"
     elif "darwin" == sys.platform:
         machine = "(macOS|OSX)"
-        ext = "(dmg|zip)"
+        ext = "(dmg|zip|tar\.gz)"
     else:
         machine = "linux.*64"
         ext = "tar.+"
@@ -120,16 +120,6 @@ def getBlender(blender_version, blender_zippath, nightly):
         z = zipfile.ZipFile(blender_zipfile, "r")
         zfiles = z.namelist()
         zdir = zfiles[0].split("/")[0]
-
-        # Some .zip archives main abnormally contain an OSX release
-        # Example case: https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.78/blender-2.78c-OSX_10.6-x86_64.zip
-        for zfile in zfiles:
-            if re.search(".*OSX.*", zfile):
-                is_osx_archive = True
-
-        if is_osx_archive:
-            print("Detected old-style type of MacOSX release: a .zip archive (instead of .dmg) containing a directory.")
-            zdir = os.path.join(zdir, "blender.app/Contents")
     elif blender_zipfile.endswith("dmg"):
         is_osx_archive = True
         from dmglib import attachedDiskImage
@@ -138,13 +128,25 @@ def getBlender(blender_version, blender_zippath, nightly):
             print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app/Contents to {os.path.realpath(".")}...')
             copy_tree(f'{mounted_dmg[0]}/Blender.app/Contents', os.path.realpath("."))
         zdir = "./"
-    elif blender_zipfile.endswith("tar.bz2"):
+    elif blender_zipfile.endswith("tar.bz2") or blender_zipfile.endswith("tar.gz"):
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
         zdir = zfiles[0].split("/")[0]
     else:
         print("Error, unknown archive extension: {blender_zipfile}. Will not extract it.}")
         exit(1)
+
+    if not is_osx_archive:
+        # Some non-dmg archives may abnormally contain an OSX release
+        # Example cases: 
+        # https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.78/blender-2.78c-OSX_10.6-x86_64.zip
+        # https://download.blender.org/release/Blender2.79/blender-2.79-macOS-10.6.tar.gz
+        for zfile in zfiles:
+            if re.search(".*OSX.*", zfile):
+                print("Detected old-style type of MacOSX release: a .zip archive (instead of .dmg) containing a directory.")
+                is_osx_archive = True
+                zdir = os.path.join(zdir, "blender.app/Contents")
+                break
 
     if not os.path.isdir(zdir):
         print(f"Unpacking {blender_zipfile}")
