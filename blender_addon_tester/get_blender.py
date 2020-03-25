@@ -1,4 +1,5 @@
 import os
+import stat
 import sys
 import shutil
 import subprocess
@@ -151,6 +152,8 @@ def getBlender(blender_version, blender_zippath, nightly):
         executable_path = glob(f"{expected_executable_dir}/*lender")
         if executable_path:
             print("Blender MacOS executable found at:", executable_path)
+            print("Adding executable rights to MacOS blender binary file")
+            os.chmod(executable_path, stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
         else:
             print("Error, Blender MacOS executable not found in directory:", expected_executable_dir, "glob result:", executable_path, "files in target directory:", os.listdir(expected_executable_dir))
             exit(1)
@@ -165,6 +168,8 @@ def getBlender(blender_version, blender_zippath, nightly):
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\dm?", zfile):
             python = os.path.realpath(zfile)
             print(f"Blender's bundled python executable was found: {python}")
+            print("Adding executable rights to MacOS blender bundled python binary file")
+            os.chmod(python, stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
             break
     if not python:
         print("ERROR, Blender's bundled python executable could not be found within Blender's files")
