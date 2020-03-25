@@ -12,7 +12,7 @@ jobs:
       max-parallel: 4
       matrix:
         #blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82a", "2.83"]
-        blender-version: ["2.79", "2.80"]
+        blender-version: ["2.78c", "2.79", "2.80"]
         # blender-version: ["2.83"]
         # os: [ubuntu-latest, windows-latest]
         os: [macos-latest]
@@ -34,7 +34,6 @@ jobs:
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
         # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
-        curl https://bootstrap.pypa.io/get-pip.py | python # upgrading pip manually to avoid a TLS problem https://github.com/adobe-type-tools/afdko/issues/238
         bash rebuild_pipreinstall_and_testexamples.sh
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
