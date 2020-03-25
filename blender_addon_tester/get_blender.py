@@ -39,6 +39,7 @@ def getSuffix(blender_version):
     nightly = False
     release_file_found = False
     for url in urls:
+        print("FETCHING RELEASES FROM: {url}")
         if release_file_found:
             break
         page = requests.get(url)
