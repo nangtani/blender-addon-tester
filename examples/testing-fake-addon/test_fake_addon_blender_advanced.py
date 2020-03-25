@@ -4,7 +4,6 @@ import blender_addon_tester as BAT
 
 if __name__ == "__main__":
     addon = "fake_addon"
-    print("SYS.ARGV IS:", sys.argv)
     if len(sys.argv) > 1:
         blender_rev = sys.argv[1]
     else:

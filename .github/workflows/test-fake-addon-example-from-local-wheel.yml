@@ -18,7 +18,7 @@ jobs:
         os: [macos-latest]
     env:
       BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
-
+      BLENDER_VERSION: ${{ matrix.blender-version }}
 
     steps:
     - uses: actions/checkout@v1
@@ -32,14 +32,9 @@ jobs:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
-      env:
-        BLENDER_VERSION: ${{ matrix.blender-version }}
       run: |
-        echo "BLENDER_VERSION IS: $BLENDER_VERSION"
+        # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
         bash rebuild_pipreinstall_and_testexamples.sh
-        cd examples/testing-fake-addon/
-        # Following scripts will detect and use the BLENDER_CACHE environment variable
-        python test_addon_blender.py $BLENDER_VERSION && python test_fake_addon_blender_advanced.py $BLENDER_VERSION && python test_fake_addon_blender_prezipped_addon.py $BLENDER_VERSION 
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:
