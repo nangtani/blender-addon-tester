@@ -151,6 +151,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         expected_executable_dir = os.path.realpath(os.path.join(zdir, "MacOS"))
         executable_path = glob(f"{expected_executable_dir}/*lender")
         if executable_path:
+            executable_path = executable_path[0]
             print("Blender MacOS executable found at:", executable_path)
             print("Adding executable rights to MacOS blender binary file")
             os.chmod(executable_path, stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
