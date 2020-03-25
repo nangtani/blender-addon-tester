@@ -130,17 +130,15 @@ def getBlender(blender_version, blender_zippath, nightly):
                     break
                 for dir in dirs:
                     if dir.lower() == "blender.app":
-                        osx_mounted_contents = os.path.join(root, "Contents")
+                        osx_mounted_contents = os.path.realpath(os.path.join(root, "Contents"))
                         print("Found", os.path.realpath(osx_mounted_contents))
+                        break
                 path = root.split(os.sep)
-                print((len(path) - 1) * '---', os.path.basename(root))
-                for file in files:
-                    print(len(path) * '---', file)
             if not osx_mounted_contents:
                 print(f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive")
                 exit(1)
             print(f'Copying Blender out of mounted space from {mounted_dmg[0]}/Blender.app/Contents to {os.path.realpath(".")}...')
-            copy_tree(f'{mounted_dmg[0]}/Blender.app/Contents', osx_mounted_contents)
+            copy_tree(osx_mounted_contents, os.path.realpath("."))
         zdir = "./"
     elif blender_zipfile.endswith("tar.bz2") or blender_zipfile.endswith("tar.gz"):
         z = tarfile.open(blender_zipfile)
