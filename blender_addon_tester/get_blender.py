@@ -39,9 +39,10 @@ def getSuffix(blender_version):
     nightly = False
     release_file_found = False
     for url in urls:
-        print(f"FETCHING RELEASES FROM: {url}")
         if release_file_found:
             break
+
+        print(f"FETCHING RELEASES FROM: {url}")
         page = requests.get(url)
         data = page.text
         soup = BeautifulSoup(data, features="html.parser")
@@ -142,8 +143,8 @@ def getBlender(blender_version, blender_zippath, nightly):
         # https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.78/blender-2.78c-OSX_10.6-x86_64.zip
         # https://download.blender.org/release/Blender2.79/blender-2.79-macOS-10.6.tar.gz
         for zfile in zfiles:
-            if re.search(".*OSX.*", zfile):
-                print("Detected old-style type of MacOSX release: a .zip archive (instead of .dmg) containing a directory.")
+            if re.search(".*OSX.*|.lender\.app", zfile):
+                print("Detected old-style type of MacOSX release: a .zip/.tar.gz archive (instead of .dmg) containing a directory.")
                 is_osx_archive = True
                 zdir = os.path.join(zdir, "blender.app/Contents")
                 break
