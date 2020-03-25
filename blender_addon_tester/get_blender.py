@@ -132,8 +132,11 @@ def getBlender(blender_version, blender_zippath, nightly):
                     if dir.lower() == "blender.app":
                         osx_mounted_contents = os.path.realpath(os.path.join(root, "Contents"))
                         print("Found", os.path.realpath(osx_mounted_contents))
-                        break
+                        # break
                 path = root.split(os.sep)
+                print((len(path) - 1) * '---', os.path.basename(root))
+                for file in files:
+                    print(len(path) * '---', file)
             os.chdir(cache_dir)
             if not osx_mounted_contents:
                 print(f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive")
