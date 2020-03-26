@@ -32,7 +32,7 @@ jobs:
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
     # Fix for issue https://github.com/douglaskastle/blender-addon-tester/issues/14
     - name: Fix blender 2.79 for Linux, by apt-getting its required dependencies first
-      if: matrix.os == 'ubuntu-latest' && startsWith(matrix.blender-version, '2.79')
+      if: matrix.os == 'ubuntu-latest' && startsWith(matrix.blender-version, '2.7')
       run: |
         sudo add-apt-repository ppa:thomas-schiex/blender-legacy
         sudo apt-get update
