@@ -11,7 +11,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82a", "2.83"]
+        blender-version: ["2.79b", "2.80", "2.81a", "2.82a", "2.83"]
+        #blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82a", "2.83"]
         os: [macos-latest, ubuntu-latest, windows-latest]
         # os: [macos-latest]
     env:
