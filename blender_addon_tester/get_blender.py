@@ -158,7 +158,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         zdir = os.path.join(cache_dir, "Contents")
         print("DEBUG: zdir is:", zdir)
         print("DEBUG: is zdir a dir?", os.path.isdir(zdir))
-    elif blender_zipfile.endswith("tar.bz2") or blender_zipfile.endswith("tar.gz"):
+    elif blender_zipfile.endswith("tar.bz2") or blender_zipfile.endswith("tar.gz") or blender_zipfile.endswith("tar.xz"):
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
         zdir = zfiles[0].split("/")[0]
