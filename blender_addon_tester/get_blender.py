@@ -228,7 +228,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         print("ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!")
         exit(1)
 
-    if sys.platform.startswith("win") or sys.platform == "darwin":
+    if sys.platform.startswith("win") or sys.platform == "darwin" or (sys.platform == "linux" and blender_version.startswith("2.7")):
         import urllib.request
         urllib.request.urlretrieve("https://bootstrap.pypa.io/get-pip.py", "get-pip.py")
         cmd = f"{python} get-pip.py"
