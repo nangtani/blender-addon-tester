@@ -11,7 +11,7 @@ def test_version_advanced(bpy_module):
     assert len(get_version(bpy_module)) < 10
 
 def test_versionID_pass(bpy_module):
-    expect_version = (0, 0, 1)
+    expect_version = (0, 1, 1)
     return_version = get_version(bpy_module)
     assert expect_version == return_version
 
