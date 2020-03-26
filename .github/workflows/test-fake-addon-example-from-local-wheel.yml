@@ -7,17 +7,15 @@ on:
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
         blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82a", "2.83"]
-        # blender-version: ["2.83"]
-        os: [ubuntu-latest, windows-latest]
-        # os: [macos-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
     env:
       BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
+      BLENDER_VERSION: ${{ matrix.blender-version }}
 
     steps:
     - uses: actions/checkout@v1
@@ -30,12 +28,17 @@ jobs:
       with:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
+    # Fix for issue https://github.com/douglaskastle/blender-addon-tester/issues/14
+    - name: Fix blender 2.7* for Linux, by apt-getting similar blender package providing required dependencies
+      if: matrix.os == 'ubuntu-latest' && startsWith(matrix.blender-version, '2.7')
+      run: |
+        sudo add-apt-repository ppa:thomas-schiex/blender-legacy
+        sudo apt-get update
+        sudo apt-get install blender # A blender 2.79 package most probably
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
+        # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
         bash rebuild_pipreinstall_and_testexamples.sh
-        cd examples/testing-fake-addon/
-        # Following scripts will detect and use the BLENDER_CACHE environment variable
-        python test_addon_blender.py ${{ matrix.blender-version }} fake_addon && python test_fake_addon_blender_advanced.py ${{ matrix.blender-version }} && python test_fake_addon_blender_prezipped_addon.py ${{ matrix.blender-version }}
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:

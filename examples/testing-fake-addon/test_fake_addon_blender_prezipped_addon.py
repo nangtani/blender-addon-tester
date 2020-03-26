@@ -16,8 +16,8 @@ if __name__ == "__main__":
     zipf.close()
     addon = "fake_addon.zip"
 
-    if len(sys.argv) > 2:
-        blender_rev = sys.argv[2]
+    if len(sys.argv) > 1:
+        blender_rev = sys.argv[1]
     else:
         blender_rev = "2.80"
     
