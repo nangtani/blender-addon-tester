@@ -76,7 +76,7 @@ def findMacOSContentsParentDirectory(starting_path):
             break
         #for dir in dirs:
         print(f"root is {root}")
-        if os.path.basename(root) == "Contents":
+        if os.path.basename(root) == "Contents" and "blender.app" in root.lower():
             osx_mounted_contents_parent = os.path.realpath(os.path.dirname(root))
             print("Found Contents parent", os.path.realpath(osx_mounted_contents_parent))
             print("Contents of Contents/:", os.listdir(root))
