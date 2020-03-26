@@ -157,6 +157,12 @@ def getBlender(blender_version, blender_zippath, nightly):
         print("Error, unknown archive extension: {blender_zipfile}. Will not extract it.}")
         exit(1)
 
+    if not os.path.isdir(zdir):
+        # OSX directories are not always recognized by os.path.isdir, so skipping OSX situations here
+        print(f"Unpacking {blender_zipfile}")
+        z.extractall()
+        z.close()
+
     if not is_osx_archive:
         # Some non-dmg archives may abnormally contain an OSX release
         # Example cases: 
@@ -167,19 +173,12 @@ def getBlender(blender_version, blender_zippath, nightly):
                 print("Detected old-style type of MacOSX release: a .zip/.tar.gz archive (instead of .dmg) containing a directory.")
                 is_osx_archive = True
                 print("CWD IS:", os.getcwd())
-                print("zfile:", zfile)
-                print("zfiles:", zfiles)
                 print("CWD listdir:", os.listdir())
                 contents_dir = glob("./*lender.app/Contents")
                 print("contents_dir:", contents_dir)
                 zdir = os.path.realpath(contents_dir[0])
                 break
 
-    if not os.path.isdir(zdir):
-        # OSX directories are not always recognized by os.path.isdir, so skipping OSX situations here
-        print(f"Unpacking {blender_zipfile}")
-        z.extractall()
-        z.close()
     blender_archive = os.path.realpath(zdir)
 
     # Directories for MacOSX have a special structure, doing more checks first
