@@ -74,17 +74,17 @@ def findMacOSContentsParentDirectory(starting_path):
     for root, dirs, files in os.walk(starting_path):
         if osx_mounted_contents_parent:
             break
-        #for dir in dirs:
-        print(f"root is {root}")
+        # print(f"root is {root}")
         if os.path.basename(root) == "Contents" and "blender.app" in root.lower():
             osx_mounted_contents_parent = os.path.realpath(os.path.dirname(root))
             print("Found Contents parent", os.path.realpath(osx_mounted_contents_parent))
             print("Contents of Contents/:", os.listdir(root))
             break
         path = root.split(os.sep)
-        print((len(path) - 1) * '---', os.path.basename(root))
+        # print((len(path) - 1) * '---', os.path.basename(root))
         for file in files:
-            print(len(path) * '---', file)
+            #print(len(path) * '---', file)
+            pass
     
     if not osx_mounted_contents_parent:
         print(f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive")
