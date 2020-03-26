@@ -68,6 +68,33 @@ def getSuffix(blender_version):
     
     return blender_zippath, nightly
 
+def findMacOSContentsParentDirectory(starting_path):
+    cwd = os.getcwd()
+    osx_mounted_contents_parent = None
+    for root, dirs, files in os.walk(starting_path):
+        if osx_mounted_contents_parent:
+            break
+        #for dir in dirs:
+        print(f"root is {root}")
+        if os.path.basename(root) == "Contents":
+            osx_mounted_contents_parent = os.path.realpath(os.path.dirname(root))
+            print("Found Contents parent", os.path.realpath(osx_mounted_contents_parent))
+            print("Contents of Contents/:", os.listdir(root))
+            break
+        path = root.split(os.sep)
+        print((len(path) - 1) * '---', os.path.basename(root))
+        for file in files:
+            print(len(path) * '---', file)
+    
+    if not osx_mounted_contents_parent:
+        print(f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive")
+        exit(1)
+
+    os.chdir(cwd)
+    
+    return osx_mounted_contents_parent
+ 
+
 
 def getBlender(blender_version, blender_zippath, nightly):
     """ Downloads Blender v'blender_version'//'nightly' if not yet in cache. Returns a decompressed Blender release path.
@@ -124,25 +151,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         from dmglib import attachedDiskImage
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(f"Mounted {blender_zipfile}")
-            osx_mounted_contents_parent = None
-            for root, dirs, files in os.walk(mounted_dmg[0]):
-                if osx_mounted_contents_parent:
-                    break
-                #for dir in dirs:
-                print(f"root is {root}")
-                if os.path.basename(root) == "Contents":
-                    osx_mounted_contents_parent = os.path.realpath(os.path.dirname(root))
-                    print("Found Contents parent", os.path.realpath(osx_mounted_contents_parent))
-                    print("Contents of Contents/:", os.listdir(root))
-                    break
-                path = root.split(os.sep)
-                print((len(path) - 1) * '---', os.path.basename(root))
-                for file in files:
-                    print(len(path) * '---', file)
-
-            if not osx_mounted_contents_parent:
-                print(f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive")
-                exit(1)
+            osx_mounted_contents_parent = findMacOSContentsParentDirectory(mounted_dmg[0])
             print(f'Copying Blender out of mounted space from {osx_mounted_contents_parent} to {cache_dir}...')
             copy_tree(osx_mounted_contents_parent, cache_dir)
         os.chdir(cache_dir)
@@ -174,14 +183,15 @@ def getBlender(blender_version, blender_zippath, nightly):
                 is_osx_archive = True
                 print("CWD IS:", os.getcwd())
                 print("CWD listdir:", os.listdir())
-                contents_dir = glob("./*lender.app/Contents")
-                print("contents_dir:", contents_dir)
-                zdir = os.path.realpath(contents_dir[0])
+                osx_extracted_contents_dir = os.path.join(findMacOSContentsParentDirectory(mounted_dmg[0]), "Contents")
+                print("contents dir:", osx_extracted_contents_dir)
+                zdir = os.path.realpath(osx_extracted_contents_dir)
+                print("new zdir:", zdir)
                 break
 
     blender_archive = os.path.realpath(zdir)
 
-    # Directories for MacOSX have a special structure, doing more checks first
+    # Directories for MacOSX have a special structure, search for blender and python executables and change permissions
     if is_osx_archive:
         print("OSX DETECTED, current dir is:", os.getcwd())
         print("OSX DETECTED, files in current dir:", os.listdir("."))
