@@ -183,7 +183,7 @@ def getBlender(blender_version, blender_zippath, nightly):
                 is_osx_archive = True
                 print("CWD IS:", os.getcwd())
                 print("CWD listdir:", os.listdir())
-                osx_extracted_contents_dir = os.path.join(findMacOSContentsParentDirectory(mounted_dmg[0]), "Contents")
+                osx_extracted_contents_dir = os.path.join(findMacOSContentsParentDirectory(os.getcwd()), "Contents")
                 print("contents dir:", osx_extracted_contents_dir)
                 zdir = os.path.realpath(osx_extracted_contents_dir)
                 print("new zdir:", zdir)
