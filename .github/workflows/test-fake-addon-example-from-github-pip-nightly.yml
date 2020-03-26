@@ -1,7 +1,6 @@
-name: test-fake-addon-example-from-github-pip
+name: test-fake-addon-example-from-github-pip-nightly
 
 on: 
-  push:
   schedule:
     - cron: '0 0 * * *'
 
@@ -12,10 +11,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        # blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82a", "2.83"]
-        blender-version: ["2.78c","2.80"]
-        # os: [ubuntu-latest, windows-latest]
-        os: [macos-latest]
+        blender-version: ["2.79b", "2.80", "2.81a", "2.82a", "2.83"]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     env:
       BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
       BLENDER_VERSION: ${{ matrix.blender-version }}
@@ -31,9 +28,14 @@ jobs:
       with:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
+    - name: Fix blender 2.79 for Linux, by apt-getting its required dependencies first
+      if: matrix.os == 'ubuntu-latest' && startsWith(matrix.blender-version, '2.79')
+      run: |
+        sudo add-apt-repository ppa:thomas-schiex/blender-legacy
+        sudo apt-get update
+        sudo apt-get install blender
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
-        echo "BLENDER_VERSION IS: $BLENDER_VERSION"
         cd examples/testing-fake-addon/
         pip install -r requirements.txt
         # These scripts will detect and use the BLENDER_CACHE environment variable
