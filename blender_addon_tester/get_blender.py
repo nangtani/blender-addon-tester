@@ -217,7 +217,7 @@ def getBlender(blender_version, blender_zippath, nightly):
         if re.search("bin/python.exe", zfile) or re.search("bin/python\d.\dm?", zfile):
             python = os.path.realpath(zfile)
             print(f"Blender's bundled python executable was found: {python}")
-            print("Adding executable rights to MacOS blender bundled python binary file")
+            print("Adding executable rights to blender bundled python binary file")
             os.chmod(python, stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
             break
     if not python:
