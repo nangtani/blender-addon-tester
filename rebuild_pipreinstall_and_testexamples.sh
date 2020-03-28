@@ -7,9 +7,9 @@ pip install -r requirements.txt
 pip uninstall blender_addon_tester -y
 python setup.py bdist_wheel
 pip install dist/*.whl
-cd examples/testing-*/
-pwd
-for testable_file in $(ls test_addon*.py); do
-  python "$testable_file" $BLENDER_VERSION fake_addon;
-done
-cd ../..
+# cd examples/testing-*/
+# pwd
+# for testable_file in $(ls test_addon*.py); do
+#   python "$testable_file" $BLENDER_VERSION fake_addon;
+# done
+# cd ../..

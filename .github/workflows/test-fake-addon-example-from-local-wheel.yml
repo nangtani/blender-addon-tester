@@ -39,6 +39,10 @@ jobs:
       run: |
         # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
         bash rebuild_pipreinstall_and_testexamples.sh
+        cd examples/testing-*/
+        pwd
+        python test_addon_blender.py ${{ matrix.blender-version }} fake_addon;
+        cd ../..
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:
