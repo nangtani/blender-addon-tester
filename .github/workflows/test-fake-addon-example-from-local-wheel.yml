@@ -11,7 +11,8 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82a", "2.83"]
+        #blender-version: ["2.78c", "2.79b", "2.80", "2.81a", "2.82a", "2.83"]
+        blender-version: ["2.79b", "2.80"]
         os: [macos-latest, ubuntu-latest, windows-latest]
     env:
       BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
@@ -43,8 +44,8 @@ jobs:
         pwd
         python test_addon_blender.py ${{ matrix.blender-version }} fake_addon;
         cd ../..
-    - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
-      uses: actions/upload-artifact@v1
-      with:
-        name: coverage.xml
-        path: examples/testing-fake-addon/coverage.xml
+#     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
+#       uses: actions/upload-artifact@v1
+#       with:
+#         name: coverage.xml
+#         path: examples/testing-fake-addon/coverage.xml
