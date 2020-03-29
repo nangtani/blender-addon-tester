@@ -46,7 +46,6 @@ jobs:
         cd examples/testing-*/
         pwd
         python test_addon_blender.py ${{ matrix.blender-version }} fake_addon
-      continue-on-error: true
     - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Advanced
       run: |
         cd examples/testing-*/
