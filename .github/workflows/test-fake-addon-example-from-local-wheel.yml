@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    steps:
+      continue-on-error: true
     strategy:
       max-parallel: 4
       matrix:
