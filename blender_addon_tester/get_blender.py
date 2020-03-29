@@ -124,6 +124,12 @@ def getBlender(blender_version, blender_zippath, nightly):
     if os.path.exists(dst):
         if nightly == True or remove:
             print(f"Removing directory (nightly:{nightly}, remove:{remove}): {dst}")
+            #cmd
+            for root, dirs, files in os.walk(dst):
+                for d in dirs:
+                    os.chmod(os.path.join(root, d), 0o777)
+                for f in files:
+                    os.chmod(os.path.join(root, f), 0o777)            
             shutil.rmtree(dst)
         else:
             print(f"Blender {blender_version} (non-nightly) release found at: {dst}")
