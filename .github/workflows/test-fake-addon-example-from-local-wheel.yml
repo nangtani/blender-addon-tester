@@ -53,8 +53,8 @@ jobs:
       run: |
         cd examples/testing-*/
         python test_addon_blender_prezipped_addon.py ${{ matrix.blender-version }} fake_addon
-#     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
-#       uses: actions/upload-artifact@v1
-#       with:
-#         name: coverage.xml
-#         path: examples/testing-fake-addon/coverage.xml
+    - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
+      uses: actions/upload-artifact@v1
+      with:
+        name: coverage.xml
+        path: examples/testing-fake-addon/coverage.xml
