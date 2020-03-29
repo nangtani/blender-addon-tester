@@ -43,13 +43,16 @@ jobs:
         cd examples/testing-*/
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
+        cd examples/testing-*/
         pwd
         python test_addon_blender.py ${{ matrix.blender-version }} fake_addon
     - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Advanced
       run: |
+        cd examples/testing-*/
         python test_addon_blender_advanced.py ${{ matrix.blender-version }} fake_addon
     - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Prezipped Addon
       run: |
+        cd examples/testing-*/
         python test_addon_blender_prezipped_addon.py ${{ matrix.blender-version }} fake_addon
 #         cd ../..
 #     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
