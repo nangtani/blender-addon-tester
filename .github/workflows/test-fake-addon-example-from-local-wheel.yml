@@ -37,6 +37,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install blender # A blender 2.79 package most probably
     - name: Setup Environment
+      run: |
         # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
         bash rebuild_pipreinstall_and_testexamples.sh
         cd examples/testing-*/
