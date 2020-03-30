@@ -124,12 +124,6 @@ def getBlender(blender_version, blender_zippath, nightly):
     if os.path.exists(dst):
         if nightly == True or remove:
             print(f"Removing directory (nightly:{nightly}, remove:{remove}): {dst}")
-            #cmd
-            for root, dirs, files in os.walk(dst):
-                for d in dirs:
-                    os.chmod(os.path.join(root, d), 0o777)
-                for f in files:
-                    os.chmod(os.path.join(root, f), 0o777)            
             shutil.rmtree(dst)
         else:
             print(f"Blender {blender_version} (non-nightly) release found at: {dst}")
@@ -224,7 +218,7 @@ def getBlender(blender_version, blender_zippath, nightly):
             python = os.path.realpath(zfile)
             print(f"Blender's bundled python executable was found: {python}")
             print("Adding executable rights to blender bundled python binary file")
-            os.chmod(python, stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
+            os.chmod(python, os.stat(python).st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
             break
     if not python:
         print("ERROR, Blender's bundled python executable could not be found within Blender's files")
