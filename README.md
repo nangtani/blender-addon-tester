@@ -93,7 +93,10 @@ tests/test_pytest.py:11: AssertionError
 ## Operational
 
 To see a working addon environment checkout this repo.  In the sub directory `examples\testing-fake-addon`, it contains a dummy addon that that can be sued to verify that the whole enviroment is setup correctly.
-
+```
+cd examples\testing-fake-addon
+test_addon_blender.py fake_addon 2.82
+```
 However it is better to use this modile with an addon in a different repo.  Check out this repo for that example, [fake_addon](https://github.com/douglaskastle/blender-fake-addon)
 
 ## Projects using `blender-addon-tester`
