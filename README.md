@@ -88,6 +88,7 @@ E         At index 0 diff: 1 != 0
 E         Use -v to get the full diff
 tests/test_pytest.py:11: AssertionError
 ====================== 1 failed, 1 passed in 0.08 seconds ======================
+```
 
 ## Operational
 
