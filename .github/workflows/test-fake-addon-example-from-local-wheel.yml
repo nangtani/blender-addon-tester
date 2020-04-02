@@ -39,20 +39,25 @@ jobs:
       run: |
         # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
         bash rebuild_pipreinstall_and_testexamples.sh
-        cd examples/testing-*/
+        cd examples/testing-fake-addon/
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
-        cd examples/testing-*/
+        cd examples/testing-fake-addon/
         pwd
         python test_addon_blender.py fake_addon ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Advanced
       run: |
-        cd examples/testing-*/
+        cd examples/testing-fake-addon/
         python test_addon_blender_advanced.py fake_addon ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Prezipped Addon
       run: |
-        cd examples/testing-*/
+        cd examples/testing-fake-addon/
         python test_addon_blender_prezipped_addon.py fake_addon ${{ matrix.blender-version }}
+    - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} built in addon
+      run: |
+        cd examples/testing-io_scene_obj/
+        pwd
+        python test_addon_blender.py io_scene_obj ${{ matrix.blender-version }}
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:
