@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import re
 import shutil
 import zipfile
 from glob import glob
@@ -24,10 +25,10 @@ def _run_blender_with_python_script(blender, blender_python_script):
 
 def test_exisiting_addons(blender_revision, addon_path, cache):
     addon = addon_path
-    files = glob(f"{cache}/blender-{blender_revision}/{blender_revision}/scripts/*/{addon}")
-    print(glob(f"{cache}/blender-{blender_revision}/{blender_revision}/scripts/*/{addon}"))
-    print(glob(f"{cache}/blender-{blender_revision}/{blender_revision}/scripts/*"))
-    print(glob(f"{cache}/*"))
+    rev = re.sub("[a-z]$", "", blender_revision)
+    loc = f"{cache}/blender-{blender_revision}/{rev}/scripts/*/{addon}"
+    print(loc)
+    files = glob(loc)
     print("files", files)
     for addon in files:
         zfile = f"{addon}.zip"
@@ -95,8 +96,8 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
 
     if config.get("blender_cache", None):
         os.environ["BLENDER_CACHE"] = config["blender_cache"]
-    else:
-        os.environ["BLENDER_CACHE"] = ".."
+#     else:
+#         os.environ["BLENDER_CACHE"] = ".."
 
     if not config["blender_load_tests_script"]:
         test_file = BUILTIN_BLENDER_LOAD_TESTS_SCRIPT
