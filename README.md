@@ -99,19 +99,23 @@ However it is better to use this modile with an addon in a different repo.  Chec
 ## Projects using `blender-addon-tester`
 
 [fake_addon](https://github.com/douglaskastle/blender-fake-addon)
+
 [blender-import-lwo](https://github.com/douglaskastle/blender-import-lwo)
+
 [ba_io_scene_obj](https://github.com/nangtani/ba_io_scene_obj)
+
 [gmic-blender](https://github.com/myself/gmic-blender)
+
 ## Releases
 
-###v0.2
+### v0.2
 
 Added default cache location if not specified
 Deleted built in addon from reference blender, if testing new version of addon
 Updated setup.py to remove unnecessary modules needed for blender-addon-tester to work.
 Updated documentation
 
-###v0.1
+### v0.1
 Initial checkin to pypi
 Working against github actions
 Working against Travis CI
