@@ -54,8 +54,8 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
                     "blender_cache": str: absolute or CWD-relative path to a directory where to download and extract Blender3d releases.
     :return: None, will sys-exit with 1 on failure
     """
-    if not blender_revision:
-        blender_revision = "2.80"
+    if None == blender_revision:
+        blender_revision = "2.82"
         print("No blender_revision given, defaulting to {blender_revision}.")
 
     print("testing addon_path:", addon_path, "under blender_revision:", blender_revision, "with config dict:", config)
