@@ -3,109 +3,78 @@
 ![Github Actions local Python wheel tests](https://github.com/douglaskastle/blender-addon-tester/workflows/test-fake-addon-example-from-local-wheel/badge.svg)
 [![codecov](https://codecov.io/gh/douglaskastle/blender-addon-tester/branch/master/graph/badge.svg)](https://codecov.io/gh/douglaskastle/blender-addon-tester)
 
-# Blender - pytest - TravisCI integration
+# blender-addon-tester
 
-The code shows how the `pytest` can be used inside blender to test an addon.  Once a checkin has been performed TravisCI runs the tests on the current releases and nightly builds for blender.
+## Background
 
-## Motivation
+The 3D tool, [Blender](https://blender.org), allows its functionality to be extended, using python.  These are called addons. 
 
-I have been around python for the better part of 10 years now.  Python is only just coming of that painful period of time when it transitioned from python2 to python3.  We got there, yay!
+Typical an addon will be released and it will be working with the version of blender that is on release at that time. However as time pass the, blender releases new versions, adding to and deprecrating parts of the exposed API.  After a while it is not uncommon for an addon to stop working.
 
-I have been playing around with blender for 3-4 years and the move to blender 2.80 from 2.79 is beginning to look very similar.
+This was seen a lot when blender made a upgrade move from 2.79 to 2.80.  Some parts of the exposed API were radically different and it broke a lot of addons.  
 
-One obvious area of concern is that the addons used in blender are hardly ever written with any tests.  If an addon was written for 2.56 it may or may not work for 2.65. It usually did, so that has allowed some great work to live on.  However the move to 2.80 is really beginning to flag where we suffer for lack of regressable testing.
+A major effort was put into rework thes addons to get them working again, but the exercise merely highlighted that there is no native testing environment that:
 
-My new years resolution (2019) was to at least see if I could put together a decent test framework that could allow for regressable tests, on multiple builds of blender, and have it feed into a continous integration tool, in this case TravisCI, that can run against the nightly builds.  
+* Allows an addon to be tested against multiple versions of blender and multiple OSs (ubuntu, windows and macosx)
+* Used an industry standard of testing, i.e. `pytest`
+* Plugs into a continuous integration tool, i.e. Github Actions, Travis CI
+* Ability to test a passing addon against the nightly builds, to catch API breaks as close to when they happen
+* Code coverage of the addon. Used to assess comprehensivness of the tests.
 
-I have also picked `pytest` as I have experience with this from my day job as a microchip validation engineer.  And it is non standard enough that the work here shows how you can get any python module you want into blender.
+## What does it do
 
-Where possible I try and script in python only.  Some other work I have seen, usually the wrapper script, can be written in bash/sh.  That can wreck my head, so here all scripts where possible have been written in python for greater code continuity.
+This python module allows command line `pytest`ing to be performed on different versions of blender. 
+
+It will download and maintain different versions of blender locally.  
+
+It will install the addon under test into a location accessible by the respective version of blender. 
+
+It will execute a series of tests, by default located in the `tests` directory. These tests are written in the `pytest` format.
+
+Once addon has been completed and the tests have been written, they are checked in to github. They can be run against a continous integration tool.  There is currently support for both Github Actions and Travis CI.
+
+## Usage
+
+It can be confusing with blender as it has an internal version of python that is different from the system python.  `blender-addon-tester` is isntall to the system python and is used to call different versions of blender.  It is inside this blender that the addon under test gets installed.
+
+`blender-addon-tester` can be install from pypi:
+
+`pip install blender-addon-tester`
+
+Then it can be called from any script:
+
+```
+    import blender_addon_tester as BAT
+    BAT.test_blender_addon(addon_path=addon, blender_revision=blender_rev)
+```
+Once called, it will
+
+* Check to see if the version of blender is presnet in the cache location, if not it will download that version of blender and install it to the cache location, installing all the extra python modules required to enable pytest-ing and coverage.
+* It will install the addon to the version of blender
+* It will run all the tests, default `tests` directory, but this can be explictly set. \it will report a pass or failure.  This result is written to be capturable by CI tools.
+* It will also report to coverage of the test.  This coverage can be almalgamated across all versions to get a full idea of testing.
+
+Online continuous integration and code coverage need to be setup explictly. 
 
 ## pytest
 
-Blender comes with it own version of python.  When you run blender, the python it uses, is this one, not the one that has been installed on your system.  This python comes with has `unittest` as a standard module.  `unittest` is a bit long in the tooth, `pytest` has started to become a lot more popular in the industry. 
-
-So two things are missing out of the box that we need to get, `pip` and `pytest`.  
-
-We explictly call the python inside blender to install `pip`:
-
-`blender/2.80/python/bin/python3.7m -m ensurepip`
-
-this will install `pip` locally that when called will install modules into the blender version of python and not the system.
-
-**linux**: `blender/2.81/python/bin/pip3`
-
-**windows**: `blender\2.81\python\Scripts\pip3`
-
-**cygwin**: NOT SUPPORTED!
-
-we use this `pip` to install pytest:
-
-`blender/2.81/python/bin/pip3 install pytest`
-
-You will now be able to import pytest inside python scripts called by blender.
-
-## fake-addon
-
-The addon included here is the most basic addon possible.  All it does is print out a message when it is installed and another one when it is removed.  However all addons are required to have version tuple.  This version ID of the addon can be read back through blender via python.  This is the test we use:
-
-```
-    expect_version = (0, 0, 1)
-    return_version = get_version(bpy_module)
-    assert  expect_version == return_version
-```
-
-In the current release, there are two tests, one to check that the right value gets returned for the version ID and one to check if the wrong value returned is detected correctly.  These pass.  If you wish to see a correct failure under pytest, changed the `expect_version` value to something it should not be.
-
-During the `pytest` `configure` phase the helper scripts have been written to handle the zipping of the addon into a zip file, which is then imported into blender.  If this import was unsuccessfuly the `get_version()` would error, which would be captured by `pytest`.
-
-The `unconfigure` removes the `addon` from the `scripts/addon` directory used by blender . 
-
-## Run tests locally
-
-To run the test locally you need to have a version of blender present. Since these scripts were written to work on multiple revisions of blender at the same time, your standard unzips should got here accordingly:
-
-**2.79b** : `../blender_2.79b`
-
-**2.80** : `../blender_2.80`
-
-**2.82** : `../blender_2.82-nightly`
-
-The script looks for a release version first, followed by looking at the nightly releases (at the time of this writing 2.82 was on nightly releases)
-
-To run the tests locally we use the system python to run the script, one could arguably use the one included in blender itself.
-
-`python scripts/run_blender.py 2.79-nightly`
+Example output of a successful `pytest`.
 
 ```
 ============================= test session starts =============================
-platform win32 -- Python 3.6.2, pytest-4.1.0, py-1.7.0, pluggy-0.8.0
-rootdir: D:\blender-fake-addon, inifile:
+platform win32 -- Python 3.7.4, pytest-5.4.1, py-1.8.1, pluggy-0.13.1 -- C:\blender\blender-2.82\blender.exe
+cachedir: .pytest_cache
+rootdir: C:\blender\blender-fake-addon
+plugins: cov-2.8.1
 collected 2 items
 
-tests\test_pytest.py ..                                                  [100%]
+tests/test_version.py::test_versionID_pass PASSED                         [ 50%]
+tests/test_version.py::test_versionID_fail PASSED                         [100%]
 
 ========================== 2 passed in 0.20 seconds ===========================
 ```
 
-
-## TravisCI
-
-To use TravisCI you need to link your github account.
-
-The script takes an argument that is the version of blender you wish to test.  The script, `get_blender.py`, is used to webscrape the blender downloads site and fetch the current revision specified, either the current release or the working nightly builds.
-
-When downloading we use a cache for the tar file we get.  This allows us to do faster incremental testing.  Keep an eye on your cache sizes over on TravisCI that they don't blow up.
-
-Here is an example of a successful run:
-
-![cron](images/success.png)
-
-And this was the result of a test that was checked in a a failure forced:
-
-![cron](images/failure.png)
-
-And here is what can be found in the log for the error.
+Example of a failing `pytest`.
 
 ```
 _____________________________ test_versionID_pass ______________________________
@@ -119,25 +88,30 @@ E         At index 0 diff: 1 != 0
 E         Use -v to get the full diff
 tests/test_pytest.py:11: AssertionError
 ====================== 1 failed, 1 passed in 0.08 seconds ======================
-Cleaning up - fake_addon
-Goodbye World
-*** test run reporting finished
-Error: Not freed memory blocks: 1, total unfreed memory 0.000214 MB
-The command "python tests/run_blender.py ${BLENDER_VERSION}" exited with 1.
-```
-As we want to run against the nightly builds we need to set up some cronjobs to run.  These can be found under settings.  I added a daily cron for my builds as I imagine my addon isn't changing that much, it is a potential change in the how the nightly builds work is what we really want to catch early.
 
-![cron](images/cron.png)
+## Operational
 
-Please consult the `.travis.yml` file for the remainder of operation it is quite self explanitory.
+To see a working addon environment checkout this repo.  In the sub directory `examples\testing-fake-addon`, it contains a dummy addon that that can be sued to verify that the whole enviroment is setup correctly.
 
-## Code Coverage
+However it is better to use this modile with an addon in a different repo.  Check out this repo for that example, [fake_addon](https://github.com/douglaskastle/blender-fake-addon)
 
-Supported. If enabled, see `coverage.xml` in the current working directory of your Python script runner.
+## Projects using `blender-addon-tester`
 
-## Building the wheel distribution
-The `blender-addon-tester` package can be built by running `pip install -r requirements.txt; python setup.py bdist_wheel`, then look for a `pip`-installable `*.whl` file  inside the `dist/` directory.
+[fake_addon](https://github.com/douglaskastle/blender-fake-addon)
+[blender-import-lwo](https://github.com/douglaskastle/blender-import-lwo)
+[ba_io_scene_obj](https://github.com/nangtani/ba_io_scene_obj)
+[gmic-blender](https://github.com/myself/gmic-blender)
+## Releases
 
-## Wrapup
+###v0.2
 
-This is just one attempt at building a verification flow.  If you have any comments for improvements please get in touch.
+Added default cache location if not specified
+Deleted built in addon from reference blender, if testing new version of addon
+Updated setup.py to remove unnecessary modules needed for blender-addon-tester to work.
+Updated documentation
+
+###v0.1
+Initial checkin to pypi
+Working against github actions
+Working against Travis CI
+
