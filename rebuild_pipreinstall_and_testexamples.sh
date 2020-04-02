@@ -10,6 +10,6 @@ pip install dist/*.whl
 cd examples/testing-*/
 pwd
 for testable_file in $(ls test_addon*.py); do
-  python "$testable_file" $BLENDER_VERSION fake_addon;
+  python "$testable_file" fake_addon $BLENDER_VERSION;
 done
 cd ../..

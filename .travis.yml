@@ -8,7 +8,7 @@ os:
 env:
     global:
         - BLENDER_CACHE=$HOME/.cache/blender
-        - VENV_CACHE=$HOME/.cache/venv
+        - BL_ADDON=fake_addon
     matrix:
         - BLENDER_VERSION="2.78c"
         - BLENDER_VERSION="2.79b"
@@ -26,7 +26,6 @@ cache:
     directories:
         - $HOME/.cache/pip
         - ${BLENDER_CACHE}
-        - ${VENV_CACHE}
 
 addons:
     apt:
@@ -44,7 +43,7 @@ script:
     - cd ${TRAVIS_BUILD_DIR}
     - cd examples/testing-fake-addon/
     - pip install -r requirements.txt
-    - python test_addon_blender.py ${BLENDER_VERSION} fake_addon
+    - python test_addon_blender.py ${BL_ADDON} ${BLENDER_VERSION}
     - bash <(curl -s https://codecov.io/bash)
 
 notifications:

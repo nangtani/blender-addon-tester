@@ -8,13 +8,13 @@ except Exception as e:
 
 def main():    
     if len(sys.argv) > 1:
-        blender_rev = sys.argv[1]
-    else:
-        blender_rev = "2.80"
-    if len(sys.argv) > 2:
-        addon = sys.argv[2]
+        addon = sys.argv[1]
     else:
         addon = "fake_addon"
+    if len(sys.argv) > 2:
+        blender_rev = sys.argv[2]
+    else:
+        blender_rev = "2.80"
     
     here = os.path.dirname(os.path.realpath(__file__))
     config = {"blender_load_tests_script": os.path.join(here, "blender_advanced_load_pytest.py"), "coverage": True, "tests": "advanced_tests/"}
