@@ -27,7 +27,7 @@ def test_exisiting_addons(blender_revision, addon_path, cache):
     files = glob(f"{cache}/blender-{blender_revision}/{blender_revision}/scripts/*/{addon}")
     print(glob(f"{cache}/blender-{blender_revision}/{blender_revision}/scripts/*/{addon}"))
     print(glob(f"{cache}/blender-{blender_revision}/{blender_revision}/scripts/*"))
-    print(glob(f"{cache}"))
+    print(glob(f"{cache}/*"))
     print("files", files)
     for addon in files:
         zfile = f"{addon}.zip"
