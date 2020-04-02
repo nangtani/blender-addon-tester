@@ -1,23 +1,17 @@
 import os
 import sys
 import subprocess
+import shutil
+import zipfile
 from glob import glob
 from .get_blender import get_blender_from_suffix
 
 CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 BUILTIN_BLENDER_LOAD_TESTS_SCRIPT = os.path.join(CURRENT_MODULE_DIRECTORY, "blender_load_pytest.py")
 
-
-def checkPath(path):
-    if "cygwin" == sys.platform:
-        cmd = "cygpath -wa {0}".format(path)
-        path = subprocess.check_output(cmd.split()).decode("ascii").rstrip()
-    return path
-
-
 def _run_blender_with_python_script(blender, blender_python_script):
-    blender_python_script = checkPath(blender_python_script)
-    local_python = checkPath(CURRENT_MODULE_DIRECTORY)
+    blender_python_script = blender_python_script
+    local_python = CURRENT_MODULE_DIRECTORY
     os.environ["LOCAL_PYTHONPATH"] = local_python
 
     cmd = f'{blender} -b --python "{blender_python_script}"'
@@ -80,6 +74,8 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
 
     if config.get("blender_cache", None):
         os.environ["BLENDER_CACHE"] = config["blender_cache"]
+    else:
+        os.environ["BLENDER_CACHE"] = ".."
 
     if not config["blender_load_tests_script"]:
         test_file = BUILTIN_BLENDER_LOAD_TESTS_SCRIPT
@@ -97,7 +93,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
             del os.environ["BLENDER_ADDON_TESTS_PATH"]
     else:
         os.environ["BLENDER_ADDON_TESTS_PATH"] = config["tests"] 
-
+        
     # Run tests with the proper Blender version and configured tests
     return _run_blender_with_python_script(blender, test_file)
 
