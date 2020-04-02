@@ -35,10 +35,24 @@ jobs:
         sudo add-apt-repository ppa:thomas-schiex/blender-legacy
         sudo apt-get update
         sudo apt-get install blender # A blender 2.79 package most probably
-    - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
+    - name: Setup Environment
       run: |
         # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
         bash rebuild_pipreinstall_and_testexamples.sh
+        cd examples/testing-*/
+    - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
+      run: |
+        cd examples/testing-*/
+        pwd
+        python test_addon_blender.py ${{ matrix.blender-version }} fake_addon
+    - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Advanced
+      run: |
+        cd examples/testing-*/
+        python test_addon_blender_advanced.py ${{ matrix.blender-version }} fake_addon
+    - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Prezipped Addon
+      run: |
+        cd examples/testing-*/
+        python test_addon_blender_prezipped_addon.py ${{ matrix.blender-version }} fake_addon
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:

@@ -34,13 +34,25 @@ jobs:
         sudo add-apt-repository ppa:thomas-schiex/blender-legacy
         sudo apt-get update
         sudo apt-get install blender
+    - name: Setup Environment
+      run: |
+        # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
+        cd examples/testing-*/
+        pip install -r requirements.txt
     - name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}}
       run: |
-        cd examples/testing-fake-addon/
-        pip install -r requirements.txt
-        # These scripts will detect and use the BLENDER_CACHE environment variable
-        python test_addon_blender.py $BLENDER_VERSION && python test_fake_addon_blender_advanced.py $BLENDER_VERSION && python test_fake_addon_blender_prezipped_addon.py $BLENDER_VERSION 
-    - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
+        cd examples/testing-*/
+        pwd
+        python test_addon_blender.py ${{ matrix.blender-version }} fake_addon
+    - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Advanced
+      run: |
+        cd examples/testing-*/
+        python test_addon_blender_advanced.py ${{ matrix.blender-version }} fake_addon
+    - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} Prezipped Addon
+      run: |
+        cd examples/testing-*/
+        python test_addon_blender_prezipped_addon.py ${{ matrix.blender-version }} fake_addon
+    - name: Expose coverage as a CI download # Related to test_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:
         name: coverage.xml
