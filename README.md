@@ -1,7 +1,7 @@
-[![Travis Build Status](https://travis-ci.org/douglaskastle/blender-addon-tester.svg?branch=master)](https://travis-ci.org/douglaskastle/blender-addon-tester)
-![Github Actions pypi.org nightly tests](https://github.com/douglaskastle/blender-addon-tester/workflows/test-fake-addon-example-from-github-pip-nightly/badge.svg)
-![Github Actions local Python wheel tests](https://github.com/douglaskastle/blender-addon-tester/workflows/test-fake-addon-example-from-local-wheel/badge.svg)
-[![codecov](https://codecov.io/gh/douglaskastle/blender-addon-tester/branch/master/graph/badge.svg)](https://codecov.io/gh/douglaskastle/blender-addon-tester)
+[![Travis Build Status](https://travis-ci.org/nangtani/blender-addon-tester.svg?branch=master)](https://travis-ci.org/nangtani/blender-addon-tester)
+![Github Actions pypi.org nightly tests](https://github.com/nangtani/blender-addon-tester/workflows/test-fake-addon-example-from-github-pip-nightly/badge.svg)
+![Github Actions local Python wheel tests](https://github.com/nangtani/blender-addon-tester/workflows/test-fake-addon-example-from-local-wheel/badge.svg)
+[![codecov](https://codecov.io/gh/nangtani/blender-addon-tester/branch/master/graph/badge.svg)](https://codecov.io/gh/nangtani/blender-addon-tester)
 
 # blender-addon-tester
 
