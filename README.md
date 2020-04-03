@@ -1,7 +1,7 @@
-[![Travis Build Status](https://travis-ci.org/nangtani/blender-addon-tester.svg?branch=master)](https://travis-ci.org/nangtani/blender-addon-tester)
-![Github Actions pypi.org nightly tests](https://github.com/nangtani/blender-addon-tester/workflows/test-fake-addon-example-from-github-pip-nightly/badge.svg)
-![Github Actions local Python wheel tests](https://github.com/nangtani/blender-addon-tester/workflows/test-fake-addon-example-from-local-wheel/badge.svg)
-[![codecov](https://codecov.io/gh/nangtani/blender-addon-tester/branch/master/graph/badge.svg)](https://codecov.io/gh/nangtani/blender-addon-tester)
+[![Travis Build Status](https://travis-ci.org/douglaskastle/blender-addon-tester.svg?branch=master)](https://travis-ci.org/douglaskastle/blender-addon-tester)
+![Github Actions pypi.org nightly tests](https://github.com/douglaskastle/blender-addon-tester/workflows/test-fake-addon-example-from-github-pip-nightly/badge.svg)
+![Github Actions local Python wheel tests](https://github.com/douglaskastle/blender-addon-tester/workflows/test-fake-addon-example-from-local-wheel/badge.svg)
+[![codecov](https://codecov.io/gh/douglaskastle/blender-addon-tester/branch/master/graph/badge.svg)](https://codecov.io/gh/douglaskastle/blender-addon-tester)
 
 # blender-addon-tester
 
@@ -9,7 +9,7 @@
 
 The 3D tool, [Blender](https://blender.org), allows its functionality to be extended, using python.  These are called addons. 
 
-Typically an addon will be released and it will be working with the version of blender that is on release at that time. However as time pass the, blender releases new versions, adding to and deprecrating parts of the exposed API.  After a while it is not uncommon for an addon to stop working.
+Typical an addon will be released and it will be working with the version of blender that is on release at that time. However as time pass the, blender releases new versions, adding to and deprecrating parts of the exposed API.  After a while it is not uncommon for an addon to stop working.
 
 This was seen a lot when blender made a upgrade move from 2.79 to 2.80.  Some parts of the exposed API were radically different and it broke a lot of addons.  
 
@@ -29,13 +29,13 @@ It will download and maintain different versions of blender locally.
 
 It will install the addon under test into a location accessible by the respective version of blender. 
 
-It will execute a series of tests, by default, located in the `tests` directory. These tests are written in the `pytest` format.
+It will execute a series of tests, by default located in the `tests` directory. These tests are written in the `pytest` format.
 
-Once the addon has been completed and the tests have been written, they are checked in to github. They can be run against a continous integration tool.  There is currently support for both Github Actions and Travis CI.
+Once addon has been completed and the tests have been written, they are checked in to github. They can be run against a continous integration tool.  There is currently support for both Github Actions and Travis CI.
 
 ## Usage
 
-It can be confusing with blender as it has an internal version of python that is different from the system python.  `blender-addon-tester` is install to the system python and is used to call different versions of blender.  It is inside this instance of blender that the addon under test gets installed.
+It can be confusing with blender as it has an internal version of python that is different from the system python.  `blender-addon-tester` is isntall to the system python and is used to call different versions of blender.  It is inside this blender that the addon under test gets installed.
 
 `blender-addon-tester` can be install from pypi:
 
@@ -110,6 +110,9 @@ However it is better to use this modile with an addon in a different repo.  Chec
 [gmic-blender](https://github.com/myself/gmic-blender)
 
 ## Releases
+
+### v0.3
+New release required to to repo migration
 
 ### v0.2
 
