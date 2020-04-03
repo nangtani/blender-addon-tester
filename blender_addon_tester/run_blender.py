@@ -26,7 +26,7 @@ def _run_blender_with_python_script(blender, blender_python_script):
 def test_exisiting_addons(blender_revision, addon_path, cache):
     addon = addon_path
     rev = re.sub("[a-z]$", "", blender_revision)
-    loc = f"{cache}/blender-{blender_revision}/{rev}/scripts/*/{addon}"
+    loc = f"{cache}/blender-*/{rev}/scripts/*/{addon}"
     print(loc)
     files = glob(loc)
     print("files", files)
