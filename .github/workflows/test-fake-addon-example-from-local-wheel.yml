@@ -55,13 +55,13 @@ jobs:
         cd examples/testing-fake-addon/
         python test_addon_blender_prezipped_addon.py fake_addon ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} built in addon
-      # This addon does not work with versions of blender below 2.8 and contains
-      # incompatible code that just crashed blender those versions of blender
-      #if: startsWith(matrix.blender-version, '2.7') != true
       run: |
         cd examples/testing-io_scene_obj/
-        pwd
         python test_addon_blender.py io_scene_obj ${{ matrix.blender-version }}
+    - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} built in addon file
+      run: |
+        cd examples/testing-io_scene_obj/
+        python test_addon_blender.py io_import_images_as_planes.py ${{ matrix.blender-version }}
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:

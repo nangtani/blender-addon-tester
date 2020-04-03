@@ -23,7 +23,7 @@ def _run_blender_with_python_script(blender, blender_python_script):
     else:
         return 1
 
-def test_exisiting_addons(blender_revision, addon_path, cache, blender):
+def test_exisiting_addons(blender_revision, addon_path, blender):
     addon = addon_path
     rev = re.sub("[a-z]$", "", blender_revision)
     if "darwin" == sys.platform:
@@ -33,6 +33,7 @@ def test_exisiting_addons(blender_revision, addon_path, cache, blender):
 
     loc = f"{loc}/*/{addon}"
     files = glob(loc)
+    print(files)
     for addon in files:
         zfile = f"{addon}.zip"
         zf = zipfile.ZipFile(zfile, "w")
@@ -45,8 +46,10 @@ def test_exisiting_addons(blender_revision, addon_path, cache, blender):
             zf.write(addon)
         zf.close()
         
-        shutil.rmtree(os.path.realpath(addon))
-
+        if os.path.isdir(addon):
+            shutil.rmtree(os.path.realpath(addon))
+        else:
+            os.unlink(os.path.realpath(addon))
 
 def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision=None, config={}):
     """
@@ -119,7 +122,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     else:
         os.environ["BLENDER_ADDON_TESTS_PATH"] = config["tests"] 
 
-    test_exisiting_addons(blender_revision, addon_path, os.environ["BLENDER_CACHE"], blender)
+    test_exisiting_addons(blender_revision, addon_path, blender)
         
     # Run tests with the proper Blender version and configured tests
     return _run_blender_with_python_script(blender, test_file)
