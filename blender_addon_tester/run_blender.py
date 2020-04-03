@@ -28,11 +28,15 @@ def test_exisiting_addons(blender_revision, addon_path, cache, blender):
     rev = re.sub("[a-z]$", "", blender_revision)
     print(blender)
     loc = os.path.realpath(f"{blender}/../{rev}/scripts")
+    print(glob(os.path.realpath(f"{blender}/../")))
+    print(glob(os.path.realpath(f"{blender}/../{rev}")))
+    print(glob(os.path.realpath(f"{blender}/../{rev}/scripts")))
     print(loc)
     loc = f"{loc}/*/{addon}"
     print(loc)
     files = glob(loc)
     print("files", files)
+    print()
     for addon in files:
         zfile = f"{addon}.zip"
         zf = zipfile.ZipFile(zfile, "w")
