@@ -35,7 +35,6 @@ addons:
 before_install:
     - mkdir -p ${BLENDER_CACHE}
     - ls ${BLENDER_CACHE}
-    - mkdir -p ${VENV_CACHE}
     - pip install -r ${TRAVIS_BUILD_DIR}/requirements.txt --upgrade
     - pip list
 
