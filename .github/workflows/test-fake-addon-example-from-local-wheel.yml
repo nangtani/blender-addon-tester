@@ -57,7 +57,7 @@ jobs:
     - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} built in addon
       # This addon does not work with versions of blender below 2.8 and contains
       # incompatible code that just crashed blender those versions of blender
-      if: startsWith(matrix.blender-version, '2.7') != true
+      #if: startsWith(matrix.blender-version, '2.7') != true
       run: |
         cd examples/testing-io_scene_obj/
         pwd
