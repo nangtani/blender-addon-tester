@@ -27,10 +27,14 @@ def test_exisiting_addons(blender_revision, addon_path, cache, blender):
     addon = addon_path
     rev = re.sub("[a-z]$", "", blender_revision)
     print(blender)
-    loc = os.path.realpath(f"{blender}/../{rev}/scripts")
-    print(glob(os.path.realpath(f"{blender}/../")))
-    print(glob(os.path.realpath(f"{blender}/../{rev}")))
-    print(glob(os.path.realpath(f"{blender}/../{rev}/scripts")))
+    if "darwin" == sys.platform:
+        loc = os.path.realpath(f"{blender}/../{rev}/scripts")
+        print(glob(os.path.realpath(f"{blender}/../../*")))
+        print(glob(os.path.realpath(f"{blender}/../../{rev}/*")))
+        print(glob(os.path.realpath(f"{blender}/../../{rev}/scripts/*")))
+    else:
+        loc = os.path.realpath(f"{blender}/../{rev}/scripts")
+
     print(loc)
     loc = f"{loc}/*/{addon}"
     print(loc)
