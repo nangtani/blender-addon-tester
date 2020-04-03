@@ -26,21 +26,13 @@ def _run_blender_with_python_script(blender, blender_python_script):
 def test_exisiting_addons(blender_revision, addon_path, cache, blender):
     addon = addon_path
     rev = re.sub("[a-z]$", "", blender_revision)
-    print(blender)
     if "darwin" == sys.platform:
         loc = os.path.realpath(f"{blender}/../../Resources/{rev}/scripts")
-        print(glob(os.path.realpath(f"{blender}/../../*")))
-        print(glob(os.path.realpath(f"{blender}/../../Resources/{rev}/*")))
-        print(glob(os.path.realpath(f"{blender}/../../Resources/{rev}/scripts/*")))
     else:
         loc = os.path.realpath(f"{blender}/../{rev}/scripts")
 
-    print(loc)
     loc = f"{loc}/*/{addon}"
-    print(loc)
     files = glob(loc)
-    print("files", files)
-    print()
     for addon in files:
         zfile = f"{addon}.zip"
         zf = zipfile.ZipFile(zfile, "w")
