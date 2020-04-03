@@ -23,10 +23,13 @@ def _run_blender_with_python_script(blender, blender_python_script):
     else:
         return 1
 
-def test_exisiting_addons(blender_revision, addon_path, cache):
+def test_exisiting_addons(blender_revision, addon_path, cache, blender):
     addon = addon_path
     rev = re.sub("[a-z]$", "", blender_revision)
-    loc = f"{cache}/blender-*/{rev}/scripts/*/{addon}"
+    print(blender)
+    loc = os.path.realpath(f"{blender}/../{rev}/scripts")
+    print(loc)
+    loc = f"{loc}/*/{addon}"
     print(loc)
     files = glob(loc)
     print("files", files)
@@ -116,7 +119,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     else:
         os.environ["BLENDER_ADDON_TESTS_PATH"] = config["tests"] 
 
-    test_exisiting_addons(blender_revision, addon_path, os.environ["BLENDER_CACHE"])
+    test_exisiting_addons(blender_revision, addon_path, os.environ["BLENDER_CACHE"], blender)
         
     # Run tests with the proper Blender version and configured tests
     return _run_blender_with_python_script(blender, test_file)
