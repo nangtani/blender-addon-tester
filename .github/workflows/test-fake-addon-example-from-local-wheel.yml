@@ -55,6 +55,7 @@ jobs:
         cd examples/testing-fake-addon/
         python test_addon_blender_prezipped_addon.py fake_addon ${{ matrix.blender-version }}
     - name: Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} built in addon
+      if: startsWith(matrix.blender-version, '2.8')
       run: |
         cd examples/testing-io_scene_obj/
         pwd
