@@ -97,17 +97,17 @@ To see a working addon environment checkout this repo.  In the sub directory `ex
 cd examples\testing-fake-addon
 test_addon_blender.py fake_addon 2.82
 ```
-However it is better to use this modile with an addon in a different repo.  Check out this repo for that example, [fake_addon](https://github.com/douglaskastle/blender-fake-addon)
+However it is better to use this modile with an addon in a different repo.  Check out this repo for that example, [fake_addon](https://github.com/nangtani/blender-fake-addon)
 
 ## Projects using `blender-addon-tester`
 
-[fake_addon](https://github.com/douglaskastle/blender-fake-addon)
+[fake_addon](https://github.com/nangtani/blender-fake-addon)
 
-[blender-import-lwo](https://github.com/douglaskastle/blender-import-lwo)
+[blender-import-lwo](https://github.com/nangtani/blender-import-lwo)
 
 [ba_io_scene_obj](https://github.com/nangtani/ba_io_scene_obj)
 
-[gmic-blender](https://github.com/myself/gmic-blender)
+[gmic-blender](https://github.com/myselfhimself/gmic-blender)
 
 ## Releases
 
