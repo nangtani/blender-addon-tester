@@ -6,6 +6,60 @@ import zipfile
 import shutil
 import bpy
 
+def clean_file(filename):
+    """ Cleans up addons files so that any blender version code is strip to be compliant with addon guidelines
+    :param filename     Path to addon file
+    :return None
+    """
+    f = open(filename, "r")
+    lines = f.readlines()
+    f.close()
+
+    unique_blender = True
+    fix_fstrings = False
+    if bpy.app.version <= (2, 79, 0):
+        fix_fstrings = True
+
+    trim_code = False
+    active_print0 = None
+    f = open(filename, "w")
+    for line in lines:
+        if unique_blender:
+            line2 = line
+            if re.search("^\s+else", line) and re.search("else bpy.app.version", line):
+                active_print0 = not (active_print0)
+                line2 = "\n"
+
+            if re.search("endif", line):
+                active_print0 = None
+                trim_code = False
+                line2 = "\n"
+
+            h = re.search("^\s+[el]?if \((\d+), (\d+), (\d+)\) < bpy.app.version", line)
+            if h:
+                current_blender_rev = (
+                    int(h.group(1)),
+                    int(h.group(2)),
+                    int(h.group(3)),
+                )
+                trim_code = True
+                active_print0 = current_blender_rev <= bpy.app.version
+                line2 = "\n"
+
+            if trim_code:
+                line2 = re.sub("^    ", "", line2)
+            if not active_print0 and not active_print0 == None:
+                line2 = "\n"
+            line = line2
+
+        k = re.search('"blender":\s\(\d+, \d+, \d+\)', line)
+        if k:
+            line = '    "blender": {0},\n'.format(bpy.app.version)
+
+        if re.search('print\(f"', line) and fix_fstrings:
+            line = re.sub("print", "pass ; # print", line)
+        f.write(line)
+    f.close()
 
 def zip_addon(addon, addon_dir):
     """ Zips 'addon' dir or '.py' file to 'addon.zip' if not yet zipped, then moves the archive to 'addon_dir'.
@@ -39,8 +93,11 @@ def zip_addon(addon, addon_dir):
             for dirname, subdirs, files in os.walk(addon):
                 zf.write(dirname)
                 for filename in files:
-                    zf.write(os.path.join(dirname, filename))
+                    filename = os.path.join(dirname, filename)
+                    clean_file(filename)
+                    zf.write(filename)
         else:
+            clean_file(addon)
             zf.write(addon)
         zf.close()
     else:
