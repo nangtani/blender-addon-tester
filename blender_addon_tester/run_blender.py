@@ -33,7 +33,6 @@ def test_exisiting_addons(blender_revision, addon_path, blender):
 
     loc = f"{loc}/*/{addon}"
     files = glob(loc)
-    print(files)
     for addon in files:
         zfile = f"{addon}.zip"
         zf = zipfile.ZipFile(zfile, "w")
