@@ -103,6 +103,15 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
         os.environ["BLENDER_CACHE"] = config["blender_cache"]
 #     else:
 #         os.environ["BLENDER_CACHE"] = ".."
+    config_keys = [
+        "blender_load_tests_script",
+        "coverage",
+        "tests",
+        "pytest_args",
+    ]
+    for c in config.keys():
+        if not c in config_keys:
+            raise Exception(f"Unknown key for config:\n\t{c}")
 
     if not config["blender_load_tests_script"]:
         test_file = BUILTIN_BLENDER_LOAD_TESTS_SCRIPT
@@ -120,6 +129,12 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
             del os.environ["BLENDER_ADDON_TESTS_PATH"]
     else:
         os.environ["BLENDER_ADDON_TESTS_PATH"] = config["tests"] 
+
+    if not config.get("pytest_args"):
+        if os.environ.get("BLENDER_PYTEST_ARGS"):
+            del os.environ["BLENDER_PYTEST_ARGS"]
+    else:
+        os.environ["BLENDER_PYTEST_ARGS"] = config["pytest_args"] 
 
     test_exisiting_addons(blender_revision, addon_path, blender)
         

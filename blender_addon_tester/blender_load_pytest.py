@@ -20,6 +20,8 @@ if not ADDON:
 COVERAGE_REPORTING = os.environ.get("BLENDER_ADDON_COVERAGE_REPORTING", False)
 # The Pytest tests/ path can be overriden through the BLENDER_ADDON_TESTS_PATH environment variable
 TESTS_PATH = os.environ.get("BLENDER_ADDON_TESTS_PATH", "tests")
+# Add explict pytest commands, just in case fine control is required
+PYTEST_ARGS = os.environ.get("BLENDER_PYTEST_ARGS", "")
 
 try:
     sys.path.append(os.environ["LOCAL_PYTHONPATH"])
@@ -28,6 +30,9 @@ except Exception as e:
     print(e)
     sys.exit(1)
 
+addon_helper = os.environ.get("ADDON_TEST_HELPER", None)
+if not None == addon_helper:
+    sys.path.append(addon_helper)
 
 class SetupPlugin:
     def __init__(self, addon):
@@ -50,6 +55,8 @@ try:
     pytest_main_args = [TESTS_PATH, "-v", "-x"]
     if COVERAGE_REPORTING is not False:
         pytest_main_args += ["--cov", "--cov-report", "term", "--cov-report", "xml"]
+        if not "" == PYTEST_ARGS:
+            pytest_main_args += [PYTEST_ARGS]
     exit_val = pytest.main(pytest_main_args, plugins=[SetupPlugin(ADDON)])
 except Exception as e:
     print(e)
