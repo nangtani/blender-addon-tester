@@ -111,6 +111,12 @@ However it is better to use this modile with an addon in a different repo.  Chec
 
 ## Releases
 
+### v0.5
+Fix blender rev edit bug
+
+### v0.4
+Introduce per blender rev addons support
+
 ### v0.3
 New release required to to repo migration
 
