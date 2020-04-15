@@ -88,14 +88,26 @@ def zip_addon(addon, addon_dir):
 
         print("Zipping addon - {0}".format(bpy_module))
 
+
         zf = zipfile.ZipFile(zfile, "w")
         if os.path.isdir(addon):
+            cwd = os.getcwd()
+            temp_dir = "tmp"
+            if os.path.isdir(temp_dir):
+                shutil.rmtree(temp_dir)
+        
+            shutil.copytree(addon, temp_dir + "/" + addon)
+            os.chdir(temp_dir)
+            if os.path.isdir("__pycache__"):
+                shutil.rmtree("__pycache__")
             for dirname, subdirs, files in os.walk(addon):
                 zf.write(dirname)
                 for filename in files:
                     filename = os.path.join(dirname, filename)
                     clean_file(filename)
                     zf.write(filename)
+            os.chdir(cwd)
+            shutil.rmtree(temp_dir)
         else:
             clean_file(addon)
             zf.write(addon)
@@ -106,7 +118,10 @@ def zip_addon(addon, addon_dir):
 
         bpy_module = addon_basename.split(".zip")[0]
 
-    return (bpy_module, zfile)
+    brev = "{0}.{1}".format(bpy.app.version[0], bpy.app.version[1])
+    bfile = re.sub(".zip", "_{}.zip".format(brev), zfile)
+    shutil.copy(zfile, bfile)
+    return (bpy_module, bfile)
 
 
 def change_addon_dir(bpy_module, zfile, addon_dir):
