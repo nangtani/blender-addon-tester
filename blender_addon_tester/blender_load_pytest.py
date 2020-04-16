@@ -30,8 +30,9 @@ except Exception as e:
     print(e)
     sys.exit(1)
 
+# This is needed for windows, doesn't seem to affect linux
 addon_helper = os.environ.get("ADDON_TEST_HELPER", None)
-if not None == addon_helper:
+if os.path.isdir(addon_helper):
     sys.path.append(addon_helper)
 
 class SetupPlugin:
