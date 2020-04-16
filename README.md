@@ -111,6 +111,17 @@ However it is better to use this modile with an addon in a different repo.  Chec
 
 ## Releases
 
+### v0.6
+Added PYTEST_ARGS on the config option
+Need a separate PYTHONPATH for the scripts directory that the addon uses for helper scripts:
+    `addon_helper = os.environ.get("ADDON_TEST_HELPER", None)`
+
+### v0.5
+Fix blender rev edit bug
+
+### v0.4
+Introduce per blender rev addons support
+
 ### v0.3
 New release required to to repo migration
 
