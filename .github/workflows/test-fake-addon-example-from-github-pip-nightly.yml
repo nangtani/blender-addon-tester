@@ -11,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        blender-version: ["2.90", "2.83", "2.82a", "2.81a", "2.80", "2.79b", "2.78c",]
+        blender-version: ["2.90.0", "2.83.0", "2.82a", "2.81a", "2.80", "2.79b", "2.78c",]
         os: [ubuntu-latest, windows-latest, macos-latest]
     env:
       BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
