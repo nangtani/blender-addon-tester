@@ -10,12 +10,15 @@ from .get_blender import get_blender_from_suffix
 CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 BUILTIN_BLENDER_LOAD_TESTS_SCRIPT = os.path.join(CURRENT_MODULE_DIRECTORY, "blender_load_pytest.py")
 
-def _run_blender_with_python_script(blender, blender_python_script):
+def _run_blender_with_python_script(blender, blender_python_script, app_template_name=""):
     blender_python_script = blender_python_script
     local_python = CURRENT_MODULE_DIRECTORY
     os.environ["LOCAL_PYTHONPATH"] = local_python
+    
+    # Set the application template call if specified
+    app_template_command = f"--app-template {app_template_name}" if app_template_name else ""
 
-    cmd = f'{blender} -b --python "{blender_python_script}"'
+    cmd = f'{blender} -b --python "{blender_python_script}" {app_template_command}'
     print(f"Will run the following command: {cmd}")
     result = int(os.system(cmd))
     if 0 == result:
@@ -23,7 +26,7 @@ def _run_blender_with_python_script(blender, blender_python_script):
     else:
         return 1
 
-def test_exisiting_addons(blender_revision, addon_path, blender):
+def test_existing_modules(blender_revision, addon_path, blender):
     addon = addon_path
     rev = re.sub("[a-z]$", "", blender_revision)
     if "darwin" == sys.platform:
@@ -50,7 +53,7 @@ def test_exisiting_addons(blender_revision, addon_path, blender):
         else:
             os.unlink(os.path.realpath(addon))
 
-def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision=None, config={}):
+def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_path="", blender_revision=None, config={}):
     """
     Run tests for "blender_revision" x "addon" using the builtin "blender_load_pytest.py" script or "custom_blender_load_tests_script"
 
@@ -98,6 +101,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     blender = os.path.realpath(files[0])
 
     os.environ["BLENDER_ADDON_TO_TEST"] = addon_path
+    os.environ["BLENDER_APP_TEMPLATE_TO_TEST"] = app_template_path
 
     if config.get("blender_cache", None):
         os.environ["BLENDER_CACHE"] = config["blender_cache"]
@@ -136,10 +140,11 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path, blender_revision
     else:
         os.environ["BLENDER_PYTEST_ARGS"] = config["pytest_args"] 
 
-    test_exisiting_addons(blender_revision, addon_path, blender)
-        
+    test_existing_modules(blender_revision, addon_path, blender)
+
+    app_template_name = os.path.basename(app_template_path).split(".zip")[0]
     # Run tests with the proper Blender version and configured tests
-    return _run_blender_with_python_script(blender, test_file)
+    return _run_blender_with_python_script(blender, test_file, app_template_name)
 
 
 if __name__ == "__main__":

@@ -11,8 +11,14 @@ def clean_file(filename):
     :param filename     Path to addon file
     :return None
     """
+    print('file:', filename)
     f = open(filename, "r")
-    lines = f.readlines()
+    try:
+        lines = f.readlines()
+    except:
+        lines = ""
+        pass
+
     f.close()
 
     unique_blender = True
@@ -61,7 +67,7 @@ def clean_file(filename):
         f.write(line)
     f.close()
 
-def zip_addon(addon, addon_dir):
+def zip_module(addon, addon_dir):
     """ Zips 'addon' dir or '.py' file to 'addon.zip' if not yet zipped, then moves the archive to 'addon_dir'.
     :param addon     Absolute or relative path to a directory to zip or a .zip file.
     :param addon_dir Path to Blender's addon directory to move the zipped archive to.
@@ -124,21 +130,24 @@ def zip_addon(addon, addon_dir):
     return (bpy_module, bfile)
 
 
-def change_addon_dir(bpy_module, zfile, addon_dir):
+def import_module_into_blender(bpy_module, zfile, addon_dir, module_type="ADDON"):
     print("Change addon dir - {0}".format(addon_dir))
 
-    if (2, 80, 0) < bpy.app.version:
-        # https://docs.blender.org/api/current/bpy.types.PreferencesFilePaths.html#bpy.types.PreferencesFilePaths.script_directory
-        # requires restart
-        bpy.context.preferences.filepaths.script_directory = addon_dir
-        bpy.utils.refresh_script_paths()
-        bpy.ops.preferences.addon_install(overwrite=True, filepath=zfile)
-        bpy.ops.preferences.addon_enable(module=bpy_module)
-    else:
-        bpy.context.user_preferences.filepaths.script_directory = addon_dir
-        bpy.utils.refresh_script_paths()
-        bpy.ops.wm.addon_install(overwrite=True, filepath=zfile)
-        bpy.ops.wm.addon_enable(module=bpy_module)
+    if module_type == "ADDON":
+        if (2, 80, 0) < bpy.app.version:
+            # https://docs.blender.org/api/current/bpy.types.PreferencesFilePaths.html#bpy.types.PreferencesFilePaths.script_directory
+            # requires restart
+            bpy.context.preferences.filepaths.script_directory = addon_dir
+            bpy.utils.refresh_script_paths()
+            bpy.ops.preferences.addon_install(overwrite=True, filepath=zfile)
+            bpy.ops.preferences.addon_enable(module=bpy_module)
+        else:
+            bpy.context.user_preferences.filepaths.script_directory = addon_dir
+            bpy.utils.refresh_script_paths()
+            bpy.ops.wm.addon_install(overwrite=True, filepath=zfile)
+            bpy.ops.wm.addon_enable(module=bpy_module)
+    elif module_type == "APP_TEMPLATE":
+        bpy.ops.preferences.app_template_install(overwrite=True, filepath=zfile)
 
 
 def cleanup(addon, bpy_module, addon_dir):
