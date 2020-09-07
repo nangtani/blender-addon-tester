@@ -55,7 +55,7 @@ class SetupPlugin:
         config.cache.set("bpy_module", self.bpy_module)
 
     def pytest_unconfigure(self):
-        cleanup(self.addon, self.bpy_module, self.addon_dir)
+        cleanup(self.bpy_module, self.addon_dir, "APP_TEMPLATE")
         print("*** test run reporting finished")
 
 

@@ -11,7 +11,6 @@ CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 BUILTIN_BLENDER_LOAD_TESTS_SCRIPT = os.path.join(CURRENT_MODULE_DIRECTORY, "blender_load_pytest.py")
 
 def _run_blender_with_python_script(blender, blender_python_script, app_template_name=""):
-    blender_python_script = blender_python_script
     local_python = CURRENT_MODULE_DIRECTORY
     os.environ["LOCAL_PYTHONPATH"] = local_python
     
