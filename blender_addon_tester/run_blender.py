@@ -6,6 +6,7 @@ import shutil
 import zipfile
 from glob import glob
 from .get_blender import get_blender_from_suffix
+from .addon_helper import zip_module, import_module_into_blender, cleanup
 
 CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 BUILTIN_BLENDER_LOAD_TESTS_SCRIPT = os.path.join(CURRENT_MODULE_DIRECTORY, "blender_load_pytest.py")
@@ -19,6 +20,8 @@ def _run_blender_with_python_script(blender, blender_python_script, app_template
 
     cmd = f'{blender} -b --python "{blender_python_script}" {app_template_command}'
     print(f"Will run the following command: {cmd}")
+
+    # TODO Clean up Blender
     result = int(os.system(cmd))
     if 0 == result:
         return 0
@@ -76,7 +79,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_
     print("Downloaded Blender is expected in this directory: ", downloaded_blender_dir)
 
     # Tune configuration
-    DEFAULT_CONFIG = {"blender_load_tests_script": BUILTIN_BLENDER_LOAD_TESTS_SCRIPT, "coverage": False}
+    DEFAULT_CONFIG = {"blender_load_tests_script": os.path.join(CURRENT_MODULE_DIRECTORY, "blender_load_pytest.py"), "coverage": False}
     # Let the provided config dict override the default one
     config = dict(DEFAULT_CONFIG, **config)
 
@@ -99,9 +102,6 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_
     
     blender = os.path.realpath(files[0])
 
-    os.environ["BLENDER_ADDON_TO_TEST"] = addon_path
-    os.environ["BLENDER_APP_TEMPLATE_TO_TEST"] = app_template_path
-
     if config.get("blender_cache", None):
         os.environ["BLENDER_CACHE"] = config["blender_cache"]
 #     else:
@@ -116,10 +116,8 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_
         if not c in config_keys:
             raise Exception(f"Unknown key for config:\n\t{c}")
 
-    if not config["blender_load_tests_script"]:
-        test_file = BUILTIN_BLENDER_LOAD_TESTS_SCRIPT
-    else:
-        test_file = config["blender_load_tests_script"]
+    # Set the test file
+    test_file = config.get("blender_load_tests_script")
 
     if not config.get("coverage"):
         if os.environ.get("BLENDER_ADDON_COVERAGE_REPORTING"):
@@ -140,6 +138,11 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_
         os.environ["BLENDER_PYTEST_ARGS"] = config["pytest_args"] 
 
     test_existing_modules(blender_revision, addon_path, blender)
+
+    # Import the module into Blender
+    addon_dir = "local_addon"
+    bpy_module, zfile = zip_module(blender, app_template_path, addon_dir, dir_to_ignore={"venv", ".git", "docs", "python_dependencies"})
+    import_module_into_blender(blender, bpy_module, zfile, addon_dir, module_type="APP_TEMPLATE")
 
     app_template_name = os.path.basename(app_template_path).split(".zip")[0]
     # Run tests with the proper Blender version and configured tests

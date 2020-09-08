@@ -4,7 +4,8 @@ import re
 import time
 import zipfile
 import shutil
-import bpy
+import subprocess
+from pathlib import Path
 
 def clean_file(filename):
     """ Cleans up addons files so that any blender version code is strip to be compliant with addon guidelines
@@ -66,7 +67,7 @@ def clean_file(filename):
         f.write(line)
     f.close()
 
-def zip_module(addon, addon_dir, dir_to_ignore=set()):
+def zip_module(blender_exec_path, module, addon_dir, dir_to_ignore=set()):
     """ Zips 'addon' dir or '.py' file to 'addon.zip' if not yet zipped, then moves the archive to 'addon_dir'.
     :param addon     Absolute or relative path to a directory to zip or a .zip file.
     :param addon_dir Path to Blender's addon directory to move the zipped archive to.
@@ -74,10 +75,10 @@ def zip_module(addon, addon_dir, dir_to_ignore=set()):
     """
     already_zipped = False
 
-    addon_path = os.path.realpath(addon)
-    addon_basename = os.path.basename(addon_path)
+    module_path = os.path.realpath(module)
+    module_basename = os.path.basename(module_path)
 
-    if addon_basename.endswith(".zip"):
+    if module_basename.endswith(".zip"):
         already_zipped = True
 
     if os.path.isdir(addon_dir):
@@ -86,7 +87,7 @@ def zip_module(addon, addon_dir, dir_to_ignore=set()):
 
     print("Addon dir is - {0}".format(os.path.realpath(addon_dir)))
     if not already_zipped:
-        bpy_module = re.sub(".py", "", addon_basename)
+        bpy_module = re.sub(".py", "", module_basename)
         zfile = os.path.realpath(bpy_module + ".zip")
 
         print("Future zip path is - {0}".format(zfile))
@@ -95,71 +96,76 @@ def zip_module(addon, addon_dir, dir_to_ignore=set()):
 
 
         zf = zipfile.ZipFile(zfile, "w")
-        if os.path.isdir(addon):
+        if os.path.isdir(module):
             cwd = os.getcwd()
             temp_dir = "tmp"
             if os.path.isdir(temp_dir):
                 shutil.rmtree(temp_dir)
         
-            shutil.copytree(addon, temp_dir + "/" + addon, ignore=shutil.ignore_patterns(*dir_to_ignore))
+            shutil.copytree(module, temp_dir + "/" + module, ignore=shutil.ignore_patterns(*dir_to_ignore))
             os.chdir(temp_dir)
             if os.path.isdir("__pycache__"):
                 shutil.rmtree("__pycache__")
-            for dirname, subdirs, files in os.walk(addon, topdown=True):
+            for dirname, subdirs, files in os.walk(module, topdown=True):
                 # Exclude unwanted directories
                 subdirs[:] = [d for d in subdirs if d not in dir_to_ignore]
 
                 # Write the directory and its contents in the archive
-                zf.write(dirname)
                 for filename in files:
                     filename = os.path.join(dirname, filename)
-                    clean_file(filename)
-                    zf.write(filename)
+                    # clean_file(filename) # TODO seems to mess up with binary files
+                    zf.write(filename, arcname=os.path.relpath(filename, Path(module_path).parent))
             os.chdir(cwd)
             shutil.rmtree(temp_dir)
         else:
-            clean_file(addon)
-            zf.write(addon)
+            clean_file(module)
+            zf.write(module)
         zf.close()
     else:
-        zfile = addon_path
+        zfile = module_path
         print("Detected zip path is - {0}. No need to zip the addon beforehand.".format(zfile))
 
-        bpy_module = addon_basename.split(".zip")[0]
+        bpy_module = module_basename.split(".zip")[0]
+    
+    # Get blender version from command line
+    output = subprocess.run([blender_exec_path, "-v"], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    blender_version = re.search('Blender (.*)\n', output).group(1).split(".")
 
-    brev = "{0}.{1}".format(bpy.app.version[0], bpy.app.version[1])
+    brev = f"{blender_version[0]}.{blender_version[1]}"
     bfile = re.sub(".zip", "_{}.zip".format(brev), zfile)
     shutil.copy(zfile, bfile)
     return (bpy_module, bfile)
 
 
-def import_module_into_blender(bpy_module, zfile, addon_dir, module_type="ADDON"):
+def import_module_into_blender(blender_exec_path, bpy_module, zfile, addon_dir, module_type="ADDON"):
     print("Change addon dir - {0}".format(addon_dir))
 
     if module_type == "ADDON":
         if (2, 80, 0) < bpy.app.version:
             # https://docs.blender.org/api/current/bpy.types.PreferencesFilePaths.html#bpy.types.PreferencesFilePaths.script_directory
             # requires restart
-            bpy.context.preferences.filepaths.script_directory = addon_dir
-            bpy.utils.refresh_script_paths()
-            bpy.ops.preferences.addon_install(overwrite=True, filepath=zfile)
-            bpy.ops.preferences.addon_enable(module=bpy_module)
+            python_command = f"import bpy; bpy.context.preferences.filepaths.script_directory = '{addon_dir}'; bpy.utils.refresh_script_paths(); bpy.ops.preferences.addon_install(overwrite=True, filepath='{zfile}'); bpy.ops.preferences.addon_enable(module='{bpy_module}')"
         else:
-            bpy.context.user_preferences.filepaths.script_directory = addon_dir
-            bpy.utils.refresh_script_paths()
-            bpy.ops.wm.addon_install(overwrite=True, filepath=zfile)
-            bpy.ops.wm.addon_enable(module=bpy_module)
+            python_command = f"import bpy; bpy.context.user_preferences.filepaths.script_directory = '{addon_dir}'; bpy.utils.refresh_script_paths(); bpy.ops.wm.addon_install(overwrite=True, filepath='{zfile}'); bpy.ops.wm.addon_enable(module='{bpy_module}')"
+            
     elif module_type == "APP_TEMPLATE":
-        bpy.ops.preferences.app_template_install(overwrite=True, filepath=zfile)
+        # Install the app template into Blender
+        python_command = f"import bpy; bpy.ops.preferences.app_template_install(overwrite=True, filepath='{zfile}')"
+    
+    # Run the installation command
+    subprocess.call([blender_exec_path, "-b", '--python-expr', python_command])
 
 
 def cleanup(bpy_module, addon_dir, module_type="ADDON"):
+    import bpy
+
     print("Cleaning up - {}".format(bpy_module))
     if (2, 80, 0) < bpy.app.version:
         if module_type == "ADDON":
             bpy.ops.preferences.addon_disable(module=bpy_module)
         elif module_type == "APP_TEMPLATE":
             # TODO make it delete the app template
+            print(bpy_module, addon_dir)
             pass
     else:
         if module_type == "ADDON":
