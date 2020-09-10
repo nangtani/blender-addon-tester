@@ -59,17 +59,19 @@ def test_existing_modules(blender_revision, addon_path, blender):
             os.unlink(os.path.realpath(addon))
 
 def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_path="", blender_exec_path="", blender_revision=None, config={}, dir_to_ignore=set()):
-    """
-    Run tests for "blender_revision" x "addon" using the builtin "blender_load_pytest.py" script or "custom_blender_load_tests_script"
+    """Run tests for "blender_revision" x "addon" using the builtin "blender_load_pytest.py" script or "custom_blender_load_tests_script"
 
-    :param addon: Addon path to test, can be a path to a directory (will be zipped for you) or to a .zip file. The Python module name will be that of the (directory or) zip file without extension, try to make it as pythonic as possible for Blender's Python importer to work properly with it: letters, digits, underscores.
+    For the module, if a path to a directory is provided it'll be automatically zipped. The Python module name will be that of the (directory or) zip file without extension, try to make it as pythonic as possible for Blender's Python importer to work properly with it: letters, digits, underscores.
+    
+    :param addon: Addon path to test, '.zip' or directory.
+    :param app_template_path: Application Template path to test, '.zip' or directory.
     :param blender_revision: Version of Blender3d. Default: "2.82"
     :param config: A options dictionary, its keys allow to override some defaults:
                     "blender_load_tests_script": str: absolute or CWD-relative path to the Blender Python scripts that loads and runs tests. Default: "blender_load_tests_script.py" (packaged with this module)
                     "coverage": bool: whether or not run coverage evaluation along tests; Default: False (no coverage evaluation) 
                     "tests": str: absolute or CWD-relative path to a directory of tests or test script that the blender_load_tests_script can use. Default: "tests/" (CWD-relative)
                     "blender_cache": str: absolute or CWD-relative path to a directory where to download and extract Blender3d releases.
-    :param dir_to_ignore: Set of directories to ignore when zipping the addon.
+    :param dir_to_ignore: Set of directories to ignore when zipping the module.
     :return: None, will sys-exit with 1 on failure
     """
     if None == blender_revision:
