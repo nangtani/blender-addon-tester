@@ -4,9 +4,12 @@ import subprocess
 import re
 import shutil
 import zipfile
+import tempfile
+from pathlib import Path
 from glob import glob
 from .get_blender import get_blender_from_suffix
 from .addon_helper import zip_module, import_module_into_blender, cleanup
+
 
 CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 BUILTIN_BLENDER_LOAD_TESTS_SCRIPT = os.path.join(CURRENT_MODULE_DIRECTORY, "blender_load_pytest.py")
@@ -55,7 +58,7 @@ def test_existing_modules(blender_revision, addon_path, blender):
         else:
             os.unlink(os.path.realpath(addon))
 
-def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_path="", blender_exec_path="", blender_revision=None, config={}):
+def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_path="", blender_exec_path="", blender_revision=None, config={}, dir_to_ignore=set()):
     """
     Run tests for "blender_revision" x "addon" using the builtin "blender_load_pytest.py" script or "custom_blender_load_tests_script"
 
@@ -66,6 +69,7 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_
                     "coverage": bool: whether or not run coverage evaluation along tests; Default: False (no coverage evaluation) 
                     "tests": str: absolute or CWD-relative path to a directory of tests or test script that the blender_load_tests_script can use. Default: "tests/" (CWD-relative)
                     "blender_cache": str: absolute or CWD-relative path to a directory where to download and extract Blender3d releases.
+    :param dir_to_ignore: Set of directories to ignore when zipping the addon.
     :return: None, will sys-exit with 1 on failure
     """
     if None == blender_revision:
@@ -143,11 +147,9 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_
     test_existing_modules(blender_revision, addon_path, blender)
 
     # Import the module into Blender
-    addon_dir = "local_addon"
-
-    # TODO make the dir_to_ignore a parameter, not hardcoded
-    bpy_module, zfile = zip_module(blender, app_template_path, addon_dir, dir_to_ignore={".venv", ".git", "docs", "python_dependencies"})
-    import_module_into_blender(blender, bpy_module, zfile, addon_dir, module_type="APP_TEMPLATE")
+    temp_dir = Path(tempfile.gettempdir()).joinpath("blender_python_test")
+    bpy_module, zfile = zip_module(blender, app_template_path, temp_dir, dir_to_ignore=dir_to_ignore)
+    import_module_into_blender(blender, bpy_module, zfile, temp_dir, module_type="APP_TEMPLATE")
 
     app_template_name = os.path.basename(app_template_path).split(".zip")[0]
     # Run tests with the proper Blender version and configured tests

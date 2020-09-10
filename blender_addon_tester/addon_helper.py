@@ -67,10 +67,10 @@ def clean_file(filename):
         f.write(line)
     f.close()
 
-def zip_module(blender_exec_path, module, addon_dir, dir_to_ignore=set()):
-    """ Zips 'addon' dir or '.py' file to 'addon.zip' if not yet zipped, then moves the archive to 'addon_dir'.
+def zip_module(blender_exec_path, module, temp_dir, dir_to_ignore=set()):
+    """ Zips 'addon' dir or '.py' file to 'addon.zip' if not yet zipped, then moves the archive to 'temp_dir'.
     :param addon     Absolute or relative path to a directory to zip or a .zip file.
-    :param addon_dir Path to Blender's addon directory to move the zipped archive to.
+    :param temp_dir Path to Blender's addon directory to move the zipped archive to.
     :return (bpy_module, zip_file) Tuple of strings - an importable module name, an addon zip file path.
     """
     already_zipped = False
@@ -81,11 +81,11 @@ def zip_module(blender_exec_path, module, addon_dir, dir_to_ignore=set()):
     if module_basename.endswith(".zip"):
         already_zipped = True
 
-    if os.path.isdir(addon_dir):
-        shutil.rmtree(addon_dir)
-    os.mkdir(addon_dir)
+    if os.path.isdir(temp_dir):
+        shutil.rmtree(temp_dir)
+    os.mkdir(temp_dir)
 
-    print("Addon dir is - {0}".format(os.path.realpath(addon_dir)))
+    print("Addon dir is - {0}".format(os.path.realpath(temp_dir)))
     if not already_zipped:
         bpy_module = re.sub(".py", "", module_basename)
         zfile = os.path.realpath(bpy_module + ".zip")
