@@ -55,7 +55,7 @@ def test_existing_modules(blender_revision, addon_path, blender):
         else:
             os.unlink(os.path.realpath(addon))
 
-def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_path="", blender_revision=None, config={}):
+def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_path="", blender_exec_path="", blender_revision=None, config={}):
     """
     Run tests for "blender_revision" x "addon" using the builtin "blender_load_pytest.py" script or "custom_blender_load_tests_script"
 
@@ -75,32 +75,35 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_
     print("testing addon_path:", addon_path, "under blender_revision:", blender_revision, "with config dict:", config)
 
     # Get Blender for the given version in a cached way
-    downloaded_blender_dir = get_blender_from_suffix(blender_revision)
-    print("Downloaded Blender is expected in this directory: ", downloaded_blender_dir)
+    if not blender_exec_path:
+        downloaded_blender_dir = get_blender_from_suffix(blender_revision)
+        print("Downloaded Blender is expected in this directory: ", downloaded_blender_dir)
 
-    # Tune configuration
-    DEFAULT_CONFIG = {"blender_load_tests_script": os.path.join(CURRENT_MODULE_DIRECTORY, "blender_load_pytest.py"), "coverage": False}
-    # Let the provided config dict override the default one
-    config = dict(DEFAULT_CONFIG, **config)
+        # Tune configuration
+        DEFAULT_CONFIG = {"blender_load_tests_script": os.path.join(CURRENT_MODULE_DIRECTORY, "blender_load_pytest.py"), "coverage": False}
+        # Let the provided config dict override the default one
+        config = dict(DEFAULT_CONFIG, **config)
 
-    if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
-        ext = ".exe"
-    else:
-        ext = ""
-
-    if "darwin" == sys.platform:
-        blender_executable_root = f"{downloaded_blender_dir}/MacOS/*lender"
-    else:
-        blender_executable_root = f"{downloaded_blender_dir}/blender{ext}"
-
-    files = glob(blender_executable_root)
-    if not 1 == len(files):
-        if len(files) == 0:
-            raise Exception(f"No blenders found in directory {blender_executable_root}: {files}")
+        if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
+            ext = ".exe"
         else:
-            raise Exception(f"Too many blenders found in directory {blender_executable_root}: {files}")
-    
-    blender = os.path.realpath(files[0])
+            ext = ""
+
+        if "darwin" == sys.platform:
+            blender_executable_root = f"{downloaded_blender_dir}/MacOS/*lender"
+        else:
+            blender_executable_root = f"{downloaded_blender_dir}/blender{ext}"
+
+        files = glob(blender_executable_root)
+        if not 1 == len(files):
+            if len(files) == 0:
+                raise Exception(f"No blenders found in directory {blender_executable_root}: {files}")
+            else:
+                raise Exception(f"Too many blenders found in directory {blender_executable_root}: {files}")
+        
+        blender = os.path.realpath(files[0])
+    else:
+        blender = blender_exec_path
 
     if config.get("blender_cache", None):
         os.environ["BLENDER_CACHE"] = config["blender_cache"]
@@ -141,7 +144,9 @@ def run_blender_version_for_addon_with_pytest_suite(addon_path="", app_template_
 
     # Import the module into Blender
     addon_dir = "local_addon"
-    bpy_module, zfile = zip_module(blender, app_template_path, addon_dir, dir_to_ignore={"venv", ".git", "docs", "python_dependencies"})
+
+    # TODO make the dir_to_ignore a parameter, not hardcoded
+    bpy_module, zfile = zip_module(blender, app_template_path, addon_dir, dir_to_ignore={".venv", ".git", "docs", "python_dependencies"})
     import_module_into_blender(blender, bpy_module, zfile, addon_dir, module_type="APP_TEMPLATE")
 
     app_template_name = os.path.basename(app_template_path).split(".zip")[0]
