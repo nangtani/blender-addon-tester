@@ -47,6 +47,7 @@ script:
     #- pip install -r requirements.txt
     - export PYTHONPATH=${TRAVIS_BUILD_DIR}
     - pip install -r ${PYTHONPATH}/blender_addon_tester/requirements.txt
+    - pip install -r ${PYTHONPATH}/blender_addon_tester/blender_requirements.txt
     - python test_addon_blender.py ${BL_ADDON} ${BLENDER_VERSION}
     - bash <(curl -s https://codecov.io/bash)
 
