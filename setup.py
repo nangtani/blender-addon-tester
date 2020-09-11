@@ -7,7 +7,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(name='blender_addon_tester',
-      version='0.6',
+      version='0.7',
       description='Add-On Tester for Blender using Pytest',
       author='Douglas Kastle',
       author_email='douglas.kastle@gmail.com',

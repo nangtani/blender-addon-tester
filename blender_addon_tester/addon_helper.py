@@ -154,3 +154,7 @@ def cleanup(addon, bpy_module, addon_dir):
 def get_version(bpy_module):
     mod = sys.modules[bpy_module]
     return mod.bl_info.get("version", (-1, -1, -1))
+
+
+def get_bl_version():
+    return bpy.app.version
