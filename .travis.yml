@@ -10,14 +10,13 @@ env:
         - BLENDER_CACHE=$HOME/.cache/blender
         - BL_ADDON=fake_addon
     matrix:
-        - BLENDER_VERSION="2.78"
-        - BLENDER_VERSION="2.79"
-        - BLENDER_VERSION="2.80"
-        - BLENDER_VERSION="2.81"
-        - BLENDER_VERSION="2.82"
-        - BLENDER_VERSION="2.83"
-        - BLENDER_VERSION="2.90"
         - BLENDER_VERSION="2.91"
+        - BLENDER_VERSION="2.90"
+        - BLENDER_VERSION="2.83"
+        - BLENDER_VERSION="2.82"
+        - BLENDER_VERSION="2.81"
+        - BLENDER_VERSION="2.80"
+        - BLENDER_VERSION="2.79"
 
 language: python
 python:
@@ -47,7 +46,6 @@ script:
     #- pip install -r requirements.txt
     - export PYTHONPATH=${TRAVIS_BUILD_DIR}
     - pip install -r ${PYTHONPATH}/blender_addon_tester/requirements.txt
-    - pip install -r ${PYTHONPATH}/blender_addon_tester/blender_requirements.txt
     - python test_addon_blender.py ${BL_ADDON} ${BLENDER_VERSION}
     - bash <(curl -s https://codecov.io/bash)
 
