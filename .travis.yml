@@ -46,6 +46,7 @@ script:
     - cd examples/testing-fake-addon/
     #- pip install -r requirements.txt
     - export PYTHONPATH=${TRAVIS_BUILD_DIR}
+    - pip install -r ${PYTHONPATH}/requirements.txt
     - python test_addon_blender.py ${BL_ADDON} ${BLENDER_VERSION}
     - bash <(curl -s https://codecov.io/bash)
 
