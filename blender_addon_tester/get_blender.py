@@ -38,7 +38,10 @@ def getSuffix(blender_version):
     blender_zippath = None
     nightly = False
     release_file_found = False
+    versions_found = {}
+    links = {}
     for url in urls:
+        versions_found[url] = []
         if release_file_found:
             break
 
@@ -48,20 +51,21 @@ def getSuffix(blender_version):
         soup = BeautifulSoup(data, features="html.parser")
         
         blender_version_suffix = ""
-        versions_found = []
         for link in soup.find_all("a"):
             x = str(link.get("href"))
             g = re.search(f"blender-(.+)-{machine}.+{ext}", x)
+            revs = []
             if g:
                 version_found = g.group(1).split("-")[0]
-                versions_found.append(version_found)
-                if version_found == blender_version:
-                    blender_zippath = f"{url}/{g.group(0)}"
-                    if url == urls[1]:
-                        nightly = True
-                    release_file_found = True
-                    break
-     
+                versions_found[url].append(version_found)
+                links[version_found] = g.group(0)
+                
+    for url in versions_found.keys():
+        for rev in sorted(versions_found[url], reverse=True):
+            if rev.startswith(blender_version):
+                blender_zippath = f"{url}/{links[rev]}"
+                break
+                        
     if None == blender_zippath:
         print(soup)
         raise Exception(f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}")
