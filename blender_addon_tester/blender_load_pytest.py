@@ -32,7 +32,9 @@ except Exception as e:
 
 # This is needed for windows, doesn't seem to affect linux
 addon_helper = os.environ.get("ADDON_TEST_HELPER", None)
-if os.path.isdir(addon_helper):
+if None == addon_helper:
+    pass
+elif os.path.isdir(addon_helper):
     sys.path.append(addon_helper)
 
 class SetupPlugin:
