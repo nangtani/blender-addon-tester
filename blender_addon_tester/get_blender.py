@@ -66,8 +66,6 @@ def getSuffix(blender_version):
                 blender_zippath = f"{url}/{links[rev]}"
                 break
                         
-    print(blender_zippath)
-    exit()
     if None == blender_zippath:
         print(soup)
         raise Exception(f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}")
