@@ -10,6 +10,7 @@ env:
         - BLENDER_CACHE=$HOME/.cache/blender
         - BL_ADDON=fake_addon
     matrix:
+        - BLENDER_VERSION="2.92"
         - BLENDER_VERSION="2.91"
         - BLENDER_VERSION="2.90"
         - BLENDER_VERSION="2.83"
