@@ -100,11 +100,13 @@ def zip_module(blender_exec_path, module, temp_dir, dir_to_ignore=set()):
         zf = zipfile.ZipFile(zfile, "w")
         if os.path.isdir(module):
             cwd = os.getcwd()
-            temp_dir = "tmp"
-            if os.path.isdir(temp_dir):
+            temp_dir = Path(tempfile.gettempdir(), "blender_addon_tester")
+            if temp_dir.is_dir():
                 shutil.rmtree(temp_dir)
-        
-            shutil.copytree(module, temp_dir + "/" + module, ignore=shutil.ignore_patterns(*dir_to_ignore))
+            
+            # Creating the module under the temp dir with its hierarchy
+            module_path = Path(module)
+            shutil.copytree(module, temp_dir.joinpath(module_path.relative_to(module_path.anchor)), ignore=shutil.ignore_patterns(*dir_to_ignore))
             os.chdir(temp_dir)
             if os.path.isdir("__pycache__"):
                 shutil.rmtree("__pycache__")
