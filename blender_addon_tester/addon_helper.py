@@ -1,6 +1,7 @@
 import os
 import sys
 import re
+import tempfile
 import time
 import zipfile
 import shutil
@@ -89,6 +90,7 @@ def zip_module(blender_exec_path, module, temp_dir, dir_to_ignore=set()):
     if not already_zipped:
         bpy_module = re.sub(".py", "", module_basename)
         zfile = os.path.realpath(bpy_module + ".zip")
+        zfile = Path(tempfile.gettempdir(), f"{bpy_module}.zip")
 
         print("Future zip path is - {0}".format(zfile))
 
