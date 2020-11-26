@@ -134,7 +134,7 @@ def zip_module(blender_exec_path, module, temp_dir, dir_to_ignore=set()):
     blender_version = re.search('Blender (.*)\n', output).group(1).split(".")
 
     brev = f"{blender_version[0]}.{blender_version[1]}"
-    bfile = re.sub(".zip", "_{}.zip".format(brev), zfile)
+    bfile = re.sub(".zip", "_{}.zip".format(brev), str(zfile))
     shutil.copy(zfile, bfile)
     return (bpy_module, bfile)
 
