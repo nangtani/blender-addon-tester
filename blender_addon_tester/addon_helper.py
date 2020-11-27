@@ -119,7 +119,6 @@ def zip_addon(addon: str, addon_dir: str):
 
             # Write addon content into archive
             for dirname, subdirs, files in os.walk(addon):
-                zf.write(dirname)
                 for filename in files:
                     filename = os.path.join(dirname, filename)
 
