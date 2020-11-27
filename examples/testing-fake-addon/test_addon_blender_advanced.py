@@ -1,5 +1,6 @@
-import sys
 import os
+from pathlib import Path
+import sys
 try:
     import blender_addon_tester as BAT
 except Exception as e:
@@ -7,17 +8,17 @@ except Exception as e:
     sys.exit(1)
 
 def main():    
+    here = Path(__file__).parent
     if len(sys.argv) > 1:
         addon = sys.argv[1]
     else:
-        addon = "fake_addon"
+        addon = str(here.joinpath("fake_addon"))
     if len(sys.argv) > 2:
         blender_rev = sys.argv[2]
     else:
         blender_rev = "2.80"
     
-    here = os.path.dirname(os.path.realpath(__file__))
-    config = {"blender_load_tests_script": os.path.join(here, "blender_advanced_load_pytest.py"), "coverage": True, "tests": "advanced_tests/"}
+    config = {"blender_load_tests_script": str(here.joinpath("blender_advanced_load_pytest.py")), "coverage": True, "tests": str(here.joinpath("advanced_tests"))}
 
     try:
         exit_val = BAT.test_blender_addon(addon_path=addon, blender_revision=blender_rev, config=config)
