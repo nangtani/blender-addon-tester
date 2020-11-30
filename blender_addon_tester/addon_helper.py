@@ -180,14 +180,14 @@ def change_addon_dir(bpy_module: str, zfile: str, addon_dir: str):
     if (2, 80, 0) < bpy.app.version:
         # https://docs.blender.org/api/current/bpy.types.PreferencesFilePaths.html#bpy.types.PreferencesFilePaths.script_directory
         # requires restart
-        bpy.context.preferences.filepaths.script_directory = str(addon_dir)
+        bpy.context.preferences.filepaths.script_directory = addon_dir.as_posix()
         bpy.utils.refresh_script_paths()
-        bpy.ops.preferences.addon_install(overwrite=True, filepath=str(zfile))
+        bpy.ops.preferences.addon_install(overwrite=True, filepath=zfile.as_posix())
         bpy.ops.preferences.addon_enable(module=bpy_module)
     else:
-        bpy.context.user_preferences.filepaths.script_directory = str(addon_dir)
+        bpy.context.user_preferences.filepaths.script_directory = addon_dir.as_posix()
         bpy.utils.refresh_script_paths()
-        bpy.ops.wm.addon_install(overwrite=True, filepath=str(zfile))
+        bpy.ops.wm.addon_install(overwrite=True, filepath=zfile.as_posix())
         bpy.ops.wm.addon_enable(module=bpy_module)
 
 

@@ -10,7 +10,7 @@ def main():
     if len(sys.argv) > 1:
         addon = sys.argv[1]
     else:
-        addon = str(Path(__file__).parent.joinpath("fake_addon"))
+        addon = Path(__file__).parent.joinpath("fake_addon").as_posix()
     if len(sys.argv) > 2:
         blender_rev = sys.argv[2]
     else:

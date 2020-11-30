@@ -12,13 +12,13 @@ def main():
     if len(sys.argv) > 1:
         addon = sys.argv[1]
     else:
-        addon = str(here.joinpath("fake_addon"))
+        addon = here.joinpath("fake_addon").as_posix()
     if len(sys.argv) > 2:
         blender_rev = sys.argv[2]
     else:
         blender_rev = "2.80"
     
-    config = {"blender_load_tests_script": str(here.joinpath("blender_advanced_load_pytest.py")), "coverage": True, "tests": str(here.joinpath("advanced_tests"))}
+    config = {"blender_load_tests_script": here.joinpath("blender_advanced_load_pytest.py").as_posix(), "coverage": True, "tests": here.joinpath("advanced_tests").as_posix()}
 
     try:
         exit_val = BAT.test_blender_addon(addon_path=addon, blender_revision=blender_rev, config=config)

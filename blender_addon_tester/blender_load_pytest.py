@@ -21,7 +21,7 @@ if not ADDON:
 COVERAGE_REPORTING = os.environ.get("BLENDER_ADDON_COVERAGE_REPORTING", False)
 # The Pytest tests/ path can be overriden through the BLENDER_ADDON_TESTS_PATH environment variable
 default_tests_dir = Path(ADDON).parent.joinpath("tests")
-TESTS_PATH = os.environ.get("BLENDER_ADDON_TESTS_PATH", str(default_tests_dir))
+TESTS_PATH = os.environ.get("BLENDER_ADDON_TESTS_PATH", default_tests_dir.as_posix())
 # Add explict pytest commands, just in case fine control is required
 PYTEST_ARGS = os.environ.get("BLENDER_PYTEST_ARGS", "")
 

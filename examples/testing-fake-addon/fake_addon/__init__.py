@@ -20,7 +20,7 @@ bl_info = {
     "name": "Fake Plugin",
     "author": "Dave Keeshan",
     "version": (0, 0, 1),
-    "blender": (2, 80, 0),
+    "blender": (2, 80, 75),
     "category": "Object",
 }
 
