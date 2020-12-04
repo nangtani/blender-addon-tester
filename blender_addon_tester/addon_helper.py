@@ -84,41 +84,42 @@ def zip_addon(addon: str, addon_dir: str):
         shutil.rmtree(addon_dir)
     os.mkdir(addon_dir)
 
-    print("Addon dir is - {0}".format(addon_dir))
+    print(f"Addon dir is - {os.path.realpath(addon_dir)}")
     if not already_zipped:  # Zip the addon
         # Get bpy python module from addon file name
         bpy_module = re.sub(".py", "", addon_basename)
 
         # Create zip archive using the module name
-        zfile = Path("{0}.zip".format(bpy_module)).resolve()
+        zfile = Path(f"{bpy_module}.zip").resolve()
 
-        print("Future zip path is - {0}".format(zfile))
+        print(f"Future zip path is - {zfile}")
 
-        print("Zipping addon - {0}".format(bpy_module))
+        print(f"Zipping addon - {bpy_module}")
 
         # Zip addon content
         # -------------------
-        zf = zipfile.ZipFile(zfile.as_posix(), "w")
+        zf = zipfile.ZipFile(zfile, "w")
+        print("patate", addon_path)
         if addon_path.is_dir():  # Addon is a directory, zip hierarchy
             cwd = os.getcwd()
             temp_dir = Path(gettempdir(), "blender_addon_tester")
 
             # Clean temp dir if already exists
             if temp_dir.is_dir():
-                shutil.rmtree(temp_dir.as_posix())
+                shutil.rmtree(temp_dir)
 
-            # Creating the addon under the temp dir with its hierarchy
-            shutil.copytree(addon_path.as_posix(), temp_dir.joinpath(addon_path.relative_to(addon_path.anchor)).as_posix())
+            # Creating the addon under the temp dir with its hierarchy 
+            shutil.copytree(addon_path, temp_dir.joinpath(addon_path.relative_to(addon_path.anchor)))
 
             # Move to temp dir
-            os.chdir(temp_dir.as_posix())
+            os.chdir(temp_dir)
 
             # Clear python cache
             if os.path.isdir("__pycache__"):
                 shutil.rmtree("__pycache__")
 
             # Write addon content into archive
-            for dirname, subdirs, files in os.walk(addon_path.as_posix()):
+            for dirname, subdirs, files in os.walk(addon_path):
                 for filename in files:
                     filename = os.path.join(dirname, filename)
 
@@ -126,13 +127,13 @@ def zip_addon(addon: str, addon_dir: str):
                     clean_file(filename)
 
                     # Write file into zip under its hierarchy
-                    zf.write(filename, arcname=os.path.relpath(filename, addon_path.parent.as_posix()))
+                    zf.write(filename, arcname=os.path.relpath(filename, addon_path.parent))
 
             # Go back to start dir
             os.chdir(cwd)
 
             # Remove temp dir
-            shutil.rmtree(temp_dir.as_posix())
+            shutil.rmtree(temp_dir)
         else:  # Addon is a file, zip only the file
             # Clean file
             clean_file(addon_path.as_posix())
@@ -144,15 +145,15 @@ def zip_addon(addon: str, addon_dir: str):
         zf.close()
     else:  # Addon is already zipped, take it as it is
         zfile = addon_path
-        print("Detected zip path is - {0}. No need to zip the addon beforehand.".format(zfile))
+        print(f"Detected zip path is - {zfile}. No need to zip the addon beforehand.")
 
         # Get bpy python module from zip file name
         bpy_module = addon_basename.split(".zip")[0]
 
     # Copy zipped addon with name extended by blender revision number
-    bl_revision = "{0}.{1}".format(bpy.app.version[0], bpy.app.version[1])
-    bfile = "{0}_{1}.zip".format(zfile.stem, bl_revision)
-    shutil.copy(zfile.as_posix(), bfile)
+    bl_revision = f"{bpy.app.version[0]}.{bpy.app.version[1]}"
+    bfile = f"{zfile.stem}_{bl_revision}.zip"
+    shutil.copy(zfile, bfile)
 
     return bpy_module, bfile
 
@@ -176,7 +177,7 @@ def change_addon_dir(bpy_module: str, zfile: str, addon_dir: str):
     if not addon_dir.is_dir():
         addon_dir.mkdir(parents=True)
 
-    print("Change addon dir - {0}".format(addon_dir))
+    print(f"Change addon dir - {addon_dir}")
     if (2, 80, 0) < bpy.app.version:
         # https://docs.blender.org/api/current/bpy.types.PreferencesFilePaths.html#bpy.types.PreferencesFilePaths.script_directory
         # requires restart
