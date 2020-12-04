@@ -19,9 +19,6 @@ def clean_file(filename):
     f.close()
 
     unique_blender = True
-    fix_fstrings = False
-    if bpy.app.version <= (2, 79, 0):
-        fix_fstrings = True
 
     trim_code = False
     active_print0 = None
@@ -59,8 +56,6 @@ def clean_file(filename):
         if k:
             line = '    "blender": {0},\n'.format(bpy.app.version)
 
-        if re.search('print\(f"', line) and fix_fstrings:
-            line = re.sub("print", "pass ; # print", line)
         f.write(line)
     f.close()
 
