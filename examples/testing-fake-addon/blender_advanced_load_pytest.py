@@ -6,6 +6,7 @@ print("Running", __file__, "from Blender")
 # run_blender_version_with_pytest_suite(override_test_file="my_load_test.py")
 
 import os
+from pathlib import Path
 import sys
 try:
     import pytest
@@ -22,7 +23,8 @@ if not ADDON:
 # Set any value to the BLENDER_ADDON_COVERAGE_REPORTING environment variable to enable it
 COVERAGE_REPORTING = os.environ.get("BLENDER_ADDON_COVERAGE_REPORTING", False)
 # The Pytest tests/ path can be overriden through the BLENDER_ADDON_TESTS_PATH environment variable
-TESTS_PATH = os.environ.get("BLENDER_ADDON_TESTS_PATH", "tests")
+default_tests_dir = Path(ADDON).parent.joinpath("tests")
+TESTS_PATH = os.environ.get("BLENDER_ADDON_TESTS_PATH", default_tests_dir.as_posix())
 
 try:
     sys.path.append(os.environ["LOCAL_PYTHONPATH"])
