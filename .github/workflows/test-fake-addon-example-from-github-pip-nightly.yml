@@ -1,6 +1,7 @@
 name: test-fake-addon-example-from-github-pip-nightly
 
-on: 
+on:
+  pull_request:
   schedule:
     - cron: '0 0 * * *'
 
