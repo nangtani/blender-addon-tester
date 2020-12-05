@@ -94,7 +94,6 @@ def zip_addon(addon: str, addon_dir: str):
         # Zip addon content
         # -------------------
         zf = zipfile.ZipFile(zfile, "w")
-        print("patate", addon_path)
         if addon_path.is_dir():  # Addon is a directory, zip hierarchy
             cwd = os.getcwd()
             temp_dir = Path(gettempdir(), "blender_addon_tester")
@@ -131,10 +130,13 @@ def zip_addon(addon: str, addon_dir: str):
             shutil.rmtree(temp_dir)
         else:  # Addon is a file, zip only the file
             # Clean file
-            clean_file(addon_path.as_posix())
+            #y = addon_path.as_posix()
+            y = addon_basename
+            #print(y)
+            clean_file(y)
 
             # Write single addon file into zip
-            zf.write(addon_path.as_posix())
+            zf.write(y)
 
         # End zip building
         zf.close()
