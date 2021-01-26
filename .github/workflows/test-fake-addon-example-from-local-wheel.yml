@@ -63,8 +63,22 @@ jobs:
       run: |
         cd examples/testing-io_scene_obj/
         python test_addon_blender.py io_import_images_as_planes.py ${{ matrix.blender-version }}
+    - if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
+      name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} with absolute paths | Unix
+      run: |
+        test_dir=$(pwd)/examples/testing-fake-addon
+        cd $(dirname $(mktemp -u))
+        python $test_dir/test_addon_blender.py $test_dir/fake_addon ${{ matrix.blender-version }}
+    - if: ${{ matrix.os == 'windows-latest' }}
+      name: Download and Test Blender ${{ matrix.blender-version }} x ${{ matrix.os}} with absolute paths | Windows
+      run: |
+        $test_dir="$pwd/examples/testing-fake-addon"
+        cd $env:TEMP
+        python "$test_dir/test_addon_blender.py" "$test_dir/fake_addon" ${{ matrix.blender-version }}
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
       uses: actions/upload-artifact@v1
       with:
         name: coverage.xml
         path: examples/testing-fake-addon/coverage.xml
+
+  
