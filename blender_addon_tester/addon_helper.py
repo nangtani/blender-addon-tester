@@ -108,12 +108,11 @@ def zip_addon(addon: str, addon_dir: str):
             # Move to temp dir
             os.chdir(temp_dir)
 
-            # Clear python cache
-            if os.path.isdir("__pycache__"):
-                shutil.rmtree("__pycache__")
-
             # Write addon content into archive
             for dirname, subdirs, files in os.walk(addon_path):
+                if "__pycache__" in subdirs:
+                    subdirs.remove("__pycache__")
+
                 for filename in files:
                     filename = os.path.join(dirname, filename)
 
