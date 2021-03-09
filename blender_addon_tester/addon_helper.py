@@ -103,13 +103,14 @@ def zip_addon(addon: str, addon_dir: str):
                 shutil.rmtree(temp_dir)
 
             # Creating the addon under the temp dir with its hierarchy 
-            shutil.copytree(addon_path, temp_dir.joinpath(addon_path.relative_to(addon_path.anchor)))
+            dest_temp_dir = temp_dir.joinpath(addon_path.relative_to(addon_path.anchor))
+            shutil.copytree(addon_path, dest_temp_dir)
 
             # Move to temp dir
             os.chdir(temp_dir)
 
             # Write addon content into archive
-            for dirname, subdirs, files in os.walk(addon_path):
+            for dirname, subdirs, files in os.walk(dest_temp_dir):
                 if "__pycache__" in subdirs:
                     subdirs.remove("__pycache__")
 
