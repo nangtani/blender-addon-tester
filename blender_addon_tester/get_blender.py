@@ -13,17 +13,24 @@ from distutils.dir_util import copy_tree
 
 CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 
-def getSuffix(blender_version):
-    print(sys.platform)
-    if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
-        machine = "windows64"
+def getSuffix(blender_version, machine=None):
+    #machine = "linux.*64"
+    if machine is None:
+        print(sys.platform)
+        if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
+            machine = "windows64"
+        elif "darwin" == sys.platform:
+            machine = "(macOS|OSX)"
+        else:
+            machine = "linux.*64"
+    
+    if "windows64" == machine:
         ext = "zip"
-    elif "darwin" == sys.platform:
-        machine = "(macOS|OSX)"
+    elif "(macOS|OSX)" == machine:
         ext = "(dmg|zip|tar\.gz)"
     else:
-        machine = "linux.*64"
-        ext = "tar.+"
+        ext = "tar.(xz|gz)"
+    
 
     g = re.search(f"\d\.\d\d", blender_version)
     if g:
@@ -56,6 +63,7 @@ def getSuffix(blender_version):
             g = re.search(f"blender-(.+)-{machine}.+{ext}", x)
             revs = []
             if g:
+                #print(g.group(0))
                 version_found = g.group(1).split("-")[0]
                 versions_found[url].append(version_found)
                 links[version_found] = g.group(0)
