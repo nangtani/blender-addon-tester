@@ -71,7 +71,11 @@ def getSuffix(blender_version, platform=None):
     for url in versions_found.keys():
         for rev in sorted(versions_found[url], reverse=True):
             if rev.startswith(blender_version):
-                blender_zippath = f"{url}/{links[rev]}"
+                link = links[rev]
+                if link.startswith("http"):
+                    blender_zippath = f"{links[rev]}"
+                else:
+                    blender_zippath = f"{url}/{links[rev]}"
                 break
                         
     if None == blender_zippath:
