@@ -27,7 +27,7 @@ PYTEST_ARGS = os.environ.get("BLENDER_PYTEST_ARGS", "")
 
 try:
     sys.path.append(os.environ["LOCAL_PYTHONPATH"])
-    from addon_helper import zip_addon, change_addon_dir, cleanup
+    from addon_helper import zip_addon, change_addon_dir, install_addon, cleanup
 except Exception as e:
     print(e)
     sys.exit(1)
@@ -48,7 +48,8 @@ class SetupPlugin:
 
     def pytest_configure(self, config):
         (self.bpy_module, self.zfile) = zip_addon(self.addon, self.addon_dir)
-        change_addon_dir(self.bpy_module, self.zfile, self.addon_dir)
+        change_addon_dir(self.bpy_module, self.addon_dir)
+        install_addon(self.bpy_module, self.zfile)
         config.cache.set("bpy_module", self.bpy_module)
 
     def pytest_unconfigure(self):

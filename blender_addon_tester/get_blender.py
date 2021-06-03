@@ -35,7 +35,7 @@ def getSuffix(blender_version, platform=None):
     if g:
         rev = g.group(0)
     else:
-        raise RuntimeError("Blender version cannot be guessed in the following string: {0}".format(blender_version))
+        raise RuntimeError(f"Blender version cannot be guessed in the following string: {blender_version}")
         
     urls = [
         f"https://ftp.nluug.nl/pub/graphics/blender/release/Blender{rev}",
@@ -240,18 +240,11 @@ def getBlender(blender_version, blender_zippath, nightly):
         print("ERROR, Blender's bundled python executable could not be found within Blender's files")
         exit(1)
 
-    if "cygwin" == sys.platform:
-        print("ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!")
-        exit(1)
+    cmd = f"{python} -m ensurepip"
+    os.system(cmd)
 
-    if sys.platform.startswith("win") or sys.platform == "darwin" or (sys.platform == "linux" and blender_version.startswith("2.7")):
-        import urllib.request
-        urllib.request.urlretrieve("https://bootstrap.pypa.io/get-pip.py", "get-pip.py")
-        cmd = f"{python} get-pip.py"
-        os.system(cmd)
-    else:
-        cmd = f"{python} -m ensurepip"
-        os.system(cmd)
+    cmd = f"{python} -m pip install -U pip"
+    os.system(cmd)
 
     cmd = f"{python} -m pip install --upgrade -r {CURRENT_MODULE_DIRECTORY}/blender_requirements.txt -r {CURRENT_MODULE_DIRECTORY}/requirements.txt"
     os.system(cmd)
@@ -283,7 +276,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         blender_rev = sys.argv[1]
     else:
-        blender_rev = "2.80"
+        blender_rev = "2.92"
 
     if re.search("-", blender_rev):
         blender_rev, _ = blender_rev.split("-")

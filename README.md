@@ -1,4 +1,3 @@
-[![Travis Build Status](https://travis-ci.com/nangtani/blender-addon-tester.svg?branch=master)](https://travis-ci.com/nangtani/blender-addon-tester)
 ![Github Actions pypi.org nightly tests](https://github.com/nangtani/blender-addon-tester/workflows/test-fake-addon-example-from-github-pip-nightly/badge.svg)
 ![Github Actions local Python wheel tests](https://github.com/nangtani/blender-addon-tester/workflows/test-fake-addon-example-from-local-wheel/badge.svg)
 [![codecov](https://codecov.io/gh/nangtani/blender-addon-tester/branch/master/graph/badge.svg)](https://codecov.io/gh/nangtani/blender-addon-tester)
@@ -62,7 +61,7 @@ Example output of a successful `pytest`.
 
 ```
 ============================= test session starts =============================
-platform win32 -- Python 3.7.4, pytest-5.4.1, py-1.8.1, pluggy-0.13.1 -- C:\blender\blender-2.90\blender.exe
+platform win32 -- Python 3.7.4, pytest-5.4.1, py-1.8.1, pluggy-0.13.1 -- C:\blender\blender-2.93\blender.exe
 cachedir: .pytest_cache
 rootdir: C:\blender\blender-fake-addon
 plugins: cov-2.8.1
@@ -95,7 +94,7 @@ tests/test_pytest.py:11: AssertionError
 To see a working addon environment checkout this repo.  In the sub directory `examples\testing-fake-addon`, it contains a dummy addon that that can be sued to verify that the whole enviroment is setup correctly.
 ```
 cd examples\testing-fake-addon
-test_addon_blender.py fake_addon 2.90
+test_addon_blender.py fake_addon 2.93
 ```
 However it is better to use this modile with an addon in a different repo.  Check out this repo for that example, [fake_addon](https://github.com/nangtani/blender-fake-addon)
 
@@ -110,6 +109,13 @@ However it is better to use this modile with an addon in a different repo.  Chec
 [gmic-blender](https://github.com/myselfhimself/gmic-blender)
 
 ## Releases
+
+### v0.8
+Needed to updated how the blender packages got fetch from the server (again)
+Fixed the non default addon directory option, #26
+Break out the addon directory setup from the addon install
+Deprecated 2.79, which removes any dependancy on python3.5
+Deprecated 2.80
 
 ### v0.7
 Re do how most recent version of blender is fetched as the format used on the server has changed.

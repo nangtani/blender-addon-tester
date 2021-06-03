@@ -1,11 +1,11 @@
 import os
-from pathlib import Path
 import re
 import sys
 import shutil
-from tempfile import gettempdir
 import time
 import zipfile
+from pathlib import Path
+from tempfile import gettempdir
 
 import bpy
 
@@ -54,7 +54,7 @@ def clean_file(filename):
 
         k = re.search('"blender":\s\(\d+, \d+, \d+\)', line)
         if k:
-            line = '    "blender": {0},\n'.format(bpy.app.version)
+            line = f'    "blender": {bpy.app.version},\n'
 
         f.write(line)
     f.close()
@@ -155,46 +155,37 @@ def zip_addon(addon: str, addon_dir: str):
     return bpy_module, bfile
 
 
-def change_addon_dir(bpy_module: str, zfile: str, addon_dir: str):
+def change_addon_dir(bpy_module: str, addon_dir: str):
     """Change Blender default addons (a.k.a user scripts) directory to the given one.
-
-    TODO shouldn't it be split in two functions?
-        1- Changing the scripts dir
-        2- Importing addons into Blender
-
     :param bpy_module: Addon name used as bpy module name
-    :param zfile: Zipped addon to import
     :param addon_dir: Directory used by Blender to get addons (user scripts)
     """
     # Ensure paths
     addon_dir = Path(addon_dir).resolve()
-    zfile = Path(zfile).resolve()
 
     # Create addon target dir if doesn't exist
     if not addon_dir.is_dir():
         addon_dir.mkdir(parents=True)
-
+    
     print(f"Change addon dir - {addon_dir}")
-    if (2, 80, 0) < bpy.app.version:
-        # https://docs.blender.org/api/current/bpy.types.PreferencesFilePaths.html#bpy.types.PreferencesFilePaths.script_directory
-        # requires restart
-        bpy.context.preferences.filepaths.script_directory = addon_dir.as_posix()
-        bpy.utils.refresh_script_paths()
-        bpy.ops.preferences.addon_install(overwrite=True, filepath=zfile.as_posix())
-        bpy.ops.preferences.addon_enable(module=bpy_module)
-    else:
-        bpy.context.user_preferences.filepaths.script_directory = addon_dir.as_posix()
-        bpy.utils.refresh_script_paths()
-        bpy.ops.wm.addon_install(overwrite=True, filepath=zfile.as_posix())
-        bpy.ops.wm.addon_enable(module=bpy_module)
+    bpy.context.preferences.filepaths.script_directory = addon_dir.as_posix()
+    bpy.utils.refresh_script_paths()
+
+
+def install_addon(bpy_module: str, zfile: str):
+    """Install addon to the version of blender
+    :param bpy_module: Addon name used as bpy module name
+    :param zfile: Zipped addon to import
+    """
+    # Ensure paths
+    zfile = Path(zfile).resolve()
+    bpy.ops.preferences.addon_install(overwrite=True, target='PREFS', filepath=zfile.as_posix())
+    bpy.ops.preferences.addon_enable(module=bpy_module)
 
 
 def cleanup(addon, bpy_module, addon_dir):
-    print("Cleaning up - {}".format(bpy_module))
-    if (2, 80, 0) < bpy.app.version:
-        bpy.ops.preferences.addon_disable(module=bpy_module)
-    else:
-        bpy.ops.wm.addon_disable(module=bpy_module)
+    print(f"Cleaning up - {bpy_module}")
+    bpy.ops.preferences.addon_disable(module=bpy_module)
     if os.path.isdir(addon_dir):
         shutil.rmtree(addon_dir)
 
