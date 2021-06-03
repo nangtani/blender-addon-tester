@@ -13,26 +13,25 @@ from distutils.dir_util import copy_tree
 
 CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 
-def getSuffix(blender_version, machine=None):
-    #machine = "linux.*64"
-    if machine is None:
-        print(sys.platform)
-        if "win32" == sys.platform or "win64" == sys.platform or "cygwin" == sys.platform:
-            machine = "windows64"
-        elif "darwin" == sys.platform:
-            machine = "(macOS|OSX)"
-        else:
-            machine = "linux.*64"
+def getSuffix(blender_version, platform=None):
     
-    if "windows64" == machine:
+    if platform is None:
+        platform = sys.platform
+    print(platform)
+    
+    if "win32" == platform or "win64" == platform or "cygwin" == platform:
+        machine = "windows"
         ext = "zip"
-    elif "(macOS|OSX)" == machine:
+    elif "darwin" == platform:
+        #machine = "(macOS|OSX)"
+        machine = "(macOS|darwin)"
         ext = "(dmg|zip|tar\.gz)"
     else:
-        ext = "tar.(xz|gz)"
+        machine = "linux"
+        ext = "tar.(xz|gz|bz2)"
     
-
-    g = re.search(f"\d\.\d\d", blender_version)
+    
+    g = re.search(f"\d\.\d+", blender_version)
     if g:
         rev = g.group(0)
     else:
@@ -40,7 +39,7 @@ def getSuffix(blender_version, machine=None):
         
     urls = [
         f"https://ftp.nluug.nl/pub/graphics/blender/release/Blender{rev}",
-        "https://builder.blender.org/download",
+        "https://builder.blender.org/download/daily",
     ]
     blender_zippath = None
     nightly = False
@@ -60,14 +59,15 @@ def getSuffix(blender_version, machine=None):
         blender_version_suffix = ""
         for link in soup.find_all("a"):
             x = str(link.get("href"))
-            g = re.search(f"blender-(.+)-{machine}.+{ext}", x)
-            revs = []
-            if g:
-                #print(g.group(0))
-                version_found = g.group(1).split("-")[0]
-                versions_found[url].append(version_found)
-                links[version_found] = g.group(0)
-                
+            #print(x)   
+            if re.search('blender', x) and re.search(machine, x) and re.search(f"{ext}$", x):
+                g = re.search(f"blender-(.+)", x)         
+                if g:
+                    version_found = g.group(1).split("-")[0]
+                    if not version_found in versions_found[url]:
+                        versions_found[url].append(version_found)
+                        links[version_found] = x
+            
     for url in versions_found.keys():
         for rev in sorted(versions_found[url], reverse=True):
             if rev.startswith(blender_version):
@@ -75,7 +75,7 @@ def getSuffix(blender_version, machine=None):
                 break
                         
     if None == blender_zippath:
-        print(soup)
+        #print(soup)
         raise Exception(f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}")
     
     return blender_zippath, nightly

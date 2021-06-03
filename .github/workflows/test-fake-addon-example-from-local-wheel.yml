@@ -13,7 +13,7 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        blender-version: ["2.92", "2.91", "2.90", "2.83", "2.82", "2.81", "2.80", ]
+        blender-version: ["3.0", "2.93", "2.92", "2.91", "2.90", "2.83", "2.82", "2.81", "2.80",]
         os: [ubuntu-latest, windows-latest, macos-latest]
     env:
       BLENDER_CACHE: ${{ github.workspace }}/.blender_releases_cache # The place where blender releases are downloaded
@@ -31,12 +31,6 @@ jobs:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
     # Fix for issue https://github.com/douglaskastle/blender-addon-tester/issues/14
-    - name: Fix blender 2.7* for Linux, by apt-getting similar blender package providing required dependencies
-      if: matrix.os == 'ubuntu-latest' && startsWith(matrix.blender-version, '2.7')
-      run: |
-        sudo add-apt-repository ppa:thomas-schiex/blender-legacy
-        sudo apt-get update
-        sudo apt-get install blender # A blender 2.79 package most probably
     - name: Setup Environment
       run: |
         # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE
