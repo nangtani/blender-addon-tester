@@ -11,6 +11,9 @@ platform_list = [
     "darwin",
 ]
 version_list = [
+    "3.3",
+    "3.2",
+    "3.1",
     "3.0",
     "2.93",
     "2.92",

@@ -94,7 +94,7 @@ tests/test_pytest.py:11: AssertionError
 To see a working addon environment checkout this repo.  In the sub directory `examples\testing-fake-addon`, it contains a dummy addon that that can be sued to verify that the whole enviroment is setup correctly.
 ```
 cd examples\testing-fake-addon
-test_addon_blender.py fake_addon 2.93
+test_addon_blender.py fake_addon 3.2
 ```
 However it is better to use this modile with an addon in a different repo.  Check out this repo for that example, [fake_addon](https://github.com/nangtani/blender-fake-addon)
 
@@ -109,6 +109,12 @@ However it is better to use this modile with an addon in a different repo.  Chec
 [gmic-blender](https://github.com/myselfhimself/gmic-blender)
 
 ## Releases
+
+### v0.9
+Add support for 3.1
+Add support for 3.2
+Add support for 3.3
+Move to python3.10 on CI
 
 ### v0.8
 Needed to updated how the blender packages got fetch from the server (again)

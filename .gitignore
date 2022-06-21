@@ -13,4 +13,6 @@ dist/
 *.egg-info/
 blender-2*/
 examples/blender-*z*
+examples/blender-*/
 get-pip.py
+*.bak
