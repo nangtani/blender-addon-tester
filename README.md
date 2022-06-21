@@ -114,7 +114,7 @@ However it is better to use this modile with an addon in a different repo.  Chec
 Add support for 3.1
 Add support for 3.2
 Add support for 3.3
-Move to python3.9 on CI
+Move to python3.10 on CI
 
 ### v0.8
 Needed to updated how the blender packages got fetch from the server (again)
