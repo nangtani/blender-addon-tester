@@ -78,7 +78,7 @@ jobs:
 
   pypy_release:
     runs-on: ubuntu-latest
-    needs: [build_code]
+    needs: [build]
     steps:
       - name: Make PyPi dist release
         run: |
