@@ -13,7 +13,7 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        blender-version: ["3.3", "3.2", "3.0", "2.93", "2.83", "2.82",]
+        blender-version: ["3.5", "3.4", "3.3", "3.2", "3.0", "2.93", "2.83", "2.82",]
         #os: [ubuntu-latest, windows-latest, macos-latest]
         os: [ubuntu-latest, windows-latest]
     env:
@@ -31,7 +31,6 @@ jobs:
       with:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
-    # Fix for issue https://github.com/douglaskastle/blender-addon-tester/issues/14
     - name: Setup Environment
       run: |
         # This testing script will make use of BLENDER_VERSION and BLENDER_CACHE

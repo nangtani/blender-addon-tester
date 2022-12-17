@@ -110,6 +110,12 @@ However it is better to use this modile with an addon in a different repo.  Chec
 
 ## Releases
 
+### v0.10
+Add support for 3.4
+Add support for 3.5
+Bumped all the guthub actions revs
+Added support for github actions release
+
 ### v0.9
 Add support for 3.1
 Add support for 3.2
