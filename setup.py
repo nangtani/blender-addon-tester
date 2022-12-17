@@ -7,7 +7,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(name='blender_addon_tester',
-      version='0.11.0',
+      version='0.10.1',
       description='Add-On Tester for Blender using Pytest',
       author='Dave Keeshan',
       author_email='dave.keeshan@daxzio.com',
@@ -23,14 +23,12 @@ setup(name='blender_addon_tester',
         "Development Status :: 2 - Pre-Alpha",
         "Topic :: Artistic Software",
         "License :: OSI Approved :: MIT License"
-        'Programming Language :: Blender',
-        'Programming Language :: Blender :: 2.82',
-        'Programming Language :: Blender :: 2.83',
-        'Programming Language :: Blender :: 2.93',
-        'Programming Language :: Blender :: 3.0',
-        'Programming Language :: Blender :: 3.2',
-        'Programming Language :: Blender :: 3.3',
-        'Programming Language :: Blender :: 3.4',
-        'Programming Language :: Blender :: 3.5',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3 :: Only',
       ]
      )
