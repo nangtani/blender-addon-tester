@@ -1,12 +1,12 @@
 
 default:
-	@make wheel
+	@make dist
 	#rm -rf build/ dist/ *.egg-info
 	pip install -r requirements.txt
 	pip uninstall blender_addon_tester -y
 	pip install dist/*.whl
 
-wheel:
+dist:
 	rm -rf build/ dist/ *.egg-info
 	python setup.py clean --all
 	python setup.py bdist_wheel
