@@ -13,7 +13,7 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        blender-version: ["3.3", "3.2", "3.0", "2.93", "2.83", "2.82",]
+        blender-version: ["3.5", "3.4", "3.3", "3.2", "2.82",]
         #os: [ubuntu-latest, windows-latest, macos-latest]
         os: [macos-latest]
     env:
