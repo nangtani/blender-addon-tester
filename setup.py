@@ -23,5 +23,14 @@ setup(name='blender_addon_tester',
         "Development Status :: 2 - Pre-Alpha",
         "Topic :: Artistic Software",
         "License :: OSI Approved :: MIT License"
+        'Programming Language :: Blender',
+        'Programming Language :: Blender :: 2.82',
+        'Programming Language :: Blender :: 2.83',
+        'Programming Language :: Blender :: 2.93',
+        'Programming Language :: Blender :: 3.0',
+        'Programming Language :: Blender :: 3.2',
+        'Programming Language :: Blender :: 3.3',
+        'Programming Language :: Blender :: 3.4',
+        'Programming Language :: Blender :: 3.5',
       ]
      )
