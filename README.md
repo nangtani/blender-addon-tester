@@ -99,14 +99,10 @@ test_addon_blender.py fake_addon 3.2
 However it is better to use this modile with an addon in a different repo.  Check out this repo for that example, [fake_addon](https://github.com/nangtani/blender-fake-addon)
 
 ## Projects using `blender-addon-tester`
-
-[fake_addon](https://github.com/nangtani/blender-fake-addon)
-
-[blender-import-lwo](https://github.com/nangtani/blender-import-lwo)
-
-[ba_io_scene_obj](https://github.com/nangtani/ba_io_scene_obj)
-
-[gmic-blender](https://github.com/myselfhimself/gmic-blender)
+- [fake_addon](https://github.com/nangtani/blender-fake-addon)
+- [blender-import-lwo](https://github.com/nangtani/blender-import-lwo)
+- [ba_io_scene_obj](https://github.com/nangtani/ba_io_scene_obj)
+- [gmic-blender](https://github.com/myselfhimself/gmic-blender)
 
 ## Releases
 ### v0.10
