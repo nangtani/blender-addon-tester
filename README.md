@@ -6,48 +6,47 @@
 
 ## Background
 
-The 3D tool, [Blender](https://blender.org), allows its functionality to be extended, using python.  These are called addons. 
+[Blender](https://blender.org) can be extended with python addons. 
 
-Typically an addon will be released and it will be working with the version of blender that is on release at that time. However as time pass the, blender releases new versions, adding to and deprecrating parts of the exposed API.  After a while it is not uncommon for an addon to stop working.
+When an addonsreleased, it's developped to work with the current version of Blender.  
+But over time as Blender releases new versions, the Blender API changes, leading to the addon to eventually breaking and stop working.
 
-This was seen a lot when blender made a upgrade move from 2.79 to 2.80.  Some parts of the exposed API were radically different and it broke a lot of addons.  
-
-A major effort was put into rework thes addons to get them working again, but the exercise merely highlighted that there is no native testing environment that:
-
+Currently there's no native testing environment that:  
 * Allows an addon to be tested against multiple versions of blender and multiple OSs (ubuntu, windows and macosx)
 * Used an industry standard of testing, i.e. `pytest`
 * Plugs into a continuous integration tool, i.e. Github Actions, Travis CI
 * Ability to test a passing addon against the nightly builds, to catch API breaks as close to when they happen
 * Code coverage of the addon. Used to assess comprehensivness of the tests.
 
-## What does it do
+## What does blender-addon-tester do
 
-This python module allows command line `pytest`ing to be performed on different versions of blender. 
+This python module allows command line `pytest`ing to be performed on different versions of blender. It will:
+- download and maintain different versions of blender locally.    
+- install the addon under test into a location accessible by the respective version of blender.   
+- execute a series of tests, by default, located in the `tests` directory. These tests are written in the `pytest` format.  
 
-It will download and maintain different versions of blender locally.  
-
-It will install the addon under test into a location accessible by the respective version of blender. 
-
-It will execute a series of tests, by default, located in the `tests` directory. These tests are written in the `pytest` format.
-
-Once the addon has been completed and the tests have been written, they are checked in to github. They can be run against a continous integration tool.  There is currently support for both Github Actions and Travis CI.
+Once the addon has been completed and the tests have been written, they are checked in to github.   
+They can be run against a continous integration tool.   
+There's currently support for both Github Actions and Travis CI.    
 
 ## Usage
 
-It can be confusing with blender as it has an internal version of python that is different from the system python.  `blender-addon-tester` is install to the system python and is used to call different versions of blender.  It is inside this instance of blender that the addon under test gets installed.
+It can be confusing with blender as it has an internal version of python that is different from the system python.   
+`blender-addon-tester` is install to the system python and is used to call different versions of blender.   
+It is inside this instance of blender that the addon under test gets installed.
 
-`blender-addon-tester` can be install from pypi:
+`blender-addon-tester` can be install from pypi:  
+```batch
+pip install blender-addon-tester
+```
 
-`pip install blender-addon-tester`
-
-Then it can be called from any script:
-
+Then it can be called from any script:  
 ```
     import blender_addon_tester as BAT
     BAT.test_blender_addon(addon_path=addon, blender_revision=blender_rev)
 ```
-Once called, it will
 
+Once called, it will  
 * Check to see if the version of blender is presnet in the cache location, if not it will download that version of blender and install it to the cache location, installing all the extra python modules required to enable pytest-ing and coverage.
 * It will install the addon to the version of blender
 * It will run all the tests, default `tests` directory, but this can be explictly set. \it will report a pass or failure.  This result is written to be capturable by CI tools.
