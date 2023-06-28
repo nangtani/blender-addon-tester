@@ -109,53 +109,52 @@ However it is better to use this modile with an addon in a different repo.  Chec
 [gmic-blender](https://github.com/myselfhimself/gmic-blender)
 
 ## Releases
-
 ### v0.10
-Add support for 3.4
-Add support for 3.5
-Bumped all the guthub actions revs
-Added support for github actions release
+- Add support for 3.4
+- Add support for 3.5
+- Bumped all the guthub actions revs
+- Added support for github actions release
 
 ### v0.9
-Add support for 3.1
-Add support for 3.2
-Add support for 3.3
-Move to python3.10 on CI
+- Add support for 3.1
+- Add support for 3.2
+- Add support for 3.3
+- Move to python3.10 on CI
 
 ### v0.8
-Needed to updated how the blender packages got fetch from the server (again)
-Fixed the non default addon directory option, #26
-Break out the addon directory setup from the addon install
-Deprecated 2.79, which removes any dependancy on python3.5
-Deprecated 2.80
+- Needed to updated how the blender packages got fetch from the server (again)
+- Fixed the non-default addon directory option, #26
+- Break out the addon directory setup from the addon install
+- Deprecated 2.79, which removes any dependency on python3.5
+- Deprecated 2.80
 
 ### v0.7
-Re do how most recent version of blender is fetched as the format used on the server has changed.
-Deprecated 2.78.
+- Re-do how the most recent version of Blender is fetched as the format used on the server has changed.
+- Deprecated 2.78.
 
 ### v0.6
-Added PYTEST_ARGS on the config option
-Need a separate PYTHONPATH for the scripts directory that the addon uses for helper scripts:
-    `addon_helper = os.environ.get("ADDON_TEST_HELPER", None)`
+- Added PYTEST_ARGS on the config option
+- Need a separate PYTHONPATH for the scripts directory that the addon uses for helper scripts:  
+`addon_helper = os.environ.get("ADDON_TEST_HELPER", None)`
 
 ### v0.5
-Fix blender rev edit bug
+- Fix Blender rev edit bug
 
 ### v0.4
-Introduce per blender rev addons support
+- Introduce per Blender rev addons support
 
 ### v0.3
-New release required to to repo migration
+- New release required due to repo migration
 
 ### v0.2
-
-Added default cache location if not specified
-Deleted built in addon from reference blender, if testing new version of addon
-Updated setup.py to remove unnecessary modules needed for blender-addon-tester to work.
-Updated documentation
+- Added default cache location if not specified
+- Deleted built-in addon from reference Blender if testing a new version of the addon
+- Updated setup.py to remove unnecessary modules needed for blender-addon-tester to work.
+- Updated documentation
 
 ### v0.1
-Initial checkin to pypi
-Working against github actions
-Working against Travis CI
+- Initial check-in to PyPI
+- Working against GitHub Actions
+- Working against Travis CI
+
 
