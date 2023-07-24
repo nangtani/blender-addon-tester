@@ -161,25 +161,43 @@ def change_addon_dir(bpy_module: str, addon_dir: str):
     :param addon_dir: Directory used by Blender to get addons (user scripts)
     """
     # Ensure paths
-    addon_dir = Path(addon_dir).resolve()
+    addon_dir_abs = Path(addon_dir).resolve()
 
     # Create addon target dir if doesn't exist
-    if not addon_dir.is_dir():
-        addon_dir.mkdir(parents=True)
-    
-    print(f"Change addon dir - {addon_dir}")
-    bpy.context.preferences.filepaths.script_directory = addon_dir.as_posix()
+    if not addon_dir_abs.is_dir():
+        addon_dir_abs.mkdir(parents=True)
+
+    print(f"Change addon dir - {addon_dir_abs}")
+
+    # 3.6 introduced multiple addon directories
+    if bpy.app.version < (3,6):
+        bpy.context.preferences.filepaths.script_directory = addon_dir_abs.as_posix()
+    else:
+        directory = addon_dir_abs.as_posix()
+        script_directories = bpy.context.preferences.filepaths.script_directories
+
+        new_dir = script_directories.new()
+        # Assign path selected via file browser.
+        new_dir.directory = directory
+        new_dir.name = addon_dir
+
     bpy.utils.refresh_script_paths()
 
 
-def install_addon(bpy_module: str, zfile: str):
+def install_addon(bpy_module: str, zfile: str, addon_dir: str):
     """Install addon to the version of blender
     :param bpy_module: Addon name used as bpy module name
     :param zfile: Zipped addon to import
     """
     # Ensure paths
     zfile = Path(zfile).resolve()
-    bpy.ops.preferences.addon_install(overwrite=True, target='PREFS', filepath=zfile.as_posix())
+
+    # 3.6 introduced multiple addon directories
+    if bpy.app.version < (3,6):
+        bpy.ops.preferences.addon_install(overwrite=True, target='PREFS', filepath=zfile.as_posix())
+    else:
+        bpy.ops.preferences.addon_install(overwrite=True, target=addon_dir, filepath=zfile.as_posix())
+
     bpy.ops.preferences.addon_enable(module=bpy_module)
 
 
