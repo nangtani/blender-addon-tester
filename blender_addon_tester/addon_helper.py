@@ -108,17 +108,19 @@ def zip_addon(addon: str, addon_dir: str):
             # Move to temp dir
             os.chdir(temp_dir)
 
-            # Clear python cache
-            if os.path.isdir("__pycache__"):
-                shutil.rmtree("__pycache__")
 
             # Write addon content into archive
             for dirname, subdirs, files in os.walk(addon_path):
                 for filename in files:
+                    # Ignore pycache files
+                    if filename.endswith('.pyc'):
+                        continue
+
                     filename = os.path.join(dirname, filename)
 
                     # Clean file
-                    #clean_file(filename)
+                    if filename.endswith('.py'):
+                        clean_file(filename)
 
                     # Write file into zip under its hierarchy
                     zf.write(filename, arcname=os.path.relpath(filename, addon_path.parent))
@@ -133,7 +135,8 @@ def zip_addon(addon: str, addon_dir: str):
             #y = addon_path.as_posix()
             y = addon_basename
             #print(y)
-            clean_file(y)
+            if filename.endswith('.py'):
+                clean_file(y)
 
             # Write single addon file into zip
             zf.write(y)
