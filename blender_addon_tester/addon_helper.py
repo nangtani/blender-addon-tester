@@ -103,25 +103,28 @@ def zip_addon(addon: str, addon_dir: str):
                 shutil.rmtree(temp_dir)
 
             # Creating the addon under the temp dir with its hierarchy 
-            shutil.copytree(addon_path, temp_dir.joinpath(addon_path.relative_to(addon_path.anchor)))
+            temp_dir_dst = temp_dir.joinpath(addon_path.relative_to(addon_path.anchor))
+            shutil.copytree(addon_path, temp_dir_dst)
 
             # Move to temp dir
-            os.chdir(temp_dir)
+            os.chdir(temp_dir_dst)
 
-            # Clear python cache
-            if os.path.isdir("__pycache__"):
-                shutil.rmtree("__pycache__")
 
             # Write addon content into archive
-            for dirname, subdirs, files in os.walk(addon_path):
+            for dirname, subdirs, files in os.walk(temp_dir_dst):
                 for filename in files:
+                    # Ignore pycache files
+                    if filename.endswith('.pyc'):
+                        continue
+
                     filename = os.path.join(dirname, filename)
 
                     # Clean file
-                    clean_file(filename)
+                    if filename.endswith('.py'):
+                        clean_file(filename)
 
                     # Write file into zip under its hierarchy
-                    zf.write(filename, arcname=os.path.relpath(filename, addon_path.parent))
+                    zf.write(filename, arcname=os.path.relpath(filename, temp_dir_dst.parent))
 
             # Go back to start dir
             os.chdir(cwd)
@@ -133,7 +136,8 @@ def zip_addon(addon: str, addon_dir: str):
             #y = addon_path.as_posix()
             y = addon_basename
             #print(y)
-            clean_file(y)
+            if filename.endswith('.py'):
+                clean_file(y)
 
             # Write single addon file into zip
             zf.write(y)
@@ -161,25 +165,43 @@ def change_addon_dir(bpy_module: str, addon_dir: str):
     :param addon_dir: Directory used by Blender to get addons (user scripts)
     """
     # Ensure paths
-    addon_dir = Path(addon_dir).resolve()
+    addon_dir_abs = Path(addon_dir).resolve()
 
     # Create addon target dir if doesn't exist
-    if not addon_dir.is_dir():
-        addon_dir.mkdir(parents=True)
-    
-    print(f"Change addon dir - {addon_dir}")
-    bpy.context.preferences.filepaths.script_directory = addon_dir.as_posix()
+    if not addon_dir_abs.is_dir():
+        addon_dir_abs.mkdir(parents=True)
+
+    print(f"Change addon dir - {addon_dir_abs}")
+
+    # 3.6 introduced multiple addon directories
+    if bpy.app.version < (3,6):
+        bpy.context.preferences.filepaths.script_directory = addon_dir_abs.as_posix()
+    else:
+        directory = addon_dir_abs.as_posix()
+        script_directories = bpy.context.preferences.filepaths.script_directories
+
+        new_dir = script_directories.new()
+        # Assign path selected via file browser.
+        new_dir.directory = directory
+        new_dir.name = addon_dir
+
     bpy.utils.refresh_script_paths()
 
 
-def install_addon(bpy_module: str, zfile: str):
+def install_addon(bpy_module: str, zfile: str, addon_dir: str):
     """Install addon to the version of blender
     :param bpy_module: Addon name used as bpy module name
     :param zfile: Zipped addon to import
     """
     # Ensure paths
     zfile = Path(zfile).resolve()
-    bpy.ops.preferences.addon_install(overwrite=True, target='PREFS', filepath=zfile.as_posix())
+
+    # 3.6 introduced multiple addon directories
+    if bpy.app.version < (3,6):
+        bpy.ops.preferences.addon_install(overwrite=True, target='PREFS', filepath=zfile.as_posix())
+    else:
+        bpy.ops.preferences.addon_install(overwrite=True, target=addon_dir, filepath=zfile.as_posix())
+
     bpy.ops.preferences.addon_enable(module=bpy_module)
 
 

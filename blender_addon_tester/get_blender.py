@@ -44,10 +44,10 @@ def getSuffix(blender_version, platform=None):
     blender_zippath = None
     nightly = False
     release_file_found = False
-    versions_found = {}
-    links = {}
+    versions_found = []
+    version_to_link = {}
+
     for url in urls:
-        versions_found[url] = []
         if release_file_found:
             break
 
@@ -55,7 +55,7 @@ def getSuffix(blender_version, platform=None):
         page = requests.get(url)
         data = page.text
         soup = BeautifulSoup(data, features="html.parser")
-        
+
         blender_version_suffix = ""
         for link in soup.find_all("a"):
             x = str(link.get("href"))
@@ -64,20 +64,18 @@ def getSuffix(blender_version, platform=None):
                 g = re.search(f"blender-(.+)", x)         
                 if g:
                     version_found = g.group(1).split("-")[0]
-                    if not version_found in versions_found[url]:
-                        versions_found[url].append(version_found)
-                        links[version_found] = x
-            
-    for url in versions_found.keys():
-        for rev in sorted(versions_found[url], reverse=True):
-            if rev.startswith(blender_version):
-                link = links[rev]
-                if link.startswith("http"):
-                    blender_zippath = f"{links[rev]}"
-                else:
-                    blender_zippath = f"{url}/{links[rev]}"
-                break
-                        
+                    if version_found.startswith(blender_version) and not version_found in versions_found:
+                        if x.startswith("http"):
+                            download_url = f"{x}"
+                        else:
+                            download_url = f"{url}/{x}"
+
+                        versions_found.append(version_found)
+                        version_to_link[version_found] = download_url
+
+    version = sorted(versions_found, reverse=True)[0]
+    blender_zippath = version_to_link[version]
+
     if None == blender_zippath:
         #print(soup)
         raise Exception(f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}")
