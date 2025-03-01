@@ -23,7 +23,7 @@ setup(name='blender_addon_tester',
       classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Topic :: Artistic Software",
-        "License :: OSI Approved :: MIT License"
+        "License :: OSI Approved :: MIT License",
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
