@@ -182,7 +182,7 @@ def change_addon_dir(bpy_module: str, addon_dir: str):
     bpy.utils.refresh_script_paths()
 
 
-def install_addon(bpy_module: str, zfile: str, addon_dir: str):
+def install_addon(bpy_module: str, zfile: str, addon_dir: str = "local_addon"):
     """Install addon to the version of blender
     :param bpy_module: Addon name used as bpy module name
     :param zfile: Zipped addon to import

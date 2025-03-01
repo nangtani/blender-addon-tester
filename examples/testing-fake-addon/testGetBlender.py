@@ -1,4 +1,5 @@
 import sys
+
 try:
     from blender_addon_tester import get_blender
 except Exception as e:
@@ -26,7 +27,7 @@ version_list = [
 ]
 
 # platform = "linux"
-# 
+#
 # blender_version = "2.81"
 # blender_zippath, nightly = get_blender.getSuffix(blender_version, platform)
 # print(blender_zippath)

@@ -8,6 +8,7 @@ print("Running", __file__, "from Blender")
 import os
 from pathlib import Path
 import sys
+
 try:
     import pytest
 except Exception as e:
@@ -17,7 +18,9 @@ except Exception as e:
 # Make sure to have BLENDER_ADDON_TO_TEST set as an environment variable first
 ADDON = os.environ.get("BLENDER_ADDON_TO_TEST", False)
 if not ADDON:
-    print("No addon to test was found in the 'BLENDER_ADDON_TO_TEST' environment variable. Exiting.")
+    print(
+        "No addon to test was found in the 'BLENDER_ADDON_TO_TEST' environment variable. Exiting."
+    )
     sys.exit(1)
 
 # Set any value to the BLENDER_ADDON_COVERAGE_REPORTING environment variable to enable it
@@ -44,7 +47,7 @@ class SetupPlugin:
     def pytest_configure(self, config):
         (self.bpy_module, self.zfile) = zip_addon(self.addon, self.addon_dir)
         change_addon_dir(self.bpy_module, self.addon_dir)
-        install_addon(self.bpy_module, self.zfile)
+        install_addon(self.bpy_module, self.zfile, self.addon_dir)
         config.cache.set("bpy_module", self.bpy_module)
 
     def pytest_unconfigure(self):
