@@ -13,7 +13,7 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        blender-version: ["3.5", "3.4", "3.3", "3.2", "2.82",]
+        blender-version: ["4.5", "4.4", "4.3", "3.6", "3.3"]
         #os: [ubuntu-latest, windows-latest, macos-latest]
         os: [ubuntu-latest, windows-latest]
     env:
@@ -21,13 +21,13 @@ jobs:
       BLENDER_VERSION: ${{ matrix.blender-version }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
     - name: Cache Blender release download
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ env.BLENDER_CACHE }}
         key: ${{ matrix.os }}-blender-${{ matrix.blender-version }}
@@ -70,7 +70,7 @@ jobs:
         cd $env:TEMP
         python "$test_dir/test_addon_blender.py" "$test_dir/fake_addon" ${{ matrix.blender-version }}
     - name: Expose coverage as a CI download # Related to test_fake_addon_blender_advanced.py
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: coverage.xml
         path: examples/testing-fake-addon/coverage.xml
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Make PyPi dist release
         run: |
           pip install -r requirements.txt
