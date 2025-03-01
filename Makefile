@@ -1,3 +1,8 @@
+dist:
+	rm -rf MANIFEST 
+	rm -rf CHANGELOG.txt
+	python setup.py sdist
+
 GIT_TAG?=0.10.0
 VERSION_FILE?=`find . -name version.py`
 release:
