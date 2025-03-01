@@ -1,3 +1,7 @@
 wheel
 setuptools
 requests
+bs4
+dmglib
+exceptiongroup
+iniconfig
