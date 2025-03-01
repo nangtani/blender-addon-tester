@@ -168,18 +168,25 @@ def change_addon_dir(bpy_module: str, addon_dir: str):
         addon_dir.mkdir(parents=True)
     
     print(f"Change addon dir - {addon_dir}")
-    bpy.context.preferences.filepaths.script_directory = addon_dir.as_posix()
+    
+    try:
+        bpy.ops.preferences.script_directory_add(directory=addon_dir.as_posix())
+    except AttributeError: # Blender 3.3 and below
+        bpy.context.preferences.filepaths.script_directory = addon_dir.as_posix()
     bpy.utils.refresh_script_paths()
 
 
-def install_addon(bpy_module: str, zfile: str):
+def install_addon(bpy_module: str, zfile: str, addon_dir: str):
     """Install addon to the version of blender
     :param bpy_module: Addon name used as bpy module name
     :param zfile: Zipped addon to import
     """
     # Ensure paths
     zfile = Path(zfile).resolve()
-    bpy.ops.preferences.addon_install(overwrite=True, target='PREFS', filepath=zfile.as_posix())
+    try:
+        bpy.ops.preferences.addon_install(overwrite=True, target=addon_dir, filepath=zfile.as_posix())
+    except TypeError: # Blender 3.3 and below
+        bpy.ops.preferences.addon_install(overwrite=True, target='PREFS', filepath=zfile.as_posix())
     bpy.ops.preferences.addon_enable(module=bpy_module)
 
 
