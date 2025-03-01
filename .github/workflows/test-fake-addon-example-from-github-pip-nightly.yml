@@ -55,7 +55,7 @@ jobs:
         pwd
         python test_addon_blender.py io_scene_obj ${{ matrix.blender-version }}
     - name: Expose coverage as a CI download # Related to test_addon_blender_advanced.py
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: coverage.xml
         path: examples/testing-fake-addon/coverage.xml
