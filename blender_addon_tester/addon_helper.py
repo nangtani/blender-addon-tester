@@ -136,8 +136,7 @@ def zip_addon(addon: str, addon_dir: str):
             #y = addon_path.as_posix()
             y = addon_basename
             #print(y)
-            if filename.endswith('.py'):
-                clean_file(y)
+            clean_file(y)
 
             # Write single addon file into zip
             zf.write(y)
