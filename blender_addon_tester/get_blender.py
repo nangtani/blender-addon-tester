@@ -13,30 +13,32 @@ from distutils.dir_util import copy_tree
 
 CURRENT_MODULE_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 
+
 def getSuffix(blender_version, platform=None):
-    
+
     if platform is None:
         platform = sys.platform
     print(platform)
-    
+
     if "win32" == platform or "win64" == platform or "cygwin" == platform:
         machine = "windows"
         ext = "zip"
     elif "darwin" == platform:
-        #machine = "(macOS|OSX)"
+        # machine = "(macOS|OSX)"
         machine = "(macOS|darwin)"
         ext = "(dmg|zip|tar\.gz)"
     else:
         machine = "linux"
         ext = "tar.(xz|gz|bz2)"
-    
-    
+
     g = re.search(f"\d\.\d+", blender_version)
     if g:
         rev = g.group(0)
     else:
-        raise RuntimeError(f"Blender version cannot be guessed in the following string: {blender_version}")
-        
+        raise RuntimeError(
+            f"Blender version cannot be guessed in the following string: {blender_version}"
+        )
+
     urls = [
         f"https://ftp.nluug.nl/pub/graphics/blender/release/Blender{rev}",
         "https://builder.blender.org/download/daily",
@@ -55,19 +57,23 @@ def getSuffix(blender_version, platform=None):
         page = requests.get(url)
         data = page.text
         soup = BeautifulSoup(data, features="html.parser")
-        
+
         blender_version_suffix = ""
         for link in soup.find_all("a"):
             x = str(link.get("href"))
-            #print(x)   
-            if re.search('blender', x) and re.search(machine, x) and re.search(f"{ext}$", x):
-                g = re.search(f"blender-(.+)", x)         
+            # print(x)
+            if (
+                re.search("blender", x)
+                and re.search(machine, x)
+                and re.search(f"{ext}$", x)
+            ):
+                g = re.search(f"blender-(.+)", x)
                 if g:
                     version_found = g.group(1).split("-")[0]
                     if not version_found in versions_found[url]:
                         versions_found[url].append(version_found)
                         links[version_found] = x
-            
+
     for url in versions_found.keys():
         for rev in sorted(versions_found[url], reverse=True):
             if rev.startswith(blender_version):
@@ -77,12 +83,15 @@ def getSuffix(blender_version, platform=None):
                 else:
                     blender_zippath = f"{url}/{links[rev]}"
                 break
-                        
+
     if None == blender_zippath:
-        #print(soup)
-        raise Exception(f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}")
-    
+        # print(soup)
+        raise Exception(
+            f"Unable to find {blender_version} in nightlies, here is what is available {versions_found}"
+        )
+
     return blender_zippath, nightly
+
 
 def findMacOSContentsParentDirectory(starting_path):
     cwd = os.getcwd()
@@ -93,29 +102,33 @@ def findMacOSContentsParentDirectory(starting_path):
         # print(f"root is {root}")
         if os.path.basename(root) == "Contents" and "blender.app" in root.lower():
             osx_mounted_contents_parent = os.path.realpath(os.path.dirname(root))
-            print("Found Contents parent", os.path.realpath(osx_mounted_contents_parent))
+            print(
+                "Found Contents parent", os.path.realpath(osx_mounted_contents_parent)
+            )
             print("Contents of Contents/:", os.listdir(root))
             break
         path = root.split(os.sep)
         # print((len(path) - 1) * '---', os.path.basename(root))
         for file in files:
-            #print(len(path) * '---', file)
+            # print(len(path) * '---', file)
             pass
-    
+
     if not osx_mounted_contents_parent:
-        print(f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive")
+        print(
+            f"Error, could not find some [bB]lender.app/Contents directory in downloaded {blender_zipfile} dmg archive"
+        )
         exit(1)
 
     os.chdir(cwd)
-    
+
     return osx_mounted_contents_parent
- 
 
 
 def getBlender(blender_version, blender_zippath, nightly):
-    """ Downloads Blender v'blender_version'//'nightly' if not yet in cache. Returns a decompressed Blender release path.
-    """
-    print(f"About to try to download Blender {blender_version} from {blender_zippath} nightly: {nightly}")
+    """Downloads Blender v'blender_version'//'nightly' if not yet in cache. Returns a decompressed Blender release path."""
+    print(
+        f"About to try to download Blender {blender_version} from {blender_zippath} nightly: {nightly}"
+    )
     remove = False
     cwd = os.getcwd()
     if "BLENDER_CACHE" in os.environ.keys():
@@ -129,7 +142,7 @@ def getBlender(blender_version, blender_zippath, nightly):
     else:
         cache_path = ".."
     os.chdir(cache_path)
-    
+
     cache_dir = os.getcwd()
 
     ext = ""
@@ -165,21 +178,32 @@ def getBlender(blender_version, blender_zippath, nightly):
     elif blender_zipfile.endswith("dmg"):
         is_osx_archive = True
         from dmglib import attachedDiskImage
+
         with attachedDiskImage(blender_zipfile) as mounted_dmg:
             print(f"Mounted {blender_zipfile}")
-            osx_mounted_contents_parent = findMacOSContentsParentDirectory(mounted_dmg[0])
-            print(f'Copying Blender out of mounted space from {osx_mounted_contents_parent} to {cache_dir}...')
+            osx_mounted_contents_parent = findMacOSContentsParentDirectory(
+                mounted_dmg[0]
+            )
+            print(
+                f"Copying Blender out of mounted space from {osx_mounted_contents_parent} to {cache_dir}..."
+            )
             copy_tree(osx_mounted_contents_parent, cache_dir)
         os.chdir(cache_dir)
         zdir = os.path.join(cache_dir, "Contents")
         print("DEBUG: zdir is:", zdir)
         print("DEBUG: is zdir a dir?", os.path.isdir(zdir))
-    elif blender_zipfile.endswith("tar.bz2") or blender_zipfile.endswith("tar.gz") or blender_zipfile.endswith("tar.xz"):
+    elif (
+        blender_zipfile.endswith("tar.bz2")
+        or blender_zipfile.endswith("tar.gz")
+        or blender_zipfile.endswith("tar.xz")
+    ):
         z = tarfile.open(blender_zipfile)
         zfiles = z.getnames()
         zdir = zfiles[0].split("/")[0]
     else:
-        print("Error, unknown archive extension: {blender_zipfile}. Will not extract it.}")
+        print(
+            "Error, unknown archive extension: {blender_zipfile}. Will not extract it.}"
+        )
         exit(1)
 
     if not os.path.isdir(zdir):
@@ -190,16 +214,20 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     if not is_osx_archive:
         # Some non-dmg archives may abnormally contain an OSX release
-        # Example cases: 
+        # Example cases:
         # https://ftp.nluug.nl/pub/graphics/blender/release/Blender2.78/blender-2.78c-OSX_10.6-x86_64.zip
         # https://download.blender.org/release/Blender2.79/blender-2.79-macOS-10.6.tar.gz
         for zfile in zfiles:
             if re.search(".*OSX.*|.lender\.app", zfile):
-                print("Detected old-style type of MacOSX release: a .zip/.tar.gz archive (instead of .dmg) containing a directory.")
+                print(
+                    "Detected old-style type of MacOSX release: a .zip/.tar.gz archive (instead of .dmg) containing a directory."
+                )
                 is_osx_archive = True
                 print("CWD IS:", os.getcwd())
                 print("CWD listdir:", os.listdir())
-                osx_extracted_contents_dir = os.path.join(findMacOSContentsParentDirectory(os.getcwd()), "Contents")
+                osx_extracted_contents_dir = os.path.join(
+                    findMacOSContentsParentDirectory(os.getcwd()), "Contents"
+                )
                 print("contents dir:", osx_extracted_contents_dir)
                 zdir = os.path.realpath(osx_extracted_contents_dir)
                 print("new zdir:", zdir)
@@ -220,13 +248,20 @@ def getBlender(blender_version, blender_zippath, nightly):
             print("Adding executable rights to MacOS blender binary file")
             os.chmod(executable_path, stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
         else:
-            print("Error, Blender MacOS executable not found in directory:", expected_executable_dir, "glob result:", executable_path, "files in target directory:", os.listdir(expected_executable_dir))
+            print(
+                "Error, Blender MacOS executable not found in directory:",
+                expected_executable_dir,
+                "glob result:",
+                executable_path,
+                "files in target directory:",
+                os.listdir(expected_executable_dir),
+            )
             exit(1)
- 
+
         zfiles = []
         for root, directories, filenames in os.walk(zdir):
             for filename in filenames:
-                zfiles.append(os.path.realpath(os.path.join(root,filename)))
+                zfiles.append(os.path.realpath(os.path.join(root, filename)))
 
     python = None
     for zfile in zfiles:
@@ -234,10 +269,15 @@ def getBlender(blender_version, blender_zippath, nightly):
             python = os.path.realpath(zfile)
             print(f"Blender's bundled python executable was found: {python}")
             print("Adding executable rights to blender bundled python binary file")
-            os.chmod(python, os.stat(python).st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
+            os.chmod(
+                python,
+                os.stat(python).st_mode | stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR,
+            )
             break
     if not python:
-        print("ERROR, Blender's bundled python executable could not be found within Blender's files")
+        print(
+            "ERROR, Blender's bundled python executable could not be found within Blender's files"
+        )
         exit(1)
 
     cmd = f"{python} -m ensurepip"
@@ -248,7 +288,6 @@ def getBlender(blender_version, blender_zippath, nightly):
 
     cmd = f"{python} -m pip install --upgrade -r {CURRENT_MODULE_DIRECTORY}/blender_requirements.txt -r {CURRENT_MODULE_DIRECTORY}/requirements.txt"
     os.system(cmd)
-
 
     shutil.rmtree("tests/__pycache__", ignore_errors=True)
 
@@ -261,7 +300,9 @@ def getBlender(blender_version, blender_zippath, nightly):
 
 
 def get_blender_from_suffix(blender_version):
-    print(f"Request to get Blender from suffix, with blender_version: {blender_version}")
+    print(
+        f"Request to get Blender from suffix, with blender_version: {blender_version}"
+    )
 
     blender_zipfile, nightly = getSuffix(blender_version)
 
@@ -270,7 +311,9 @@ def get_blender_from_suffix(blender_version):
 
 if __name__ == "__main__":
     if "cygwin" == sys.platform:
-        print("ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!")
+        print(
+            "ERROR, do not run this under cygwin, run it under Linux and Windows cmd!!"
+        )
         exit(1)
 
     if len(sys.argv) > 1:

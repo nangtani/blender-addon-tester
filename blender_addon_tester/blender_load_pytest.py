@@ -5,6 +5,7 @@
 import os
 from pathlib import Path
 import sys
+
 try:
     import pytest
 except Exception as e:
@@ -14,7 +15,9 @@ except Exception as e:
 # Make sure to have BLENDER_ADDON_TO_TEST set as an environment variable first
 ADDON = os.environ.get("BLENDER_ADDON_TO_TEST", False)
 if not ADDON:
-    print("No addon to test was found in the 'BLENDER_ADDON_TO_TEST' environment variable. Exiting.")
+    print(
+        "No addon to test was found in the 'BLENDER_ADDON_TO_TEST' environment variable. Exiting."
+    )
     sys.exit(1)
 
 # Set any value to the BLENDER_ADDON_COVERAGE_REPORTING environment variable to enable it
@@ -38,6 +41,7 @@ if None == addon_helper:
     pass
 elif os.path.isdir(addon_helper):
     sys.path.append(addon_helper)
+
 
 class SetupPlugin:
     def __init__(self, addon):
