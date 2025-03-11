@@ -52,9 +52,9 @@ def clean_file(filename):
                 line2 = "\n"
             line = line2
 
-        k = re.search('"blender":\s\(\d+, \d+, \d+\)', line)
-        if k:
-            line = f'    "blender": {bpy.app.version},\n'
+#         k = re.search('"blender":\s\(\d+, \d+, \d+\)', line)
+#         if k:
+#             line = f'    "blender": {bpy.app.version},\n'
 
         f.write(line)
     f.close()
